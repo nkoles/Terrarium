@@ -2,23 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimalBaseClass : MonoBehaviour
+public class PlantBaseClass : MonoBehaviour
 {
     public float age;
     public float ageLimit;
 
-    public float hunger;
-    public float hungerLimit;
-
-    public string animalName;
-
-    public bool isBaby;
+    public string plantName;
 
     public enum LifecycleStates
     {
-        Idle,
-        Hungry,
-        Horny,
+        Seed,
+        Sapling,
+        Bloom,
         Dead
     }
 
@@ -26,9 +21,9 @@ public class AnimalBaseClass : MonoBehaviour
 
     public AttributeData attributes;
 
-    public AnimalBaseClass InitialiseAnimal()
+    public PlantBaseClass InitialisePlant()
     {
-        A nimalBaseClass result = new AnimalBaseClass();
+        PlantBaseClass result = new PlantBaseClass();
 
         return result;
     }
