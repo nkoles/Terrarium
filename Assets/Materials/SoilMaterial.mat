@@ -52,7 +52,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
-    - _Fertility: 0
+    - _EdgeBorder: 0.45
+    - _EdgeIntensity: 6.7
+    - _Fertility: 1
+    - _MaxNoise: 47.09
     - _QueueControl: 0
     m_Colors: []
   m_BuildTextureStacks: []
