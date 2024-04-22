@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class AnimalAI : MonoBehaviour
 {
-    
+    [Header("Animal AI Fields")]
+    public Transform test;
+
+    private void Awake()
+    {
+    }
 }

@@ -12,8 +12,9 @@ public enum AnimalStates
     Decomposing
 }
 
-public class Animal : MonoBehaviour, ITerrariumProduct
+public class Animal : AnimalAI, ITerrariumProduct
 {
+    [Header ("Animal General Fields")]
     public float maxAge;
     public float currentAge;
 
@@ -26,17 +27,13 @@ public class Animal : MonoBehaviour, ITerrariumProduct
 
     [SerializeField]
     private TraitData traits;
-    public uint traitData;
+    public int traitData;
 
     public AnimalStates currentState;
-
-    public AnimalAI m_NavigationAI;
 
     public bool isInitialised = false;
     public void Initialise()
     {
-        m_NavigationAI = GetComponent<AnimalAI>();
-
         maxAge = UnityEngine.Random.Range(120, 180);
         currentAge = 0;
 
@@ -70,6 +67,5 @@ public class Animal : MonoBehaviour, ITerrariumProduct
 
     private void Awake()
     {
-        traitData = TraitConstants.CreateTraitDataIndex(TraitConstants.FOOD_FERTILISER, TraitConstants.FOOD_FERTILISER);
     }
 }

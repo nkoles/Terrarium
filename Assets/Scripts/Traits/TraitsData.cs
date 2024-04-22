@@ -35,68 +35,94 @@ public enum MiscTraits
 
 namespace TerrariumTraits
 {
-    using TraitType = UInt32;
+    using TraitType = Int32;
 
     static public class TraitConstants
     {
         //Nutrition Traits
-        public const TraitType NUTRITION_MASK = (uint) 0xFFFF;
+        public const TraitType NUTRITION_SHIFT = 0;
+        public const TraitType NUTRITION_MASK = 0xFF << NUTRITION_SHIFT;
 
-        public const TraitType NUTRITION_HERBIVORE = (uint)1 << (int)NUTRITION_MASK;
-        public const TraitType NUTRITION_CARNIVORE = (uint)2 << (int)NUTRITION_MASK;
-        public const TraitType NUTRITION_SCAVENGER = (uint)3 << (int)NUTRITION_MASK;
+        public const TraitType NUTRITION_HERBIVORE = (int)1 << NUTRITION_MASK;
+        public const TraitType NUTRITION_CARNIVORE = (int)2 << NUTRITION_MASK;
+        public const TraitType NUTRITION_SCAVENGER = (int)3 << NUTRITION_MASK;
 
-        static public TraitType[] NUTRITION_TRAITS_ALL = { NUTRITION_CARNIVORE,  NUTRITION_SCAVENGER, NUTRITION_SCAVENGER };
+        public const TraitType NUTRITION_TRAITS_ALL = NUTRITION_CARNIVORE | NUTRITION_SCAVENGER | NUTRITION_SCAVENGER;
 
         //Food Traits
         public const int FOOD_TRAIT_SHIFT = 8;
-        public const TraitType FOOD_MASK = (uint) 0xFFFF << FOOD_TRAIT_SHIFT;
+        public const TraitType FOOD_MASK = 0xFF << FOOD_TRAIT_SHIFT;
 
-        public const TraitType FOOD_PLANT = (uint)1 << (int)FOOD_MASK;
-        public const TraitType FOOD_MEAT = (uint)2 << (int)FOOD_MASK;
-        public const TraitType FOOD_FERTILISER = (uint)3 << (int)FOOD_MASK;
+        public const TraitType FOOD_PLANT = (int)1 << FOOD_MASK;
+        public const TraitType FOOD_MEAT = (int)2 << FOOD_MASK;
+        public const TraitType FOOD_FERTILISER = (int)3 << FOOD_MASK;
+
+        public const TraitType FOOD_TRAITS_ALL = FOOD_PLANT | FOOD_MEAT | FOOD_FERTILISER;
 
         //TerrainTraits
         public const int TERRAIN_TRAIT_SHIFT = 16;
-        public const TraitType TERRAIN_MASK = (uint) 0xFFFF << TERRAIN_TRAIT_SHIFT;
+        public const TraitType TERRAIN_MASK = 0xFF << TERRAIN_TRAIT_SHIFT;
 
-        public const TraitType TERRAIN_GROUND = (UInt32)1 << (int)TERRAIN_MASK;
-        public const TraitType TERRAIN_WATER = (uint)2 << (int)TERRAIN_MASK;
-        public const TraitType TERRAIN_AIR = (uint)3 << (int)TERRAIN_MASK;
+        public const TraitType TERRAIN_GROUND = (int)1 << TERRAIN_MASK;
+        public const TraitType TERRAIN_WATER = (int)2 << TERRAIN_MASK;
+        public const TraitType TERRAIN_AIR = (int)3 << TERRAIN_MASK;
 
         //MiscTraits
         public const int MISC_TRAIT_MASK = 24;
-        public const TraitType MISC_TRAITS = (uint) 0xFFFF << MISC_TRAIT_MASK;
+        public const TraitType MISC_TRAITS = 0xFF << MISC_TRAIT_MASK;
 
-        public const TraitType MISC_PICKUPABLE = MISC_TRAITS << (1 + MISC_TRAIT_MASK);
+        public const TraitType MISC_PICKUPABLE = (int)1 << MISC_TRAITS;
 
         static public TraitType CreateTraitDataIndex(params TraitType[] traits)
         {
             TraitType result = new TraitType();
 
-            for(int i =0; i < traits.Length; ++i)
+            foreach(TraitType t in traits)
             {
-                result |= traits[i];
+                AddTrait(result, t);
             }
 
             return result;
         }
 
-        
-
-        static public bool hasTrait(TraitType traitData, TraitType traitComparison)
+        static public TraitType AddTrait(TraitType traitData, params TraitType[] traitToAdd)
         {
-            return (traitData & traitComparison)!=0;
+            foreach(TraitType t in traitToAdd)
+            {
+                traitData |= t;
+            }
 
-            //if ((traitData & traitComparison))
-            //{
-            //    return false;
-            //}
-            //else
-            //{
-            //    Debug.Log("Has Trait");
-            //    return true;
-            //}
+            return traitData;
+        }
+
+        static public TraitType RemoveTrait(TraitType traitData, params TraitType[] traitsToRemove)
+        {
+            TraitType removalTraits = CreateTraitDataIndex(traitsToRemove);
+
+            traitData &= ~removalTraits;
+
+            return traitData;
+        }
+
+        static public bool HasTrait(TraitType traitData, params TraitType[] traitComparisons)
+        {
+            for(int i = 0; i < traitComparisons.Length; ++i)
+            {
+                if((traitData & traitComparisons[i]) != 0)
+                {
+                    Debug.Log("Containts traits");
+
+                    if (i ==traitComparisons.Length-1)
+                    {
+
+                        return true;
+                    }
+                }
+            }
+
+            Debug.Log("Doesn't contain the traits");
+
+            return false;
         }
     }
 }
