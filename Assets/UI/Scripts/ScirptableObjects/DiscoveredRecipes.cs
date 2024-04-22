@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+
+[CreateAssetMenu(fileName = "DiscovereedRecipes", menuName = "ScriptableObjects/DiscoveredRecipes", order = 3)]
+public class DiscoveredRecipes : ScriptableObject
 {
     // Start is called before the first frame update
     void Start()
