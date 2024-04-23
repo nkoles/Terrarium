@@ -25,8 +25,8 @@ public class Animal : AnimalAI, ITerrariumProduct
     public float maxHunger;
     public float currentHunger;
 
-    [SerializeField]
-    private TraitData traits;
+    //[SerializeField]
+    //private TraitData traits;
     public int traitData;
 
     public AnimalStates currentState;
@@ -37,8 +37,11 @@ public class Animal : AnimalAI, ITerrariumProduct
         maxAge = UnityEngine.Random.Range(120, 180);
         currentAge = 0;
 
+        maxHunger = 10;
+
         isBaby = true;
 
+        isInitialised = true;
     }
     
     public void Age()
@@ -63,9 +66,5 @@ public class Animal : AnimalAI, ITerrariumProduct
             default:
                 break;
         }
-    }
-
-    private void Awake()
-    {
     }
 }

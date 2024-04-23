@@ -3,35 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public enum NutritionTraits
-{
-    Herbivore,
-    Carnivore,
-    Scavenger
-}
+//[Serializable]
+//public enum NutritionTraits
+//{
+//    Herbivore,
+//    Carnivore,
+//    Scavenger
+//}
 
-[Serializable]
-public enum FoodTraits
-{
-    Plant,
-    Meat,
-    Fertilizer
-}
+//[Serializable]
+//public enum FoodTraits
+//{
+//    Plant,
+//    Meat,
+//    Fertilizer
+//}
 
-[Serializable]
-public enum TerrainTraits
-{
-    Ground,
-    Water,
-    Air
-}
+//[Serializable]
+//public enum TerrainTraits
+//{
+//    Ground,
+//    Water,
+//    Air
+//}
 
-[Serializable]
-public enum MiscTraits
-{
-    Pickupable
-}
+//[Serializable]
+//public enum MiscTraits
+//{
+//    Pickupable
+//}
 
 namespace TerrariumTraits
 {
@@ -73,7 +73,7 @@ namespace TerrariumTraits
 
         public const TraitType MISC_PICKUPABLE = (int)1 << MISC_TRAITS;
 
-        static public TraitType CreateTraitDataIndex(params TraitType[] traits)
+        static public TraitType CreateTraitData(params TraitType[] traits)
         {
             TraitType result = new TraitType();
 
@@ -97,7 +97,7 @@ namespace TerrariumTraits
 
         static public TraitType RemoveTrait(TraitType traitData, params TraitType[] traitsToRemove)
         {
-            TraitType removalTraits = CreateTraitDataIndex(traitsToRemove);
+            TraitType removalTraits = CreateTraitData(traitsToRemove);
 
             traitData &= ~removalTraits;
 
@@ -127,33 +127,8 @@ namespace TerrariumTraits
     }
 }
 
-[Serializable]
-public struct TraitData
-{
-    public List<FoodTraits> FoodTraits;
-    public List<NutritionTraits> NutritionTraits;
-    public List<TerrainTraits> TerrainTraits;
-    public List<MiscTraits> MiscTraits;
-
-    //public void AddTrait<T>(T trait)
-    //    where T : System.Enum
-    //{
-    //    switch (System.Enum.GetUnderlyingType(typeof(T))
-    //    {
-    //        case (FoodTraits):
-    //            break;
-    //    }
-    //}
-
-    //public bool HasDuplicateTrait<T>(T trait)
-    //{
-
-    //}
-
-    public TraitData CombineTraitData(ref TraitData traits1, ref TraitData traits2)
-    {
-        TraitData CombinedTraits = new TraitData();
-
-        return CombinedTraits;
-    }
-}
+//[Serializable]
+//public struct TraitData
+//{
+//    public 
+//}

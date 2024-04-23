@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
 
-public class TerrariumTerrain : MonoBehaviour
+using TraitType = System.Int32;
+
+public interface ITerrainProduct
 {
-    public int traitData = TraitConstants.TERRAIN_GROUND;
+    public void Initialise();
 }
