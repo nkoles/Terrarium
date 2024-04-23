@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
+using LerpingUtils;
 
 public class AnimalAI : MonoBehaviour
 {
@@ -13,8 +14,6 @@ public class AnimalAI : MonoBehaviour
     private List<Vector3> AvailableTiles(int terrainData)
     {
         List<Vector3> results = new List<Vector3>();
-
-        Vector3Int currentAnimalPosition = terrainGrid.WorldToCell(transform.position);
 
         Ray[] directionalRays = new Ray[4]
         {
@@ -53,11 +52,25 @@ public class AnimalAI : MonoBehaviour
         return results;
     }
 
-    public void Move(int traitData)
-    {
 
-        //List<Vector3> availableTiles = AvailableTiles(traitData);
+
+    public IEnumerator Move(int traitData)
+    {
+        List<Vector3> availableTiles = AvailableTiles(traitData);
+
+        if(availableTiles.Count > 0)
+        {
+            int randomTile = Random.Range(0, availableTiles.Count);
+
+            Vector3 target = new Vector3(availableTiles[randomTile].x , transform.position.y, availableTiles[randomTile].x);
+
+            transform.position = target;
+        }
+
+        yield return null;
     }
+
+
 
 //    private void OnDrawGizmos()
 //    {

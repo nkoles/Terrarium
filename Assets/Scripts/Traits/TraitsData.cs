@@ -67,6 +67,8 @@ namespace TerrariumTraits
         public const TraitType TERRAIN_WATER = (int)2 << TERRAIN_MASK;
         public const TraitType TERRAIN_AIR = (int)3 << TERRAIN_MASK;
 
+        public const TraitType TERRAIN_TRAITS_ALL = TERRAIN_GROUND | TERRAIN_WATER | TERRAIN_AIR;
+
         //MiscTraits
         public const int MISC_TRAIT_MASK = 24;
         public const TraitType MISC_TRAITS = 0xFF << MISC_TRAIT_MASK;
