@@ -4,7 +4,11 @@ using UnityEngine;
 
 public interface ITerrariumProduct
 {
+    public int TraitData { get; set; }
+
     public void Initialise();
 
     public void Age();
+
+    public void Lifecycle();
 }

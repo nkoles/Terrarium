@@ -27,7 +27,8 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     //[SerializeField]
     //private TraitData traits;
-    public int traitData;
+    private int _traitData;
+    public int TraitData { get { return _traitData; } set { _traitData = value; } }
 
     public AnimalStates currentState;
 
@@ -49,13 +50,14 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     }
 
-    private void Update()
+    public void Lifecycle()
     {
         if(isInitialised)
             Age();
 
         switch(currentState){
             case AnimalStates.Idle:
+                Move(AvailableTiles(TraitConstants.TERRAIN_GROUND));
                 break;
             case AnimalStates.Hungry:
                 break;
@@ -66,5 +68,11 @@ public class Animal : AnimalAI, ITerrariumProduct
             default:
                 break;
         }
+    }
+
+    public void Awake()
+    {
+        TraitData = TraitConstants.TERRAIN_GROUND;
+        GameTimeManager.Tick.AddListener(Lifecycle);
     }
 }

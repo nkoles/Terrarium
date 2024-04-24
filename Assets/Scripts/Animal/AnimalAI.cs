@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
 using LerpingUtils;
+using System.Linq;
 
 public class AnimalAI : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class AnimalAI : MonoBehaviour
 
     public Grid terrainGrid;
 
-    private List<Vector3> AvailableTiles(int terrainData)
+    public List<Vector3> AvailableTiles(int terrainData)
     {
         List<Vector3> results = new List<Vector3>();
 
@@ -42,9 +43,10 @@ public class AnimalAI : MonoBehaviour
             {
                 Physics.Raycast(groundRays[i], out groundHits[i], 1f);
 
-                if (TraitConstants.HasTrait(groundHits[i].collider.GetComponent<TerrariumTerrain>().traitData, terrainData))
+                if (groundHits[i].collider != null && TraitConstants.HasTrait(groundHits[i].collider.GetComponent<TerrariumTerrain>().traitData, terrainData))    
                 {
-                    results.Add(terrainGrid.WorldToCell(groundHits[i].collider.transform.position));
+                    Vector3Int cellPosition = terrainGrid.WorldToCell(groundHits[i].collider.gameObject.transform.position);
+                    results.Add(new Vector3(cellPosition.x, cellPosition.z, cellPosition.y));
                 }
             }
         }
@@ -52,48 +54,121 @@ public class AnimalAI : MonoBehaviour
         return results;
     }
 
-
-
-    public IEnumerator Move(int traitData)
+    public void Move(List<Vector3> availableTiles)
     {
-        List<Vector3> availableTiles = AvailableTiles(traitData);
-
         if(availableTiles.Count > 0)
         {
-            int randomTile = Random.Range(0, availableTiles.Count);
+            int randomTile = Random.Range(0, availableTiles.Count + 1);
 
-            Vector3 target = new Vector3(availableTiles[randomTile].x , transform.position.y, availableTiles[randomTile].x);
+            Vector3 target = transform.position;
+
+            if(randomTile != availableTiles.Count)
+            {
+                target = new Vector3(availableTiles[randomTile].x + 0.5f, transform.position.y, availableTiles[randomTile].z + 0.5f);
+                print(target);
+            }
 
             transform.position = target;
         }
-
-        yield return null;
     }
 
+    public void Move(Vector3 availableTile)
+    {
+        List<Vector3> tile = new List<Vector3>() { availableTile };
 
+        Move(tile);
+    }
 
-//    private void OnDrawGizmos()
-//    {
-//        Ray[] directionalRays = new Ray[4]
-//{
-//            new Ray(transform.position, transform.forward),
-//            new Ray(transform.position, -transform.forward),
-//            new Ray(transform.position, transform.right),
-//            new Ray(transform.position, -transform.right)
-//};
+    public Vector3 Find(int terrainData, int searchData, float range, AnimalStates state)
+    {
+        List<Vector3> nonFilteredAvailableTiles = AvailableTiles(terrainData);
 
-//        Ray[] groundRays = new Ray[4]
-//        {
-//            new Ray(transform.position + transform.forward, -transform.up),
-//            new Ray(transform.position - transform.forward, -transform.up),
-//            new Ray(transform.position + transform.right, -transform.up),
-//            new Ray(transform.position - transform.right, -transform.up)
-//        };
+        Collider[] nearbyColliders = new Collider[0];
+        List<Vector3> nearbyCollidersPositions = new List<Vector3>();
 
-//        for(int i = 0; i < 4; i++)
-//        {
-//            Gizmos.DrawRay(groundRays[i]);
-//            Gizmos.DrawRay(directionalRays[i]);
-//        }
-//    }
+        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders);
+
+        foreach(var collider in nearbyColliders)
+        {
+            Plant plant = new Plant();
+            Animal animal = new Animal();
+
+            if(collider.TryGetComponent<Plant>(out plant) || collider.TryGetComponent<Animal>(out animal))
+            {
+                if(TryGetComponent<Plant>(out plant))
+                {
+                    if (TraitConstants.HasTrait(plant.TraitData, searchData))
+                        nearbyCollidersPositions.Add(collider.transform.position);
+                }
+
+                if (TryGetComponent<Animal>(out animal))
+                {
+                    if (TraitConstants.HasTrait(animal.TraitData, searchData))
+                        nearbyCollidersPositions.Add(collider.transform.position);
+                }
+            }
+        }
+
+        int tileIndex = 0;
+        float tempDistance = float.MaxValue;
+
+        for (int i = 0; i < nonFilteredAvailableTiles.Count ; ++i)
+        {
+            for (int j = 0; j < nearbyCollidersPositions.Count; ++j)
+            {
+                if (Vector3.Distance(nonFilteredAvailableTiles[i], nearbyCollidersPositions[j]) < tempDistance)
+                {
+                    tileIndex = i;
+                    tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], nearbyCollidersPositions[j]);
+                }
+            }
+        }
+
+        return nonFilteredAvailableTiles[tileIndex];
+    }
+
+    public bool CheckForFood(int traitData)
+    {
+        List<Vector3> directions = new List<Vector3>() { transform.forward , -transform.forward, transform.right, -transform.right };
+
+        RaycastHit[] hitData = new RaycastHit[4];
+
+        for(int i = 0; i < 4; ++i)
+        {
+            Physics.Raycast(transform.position, directions[i], out hitData[i], 1f);
+
+            
+        }
+
+        return true;
+    }
+
+    public void Eat()
+    {
+    }
+
+    private void OnDrawGizmos()
+    {
+        Ray[] directionalRays = new Ray[4]
+{
+                new Ray(transform.position, transform.forward),
+                new Ray(transform.position, -transform.forward),
+                new Ray(transform.position, transform.right),
+                new Ray(transform.position, -transform.right)
+};
+
+        Ray[] groundRays = new Ray[4]
+        {
+                new Ray(transform.position + transform.forward, -transform.up),
+                new Ray(transform.position - transform.forward, -transform.up),
+                new Ray(transform.position + transform.right, -transform.up),
+                new Ray(transform.position - transform.right, -transform.up)
+        };
+
+        for (int i = 0; i < 4; i++)
+        {
+            Gizmos.DrawRay(groundRays[i]);
+            Gizmos.DrawRay(directionalRays[i]);
+        }
+    }
 }
