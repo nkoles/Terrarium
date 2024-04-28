@@ -9,9 +9,21 @@ public enum ItemType
     Type1
 }
 
-public class ItemData : MonoBehaviour
+[CreateAssetMenu]
+public class ItemData : ScriptableObject
 {
     public ItemType itemType;
+    [HideInInspector] public string displayName;
     public Sprite icon;
     // OTHER ITEM VARIABLES HERE
+
+    private void OnEnable()
+    {
+        displayName = itemType.ToString();
+    }
+
+    private void OnDisable()
+    {
+        displayName = null;
+    }
 }

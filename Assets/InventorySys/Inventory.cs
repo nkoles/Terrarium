@@ -6,12 +6,15 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour, ICollectible
 {
+    [Header("Inventory Contents")]
     public List<InventoryItem> inventory = new List<InventoryItem>();
     private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 
-    public static event Action OnItemCollected;
-
+    [Header("Item Types")]
     public ItemData[] itemArray;
+
+    public static event Action OnItemCollected;
+    public static event Action<List<InventoryItem>> OnInventoryChange;
 
     private void OnEnable()
     {
@@ -45,12 +48,19 @@ public class Inventory : MonoBehaviour, ICollectible
         if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
         {
             item.AddToStack();
+            Debug.Log(item.itemData.displayName + " total stack is now " + item.stackSize);
+            OnInventoryChange?.Invoke(inventory);
         }
         else
         {
-            InventoryItem newItem = new InventoryItem(itemData);
-            inventory.Add(newItem);
-            itemDictionary.Add(itemData, newItem);
+            if (inventory.Count <= 18)
+            {
+                InventoryItem newItem = new InventoryItem(itemData);
+                inventory.Add(newItem);
+                itemDictionary.Add(itemData, newItem);
+                Debug.Log("Added " + item.itemData.displayName + " to inventory for first time");
+            }
+            else { Debug.Log("Inventory Full!"); }
         }
     }
 
@@ -64,13 +74,13 @@ public class Inventory : MonoBehaviour, ICollectible
                 inventory.Remove(item);
                 itemDictionary.Remove(itemData);
             }
+            OnInventoryChange?.Invoke(inventory);
         }
     }
 
     public void Collect(int i)
     {
         OnItemCollected?.Invoke();
-
         Add(itemArray[i]);
     }
 }
