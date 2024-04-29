@@ -7,6 +7,7 @@ public class GameTimeManager : MonoBehaviour
 {
     static public GameTimeManager timeHandlerInstance;
 
+    static public UnityEvent PreTick = new UnityEvent();
     static public UnityEvent Tick = new UnityEvent();
 
     public float tickFrequency;
@@ -30,6 +31,7 @@ public class GameTimeManager : MonoBehaviour
         if(_tickTimer >= tickFrequency)
         {
             print("TICK");
+            PreTick.Invoke();
             Tick.Invoke();
             _tickTimer = 0;
         }

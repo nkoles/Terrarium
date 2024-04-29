@@ -4,7 +4,8 @@ using UnityEngine;
 using TerrariumTraits;
 using LerpingUtils;
 using System.Linq;
-using Unity.VisualScripting;
+using System;
+using static UnityEngine.ParticleSystem;
 
 public class AnimalAI : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class AnimalAI : MonoBehaviour
 
     public Grid terrainGrid;
 
-    public Vector3[] AvailableTiles(int terrainData)
+    public Vector3[] AvailableTiles(TerrainTraits terrainTraits)
     {
         List<Vector3> results = new List<Vector3>();
 
@@ -45,7 +46,7 @@ public class AnimalAI : MonoBehaviour
             {
                 Physics.Raycast(groundRays[i], out groundHits[i], 1f);
 
-                if (groundHits[i].collider != null && TraitConstants.HasTrait(groundHits[i].collider.GetComponent<TerrariumTerrain>().traitData, terrainData))    
+                if (groundHits[i].collider != null && TraitUtils.HasTrait(terrainTraits, groundHits[i].collider.GetComponent<TerrariumTerrain>().traitData.terrainTraits))
                 {
                     Vector3Int cellPosition = terrainGrid.WorldToCell(groundHits[i].collider.gameObject.transform.position);
                     results.Add(new Vector3(cellPosition.x, cellPosition.z, cellPosition.y));
@@ -60,7 +61,7 @@ public class AnimalAI : MonoBehaviour
     {
         if(availableTiles.Length > 0)
         {
-            int randomTile = Random.Range(0, availableTiles.Length + 1);
+            int randomTile = UnityEngine.Random.Range(0, availableTiles.Length + 1);
 
             Vector3 target = transform.position;
 
@@ -81,42 +82,49 @@ public class AnimalAI : MonoBehaviour
         Move(tile);
     }
 
-    public ITerrariumProduct FindWithTrait(int terrainData, int[] searchData, float range)
+    public ITerrariumProduct FindTargetWithTrait<TEnum>(TEnum searchTrait, float range) where TEnum: Enum
     {
         ITerrariumProduct target = null;
 
-        int maxColliders = 10;
+        int maxColliders = 5;
 
         Collider[] nearbyColliders = new Collider[maxColliders];
-        List<Vector3> nearbyCollidersPositions = new List<Vector3>();
+        List<ITerrariumProduct> nearbyTargets = new List<ITerrariumProduct>();
 
-        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders);
+        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders, ~(1<<6));
 
         foreach(var collider in nearbyColliders)
         {
-            print(collider);
-
-            if(TryGetComponent<ITerrariumProduct>(out target))
+            if(collider != null && collider.GetComponent<ITerrariumProduct>() != null)
             {
-                foreach(var trait in searchData)
-                {
-                    return target;
+                print(collider.name);
 
-                    //if(TraitConstants.HasTrait(target.TraitData, trait))
-                    //{
-                    //    return target;
-                    //} else
-                    //{
-                    //    target = null;
-                    //}
+                print(collider.GetComponent<ITerrariumProduct>().Traits.GetTraitFlags<TEnum>());
+
+                if (TraitUtils.HasTrait<TEnum>(collider.GetComponent<ITerrariumProduct>().Traits.GetTraitFlags<TEnum>(), searchTrait))
+                {
+                    nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
                 }
+            }
+        }
+
+        float distance = float.MaxValue;
+
+        print(nearbyTargets.Count);
+
+        foreach(var targ in nearbyTargets)
+        {
+            if(Vector3.Distance(transform.position, targ.PositionalData) < distance)
+            {
+                target = targ;
+                distance = Vector3.Distance(transform.position, targ.PositionalData);
             }
         }
 
         return target;
     }
 
-    public Vector3 ClosestTileToTarget(int terrainData)
+    public Vector3 ClosestTileToTarget(TerrainTraits terrainData)
     {
         Vector3[] nonFilteredAvailableTiles = AvailableTiles(terrainData);
 
@@ -125,36 +133,33 @@ public class AnimalAI : MonoBehaviour
 
         for (int i = 0; i < nonFilteredAvailableTiles.Length; ++i)
         {
-            if (Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData.position) < tempDistance)
+            if (Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData) < tempDistance)
             {
                 tileIndex = i;
-                tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData.position);
+                tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData);
             }
         }
 
         return nonFilteredAvailableTiles[tileIndex];
     }
 
-    public bool CheckForTrait(int[] searchData)
+    public bool CheckForTarget()
     {
-        List<Vector3> directions = new List<Vector3>() { transform.forward , -transform.forward, transform.right, -transform.right };
+        List<Vector3> directions = new List<Vector3>() { transform.forward, -transform.forward, transform.right, -transform.right };
 
         RaycastHit[] hitData = new RaycastHit[4];
 
-        for(int i = 0; i < 4; ++i)
+        for (int i = 0; i < 4; ++i)
         {
             Physics.Raycast(transform.position, directions[i], out hitData[i], 1f);
 
             ITerrariumProduct terrariumProduct;
 
-            foreach (int trait in searchData)
+            if (hitData[i].collider != null && hitData[i].collider.TryGetComponent<ITerrariumProduct>(out terrariumProduct))
             {
-                if (hitData[i].collider.TryGetComponent<ITerrariumProduct>(out terrariumProduct))
+                if(terrariumProduct == target)
                 {
-                    if(TraitConstants.HasTrait(terrariumProduct.TraitData, trait))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -164,24 +169,26 @@ public class AnimalAI : MonoBehaviour
 
     public void Consume()
     {
-        print("Consumed Target");
     }
 
-    public void Eat(int[] nutritionData, int terrainData, float range)
+    public void Eat(TerrainTraits terrainTraits, FoodTraits searchTraits, float range)
     {
-        print(CheckForTrait(nutritionData));
-
         if(target == null)
         {
-            FindWithTrait(terrainData, nutritionData, range);
-            Move(AvailableTiles(terrainData));
+            Move(AvailableTiles(terrainTraits));
+            target = FindTargetWithTrait<FoodTraits>(searchTraits, range);
         } else
         {
-            if(!CheckForTrait(nutritionData))
+            print("Target Found");
+
+            if (!CheckForTarget())
             {
-                Move(ClosestTileToTarget(terrainData));
-            } else
+                print("Getting to Target");
+                Move(ClosestTileToTarget(terrainTraits));
+            }
+            else
             {
+                print("Consuming");
                 Consume();
             }
         }

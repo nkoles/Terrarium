@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TerrariumTraits;
 using UnityEngine;
 
 public interface ITerrariumProduct
 {
-    public int TraitData { get; set; }
+    public TraitData Traits { get; set; }
 
-    public Transform PositionalData { get; set; }
+    public bool IsDead { get; set; }
+
+    public Vector3 PositionalData { get; set; }
 
     public void Initialise();
 

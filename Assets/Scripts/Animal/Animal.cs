@@ -20,18 +20,21 @@ public class Animal : AnimalAI, ITerrariumProduct
     public float currentAge;
 
     public bool isBaby;
-    public bool isDead;
 
-    public int maxHunger = 20;
+    [SerializeField]
+    private bool _isDead;
+    public bool IsDead { get { return _isDead; } set { _isDead = value; } }
+
+    public int maxHunger = 40;
     public int currentHunger = 0;
 
     [SerializeField]
-    private int _traitData;
-    public int TraitData { get { return _traitData; } set { _traitData = value; } }
+    private TraitData _traitData;
+    public TraitData Traits { get { return _traitData; } set { _traitData = value; } }
 
     [SerializeField]
-    private Transform _transform;
-    public Transform PositionalData { get { return _transform; } set { _transform = value; } }
+    private Vector3 _position;
+    public Vector3 PositionalData { get { return _position; } set { _position = value; } }
 
     public AnimalStates currentState;
 
@@ -51,8 +54,6 @@ public class Animal : AnimalAI, ITerrariumProduct
     public void Age()
     {
         currentHunger++;
-
-        print(target);
     }
 
     public void Lifecycle()
@@ -60,38 +61,24 @@ public class Animal : AnimalAI, ITerrariumProduct
         if (isInitialised)
             Age();
 
-        PositionalData = transform;
+        PositionalData = transform.position;
 
         switch (currentState){
             case AnimalStates.Idle:
-                if (currentHunger > maxHunger / 2)
-                {
-                    currentState = AnimalStates.Hungry;
-                }
-
-                Move(AvailableTiles(TraitConstants.TERRAIN_GROUND));
+                Move(AvailableTiles(Traits.terrainTraits));
                 break;
             case AnimalStates.Hungry:
-                int[] nutritionalTraits = TraitConstants.ReturnTraits(TraitData, TraitConstants.NUTRITION_TRAITS_ALL);
-                List<int> searchTraits = new List<int>();
+                FoodTraits searchTraits = new FoodTraits();
 
-                foreach(var trait in nutritionalTraits)
-                {
-                    switch (trait)
-                    {
-                        case TraitConstants.NUTRITION_HERBIVORE:
-                            searchTraits.Add(TraitConstants.FOOD_PLANT);
-                            break;
-                        case TraitConstants.NUTRITION_CARNIVORE:
-                            searchTraits.Add(TraitConstants.FOOD_MEAT);
-                            break;
-                        case TraitConstants.NUTRITION_SCAVENGER:
-                            searchTraits.Add(TraitConstants.FOOD_FERTILISER);
-                            break;
-                    }
-                }
+                if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Herbivore))
+                    searchTraits |= FoodTraits.Plant;
+                if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Carnivore))
+                    searchTraits |= FoodTraits.Meat;
+                if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Scavenger))
+                    searchTraits |= FoodTraits.Fertilizer;
 
-                Eat(searchTraits.ToArray(), TraitConstants.TERRAIN_GROUND, 10);
+                Eat(Traits.terrainTraits, searchTraits, 10);
+
                 break;
             case AnimalStates.Horny:
                 break;
@@ -104,7 +91,6 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Awake()
     {
-        TraitData = TraitConstants.CreateTraitData(TraitConstants.TERRAIN_GROUND, TraitConstants.NUTRITION_HERBIVORE);
         GameTimeManager.Tick.AddListener(Lifecycle);
     }
 }

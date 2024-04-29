@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class Plant : PlantAI, ITerrariumProduct
 {
-    private int _traitData;
-    public int TraitData { get { return _traitData; } set { _traitData = value; } }
+    [SerializeField]
+    private TraitData _traitData;
+    public TraitData Traits { get { return _traitData; } set { _traitData = value; } }
 
-    private Transform _transform;
-    public Transform PositionalData { get { return _transform; } set { _transform = value; } }
+    private Vector3 _position;
+    public Vector3 PositionalData { get { return _position; } set { _position = value; } }
+
+    private bool _isDead;
+    public bool IsDead {  get { return _isDead; } set { _isDead = value; } }
 
     public void Initialise()
     {
@@ -18,19 +22,17 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Age()
     {
-
+        print(PositionalData);
+        PositionalData = transform.position;
     }
 
     public void Lifecycle()
     {
-        Age();
-
-        PositionalData = transform;
     }
 
     public void Awake()
     {
-        TraitData = TraitConstants.FOOD_PLANT;
+        GameTimeManager.PreTick.AddListener(Age);
         GameTimeManager.Tick.AddListener(Lifecycle);
     }
 }

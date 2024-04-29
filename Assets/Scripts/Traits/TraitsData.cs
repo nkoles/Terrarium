@@ -3,186 +3,131 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[Serializable]
-//public enum NutritionTraits
-//{
-//    Herbivore,
-//    Carnivore,
-//    Scavenger
-//}
-
-//[Serializable]
-//public enum FoodTraits
-//{
-//    Plant,
-//    Meat,
-//    Fertilizer
-//}
-
-//[Serializable]
-//public enum TerrainTraits
-//{
-//    Ground,
-//    Water,
-//    Air
-//}
-
-//[Serializable]
-//public enum MiscTraits
-//{
-//    Pickupable
-//}
-
 namespace TerrariumTraits
 {
-    using TraitType = Int32;
-
-    static public class TraitConstants
+    [Flags]
+    public enum NutritionalTraits
     {
-        //Nutrition Traits
-        public const TraitType NUTRITION_SHIFT = 0;
-        public const TraitType NUTRITION_MASK = 0xF << NUTRITION_SHIFT;
+        None = 0,
+        Herbivore = 1,
+        Carnivore = 2,
+        Scavenger = 4,
+        Everything = 8
+    }
 
-        public const TraitType NUTRITION_HERBIVORE = (int)1 << NUTRITION_MASK;
-        public const TraitType NUTRITION_CARNIVORE = (int)2 << NUTRITION_MASK;
-        public const TraitType NUTRITION_SCAVENGER = (int)3 << NUTRITION_MASK;
+    [Flags]
+    public enum FoodTraits
+    {
+        None = 0,
+        Plant = 1,
+        Meat = 2,
+        Fertilizer = 4,
+        Everything = 8
+    }
 
-        public const TraitType NUTRITION_TRAITS_ALL = NUTRITION_CARNIVORE | NUTRITION_SCAVENGER | NUTRITION_SCAVENGER;
 
-        //Food Traits
-        public const int FOOD_TRAIT_SHIFT = 8;
-        public const TraitType FOOD_MASK = 0xFF << FOOD_TRAIT_SHIFT;
+    [Flags]
+    public enum TerrainTraits
+    {
+        None = 0,
+        Ground = 1,
+        Water = 2,
+        Air = 4,
+        Everything = 8
+    }
 
-        public const TraitType FOOD_PLANT = (int)1 << FOOD_MASK;
-        public const TraitType FOOD_MEAT = (int)2 << FOOD_MASK;
-        public const TraitType FOOD_FERTILISER = (int)3 << FOOD_MASK;
+    [Flags]
+    public enum MiscTraits
+    {
+        None = 0,
+        Pickupable = 1,
+        Everything
+    }
 
-        public const TraitType FOOD_TRAITS_ALL = FOOD_PLANT | FOOD_MEAT | FOOD_FERTILISER;
-
-        //TerrainTraits
-        public const int TERRAIN_TRAIT_SHIFT = 16;
-        public const TraitType TERRAIN_MASK = 0xFF << TERRAIN_TRAIT_SHIFT;
-
-        public const TraitType TERRAIN_GROUND = (int)1 << TERRAIN_MASK;
-        public const TraitType TERRAIN_WATER = (int)2 << TERRAIN_MASK;
-        public const TraitType TERRAIN_AIR = (int)3 << TERRAIN_MASK;
-
-        public const TraitType TERRAIN_TRAITS_ALL = TERRAIN_GROUND | TERRAIN_WATER | TERRAIN_AIR;
-
-        //MiscTraits
-        public const int MISC_TRAIT_SHIFT = 24;
-        public const TraitType MISC_MASK = 0xFF << MISC_TRAIT_SHIFT;
-
-        public const TraitType MISC_PICKUPABLE = (int)1 << MISC_MASK;
-
-        public const TraitType MISC_TRAITS_ALL = MISC_PICKUPABLE;
-
-        public const TraitType ALL_TRAITS = NUTRITION_TRAITS_ALL | FOOD_TRAITS_ALL | TERRAIN_TRAITS_ALL | MISC_TRAITS_ALL;
-
-        static public TraitType[] GenerateFlagArray(int end, TraitType mask)
+    static public class TraitUtils
+    {
+        static public void AddTrait<T>(T traitData, params T[] traitFlags) where T: Enum
         {
-            TraitType[] results = new TraitType[end];
-
-            for (int i = 1; i <= end; ++i)
+            foreach (var t in traitFlags)
             {
-                results[i-1] = (int)i << mask;
-            }
+                int traitDataValue = (int)(object)traitData;
+                int traitFlagValue = (int)(object)t;
 
-            return results;
+                traitData = (T)(object)(traitDataValue | traitFlagValue);
+
+                //Debug.Log("Added Trait: " + Enum.GetName(typeof(T), traitFlagValue));
+            }
         }
 
-        static public TraitType CreateTraitData(params TraitType[] traits)
+        static public void RemoveTrait<T>(T traitData, params T[] traitFlags) where T: Enum
         {
-            TraitType result = new TraitType();
-
-            foreach(TraitType t in traits)
+            foreach (var t in traitFlags)
             {
-                AddTrait(result, t);
-            }
+                int traitDataValue = (int)(object)traitData;
+                int traitFlagValue = (int)(object)t;
 
-            return result;
+                traitData = (T)(object)(traitDataValue & (~traitFlagValue));
+
+                //Debug.Log("Removed Trait: " + Enum.GetName(typeof(T), traitFlagValue));
+            }
         }
 
-        static public TraitType AddTrait(TraitType traitData, params TraitType[] traitToAdd)
+        static public bool HasTrait<T>(T traitData, T traitFlags) where T: Enum
         {
-            foreach(TraitType t in traitToAdd)
+            int traitDataValue = (int)(object)traitData;
+            int traitFlagValue = (int)(object)traitFlags;
+
+            if ((traitDataValue & traitFlagValue) != 0)
             {
-                traitData |= t;
+                //Debug.Log("Does have trait: " + Enum.GetName(typeof(T), traitFlagValue));
+
+                return true;
             }
 
-            return traitData;
-        }
-
-        static public TraitType RemoveTrait(TraitType traitData, params TraitType[] traitsToRemove)
-        {
-            TraitType removalTraits = CreateTraitData(traitsToRemove);
-
-            traitData &= ~removalTraits;
-
-            return traitData;
-        }
-
-        static public bool HasTrait(TraitType traitData, params TraitType[] traitComparisons)
-        {
-            for(int i = 0; i < traitComparisons.Length; ++i)
-            {
-                if((traitData & traitComparisons[i]) != 0)
-                {
-                    //Debug.Log("Containts traits");
-
-                    if (i ==traitComparisons.Length-1)
-                    {
-
-                        return true;
-                    }
-                }
-            }
-
-            Debug.Log("Doesn't contain the traits");
+            //Debug.Log("Does not have trait: " + Enum.GetName(typeof(T), traitFlagValue));
 
             return false;
         }
+    }
 
-        static public TraitType[] ReturnTraits(TraitType traitData, TraitType traitCategory)
+    [Serializable]
+    public class TraitData
+    {
+        public NutritionalTraits nutritionTraits;
+        public FoodTraits foodTraits;
+        public TerrainTraits terrainTraits;
+        public MiscTraits miscTraits;
+
+        public TEnum GetTraitFlags<TEnum>() where TEnum : Enum
         {
-            List<TraitType> results = new List<TraitType>();
-            TraitType[] comparison = new TraitType[0];
+            object result = null;
 
-            switch (traitCategory)
-            {
-                case NUTRITION_TRAITS_ALL:
-                    comparison = GenerateFlagArray(3, NUTRITION_MASK);
-                    break;
-                case FOOD_TRAITS_ALL:
-                    comparison = GenerateFlagArray(3, FOOD_MASK);
-                    break;
+            if (typeof(TEnum) == typeof(NutritionalTraits))
+                result = nutritionTraits;
+            else if (typeof(TEnum) == typeof(FoodTraits))
+                result = foodTraits;
+            else if (typeof(TEnum) == typeof(TerrainTraits))
+                result = terrainTraits;
+            else if (typeof (TEnum) == typeof(MiscTraits))
+                result = miscTraits;
 
-                case MISC_TRAITS_ALL:
-                    comparison = GenerateFlagArray(1, MISC_MASK);
-                    break;
-            }
+            return (TEnum)result;
+        }
 
-            foreach(var trait in comparison)
-            {
-                if(HasTrait(traitData, trait))
-                {
-                    results.Add(trait);
-                }
-            }
+        public TraitData(NutritionalTraits nTraits, FoodTraits fTraits, TerrainTraits tTraits, MiscTraits mTraits)
+        {
+            this.nutritionTraits = nTraits;
+            this.foodTraits = fTraits;
+            this.terrainTraits = tTraits;
+            this.miscTraits = mTraits;
+        }
 
-            return results.ToArray();
+        public TraitData(TerrainTraits tTraits)
+        {
+            this.nutritionTraits = NutritionalTraits.None;
+            this.foodTraits = FoodTraits.None;
+            this.terrainTraits = tTraits;
+            this.miscTraits = MiscTraits.None;
         }
     }
 }
-
-//public class Trait : ScriptableObject
-//{
-//    public string traitName;
-//    public int traitID;
-//}
-
-//[Serializable]
-//public struct TraitData
-//{
-//    public 
-//}

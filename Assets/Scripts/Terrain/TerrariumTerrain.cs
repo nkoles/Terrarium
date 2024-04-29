@@ -5,10 +5,10 @@ using TerrariumTraits;
 
 public class TerrariumTerrain : MonoBehaviour
 {
-    public int traitData = TraitConstants.TERRAIN_GROUND;
+    public TraitData traitData;
 
     private void Awake()
     {
-        traitData = TraitConstants.TERRAIN_GROUND;
+        traitData = new TraitData(TerrainTraits.Ground);
     }
 }
