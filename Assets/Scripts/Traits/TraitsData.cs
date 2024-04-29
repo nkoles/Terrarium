@@ -41,7 +41,7 @@ namespace TerrariumTraits
     {
         //Nutrition Traits
         public const TraitType NUTRITION_SHIFT = 0;
-        public const TraitType NUTRITION_MASK = 0xFF << NUTRITION_SHIFT;
+        public const TraitType NUTRITION_MASK = 0xF << NUTRITION_SHIFT;
 
         public const TraitType NUTRITION_HERBIVORE = (int)1 << NUTRITION_MASK;
         public const TraitType NUTRITION_CARNIVORE = (int)2 << NUTRITION_MASK;
@@ -70,10 +70,26 @@ namespace TerrariumTraits
         public const TraitType TERRAIN_TRAITS_ALL = TERRAIN_GROUND | TERRAIN_WATER | TERRAIN_AIR;
 
         //MiscTraits
-        public const int MISC_TRAIT_MASK = 24;
-        public const TraitType MISC_TRAITS = 0xFF << MISC_TRAIT_MASK;
+        public const int MISC_TRAIT_SHIFT = 24;
+        public const TraitType MISC_MASK = 0xFF << MISC_TRAIT_SHIFT;
 
-        public const TraitType MISC_PICKUPABLE = (int)1 << MISC_TRAITS;
+        public const TraitType MISC_PICKUPABLE = (int)1 << MISC_MASK;
+
+        public const TraitType MISC_TRAITS_ALL = MISC_PICKUPABLE;
+
+        public const TraitType ALL_TRAITS = NUTRITION_TRAITS_ALL | FOOD_TRAITS_ALL | TERRAIN_TRAITS_ALL | MISC_TRAITS_ALL;
+
+        static public TraitType[] GenerateFlagArray(int end, TraitType mask)
+        {
+            TraitType[] results = new TraitType[end];
+
+            for (int i = 1; i <= end; ++i)
+            {
+                results[i-1] = (int)i << mask;
+            }
+
+            return results;
+        }
 
         static public TraitType CreateTraitData(params TraitType[] traits)
         {
@@ -112,7 +128,7 @@ namespace TerrariumTraits
             {
                 if((traitData & traitComparisons[i]) != 0)
                 {
-                    Debug.Log("Containts traits");
+                    //Debug.Log("Containts traits");
 
                     if (i ==traitComparisons.Length-1)
                     {
@@ -126,8 +142,44 @@ namespace TerrariumTraits
 
             return false;
         }
+
+        static public TraitType[] ReturnTraits(TraitType traitData, TraitType traitCategory)
+        {
+            List<TraitType> results = new List<TraitType>();
+            TraitType[] comparison = new TraitType[0];
+
+            switch (traitCategory)
+            {
+                case NUTRITION_TRAITS_ALL:
+                    comparison = GenerateFlagArray(3, NUTRITION_MASK);
+                    break;
+                case FOOD_TRAITS_ALL:
+                    comparison = GenerateFlagArray(3, FOOD_MASK);
+                    break;
+
+                case MISC_TRAITS_ALL:
+                    comparison = GenerateFlagArray(1, MISC_MASK);
+                    break;
+            }
+
+            foreach(var trait in comparison)
+            {
+                if(HasTrait(traitData, trait))
+                {
+                    results.Add(trait);
+                }
+            }
+
+            return results.ToArray();
+        }
     }
 }
+
+//public class Trait : ScriptableObject
+//{
+//    public string traitName;
+//    public int traitID;
+//}
 
 //[Serializable]
 //public struct TraitData

@@ -4,15 +4,17 @@ using UnityEngine;
 using TerrariumTraits;
 using LerpingUtils;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class AnimalAI : MonoBehaviour
 {
     [Header("Animal AI Fields")]
     public float speed;
+    public ITerrariumProduct? target = null;
 
     public Grid terrainGrid;
 
-    public List<Vector3> AvailableTiles(int terrainData)
+    public Vector3[] AvailableTiles(int terrainData)
     {
         List<Vector3> results = new List<Vector3>();
 
@@ -51,21 +53,21 @@ public class AnimalAI : MonoBehaviour
             }
         }
 
-        return results;
+        return results.ToArray();
     }
 
-    public void Move(List<Vector3> availableTiles)
+    public void Move(Vector3[] availableTiles)
     {
-        if(availableTiles.Count > 0)
+        if(availableTiles.Length > 0)
         {
-            int randomTile = Random.Range(0, availableTiles.Count + 1);
+            int randomTile = Random.Range(0, availableTiles.Length + 1);
 
             Vector3 target = transform.position;
 
-            if(randomTile != availableTiles.Count)
+            if(randomTile != availableTiles.Length)
             {
                 target = new Vector3(availableTiles[randomTile].x + 0.5f, transform.position.y, availableTiles[randomTile].z + 0.5f);
-                print(target);
+                //print(target);
             }
 
             transform.position = target;
@@ -74,60 +76,66 @@ public class AnimalAI : MonoBehaviour
 
     public void Move(Vector3 availableTile)
     {
-        List<Vector3> tile = new List<Vector3>() { availableTile };
+        Vector3[] tile = new Vector3[] { availableTile };
 
         Move(tile);
     }
 
-    public Vector3 Find(int terrainData, int searchData, float range, AnimalStates state)
+    public ITerrariumProduct FindWithTrait(int terrainData, int[] searchData, float range)
     {
-        List<Vector3> nonFilteredAvailableTiles = AvailableTiles(terrainData);
+        ITerrariumProduct target = null;
 
-        Collider[] nearbyColliders = new Collider[0];
+        int maxColliders = 10;
+
+        Collider[] nearbyColliders = new Collider[maxColliders];
         List<Vector3> nearbyCollidersPositions = new List<Vector3>();
 
         Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders);
 
         foreach(var collider in nearbyColliders)
         {
-            Plant plant = new Plant();
-            Animal animal = new Animal();
+            print(collider);
 
-            if(collider.TryGetComponent<Plant>(out plant) || collider.TryGetComponent<Animal>(out animal))
+            if(TryGetComponent<ITerrariumProduct>(out target))
             {
-                if(TryGetComponent<Plant>(out plant))
+                foreach(var trait in searchData)
                 {
-                    if (TraitConstants.HasTrait(plant.TraitData, searchData))
-                        nearbyCollidersPositions.Add(collider.transform.position);
-                }
+                    return target;
 
-                if (TryGetComponent<Animal>(out animal))
-                {
-                    if (TraitConstants.HasTrait(animal.TraitData, searchData))
-                        nearbyCollidersPositions.Add(collider.transform.position);
+                    //if(TraitConstants.HasTrait(target.TraitData, trait))
+                    //{
+                    //    return target;
+                    //} else
+                    //{
+                    //    target = null;
+                    //}
                 }
             }
         }
 
+        return target;
+    }
+
+    public Vector3 ClosestTileToTarget(int terrainData)
+    {
+        Vector3[] nonFilteredAvailableTiles = AvailableTiles(terrainData);
+
         int tileIndex = 0;
         float tempDistance = float.MaxValue;
 
-        for (int i = 0; i < nonFilteredAvailableTiles.Count ; ++i)
+        for (int i = 0; i < nonFilteredAvailableTiles.Length; ++i)
         {
-            for (int j = 0; j < nearbyCollidersPositions.Count; ++j)
+            if (Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData.position) < tempDistance)
             {
-                if (Vector3.Distance(nonFilteredAvailableTiles[i], nearbyCollidersPositions[j]) < tempDistance)
-                {
-                    tileIndex = i;
-                    tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], nearbyCollidersPositions[j]);
-                }
+                tileIndex = i;
+                tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], target.PositionalData.position);
             }
         }
 
         return nonFilteredAvailableTiles[tileIndex];
     }
 
-    public bool CheckForFood(int traitData)
+    public bool CheckForTrait(int[] searchData)
     {
         List<Vector3> directions = new List<Vector3>() { transform.forward , -transform.forward, transform.right, -transform.right };
 
@@ -137,14 +145,46 @@ public class AnimalAI : MonoBehaviour
         {
             Physics.Raycast(transform.position, directions[i], out hitData[i], 1f);
 
-            
+            ITerrariumProduct terrariumProduct;
+
+            foreach (int trait in searchData)
+            {
+                if (hitData[i].collider.TryGetComponent<ITerrariumProduct>(out terrariumProduct))
+                {
+                    if(TraitConstants.HasTrait(terrariumProduct.TraitData, trait))
+                    {
+                        return true;
+                    }
+                }
+            }
         }
 
-        return true;
+        return false;
     }
 
-    public void Eat()
+    public void Consume()
     {
+        print("Consumed Target");
+    }
+
+    public void Eat(int[] nutritionData, int terrainData, float range)
+    {
+        print(CheckForTrait(nutritionData));
+
+        if(target == null)
+        {
+            FindWithTrait(terrainData, nutritionData, range);
+            Move(AvailableTiles(terrainData));
+        } else
+        {
+            if(!CheckForTrait(nutritionData))
+            {
+                Move(ClosestTileToTarget(terrainData));
+            } else
+            {
+                Consume();
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -170,5 +210,7 @@ public class AnimalAI : MonoBehaviour
             Gizmos.DrawRay(groundRays[i]);
             Gizmos.DrawRay(directionalRays[i]);
         }
+
+        Gizmos.DrawWireSphere(transform.position, 5);
     }
 }

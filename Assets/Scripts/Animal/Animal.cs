@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
 using System;
+using System.Linq;
 
 public enum AnimalStates
 {
@@ -21,14 +22,16 @@ public class Animal : AnimalAI, ITerrariumProduct
     public bool isBaby;
     public bool isDead;
 
+    public int maxHunger = 20;
+    public int currentHunger = 0;
 
-    public float maxHunger;
-    public float currentHunger;
-
-    //[SerializeField]
-    //private TraitData traits;
+    [SerializeField]
     private int _traitData;
     public int TraitData { get { return _traitData; } set { _traitData = value; } }
+
+    [SerializeField]
+    private Transform _transform;
+    public Transform PositionalData { get { return _transform; } set { _transform = value; } }
 
     public AnimalStates currentState;
 
@@ -47,19 +50,48 @@ public class Animal : AnimalAI, ITerrariumProduct
     
     public void Age()
     {
+        currentHunger++;
 
+        print(target);
     }
 
     public void Lifecycle()
     {
-        if(isInitialised)
+        if (isInitialised)
             Age();
 
-        switch(currentState){
+        PositionalData = transform;
+
+        switch (currentState){
             case AnimalStates.Idle:
+                if (currentHunger > maxHunger / 2)
+                {
+                    currentState = AnimalStates.Hungry;
+                }
+
                 Move(AvailableTiles(TraitConstants.TERRAIN_GROUND));
                 break;
             case AnimalStates.Hungry:
+                int[] nutritionalTraits = TraitConstants.ReturnTraits(TraitData, TraitConstants.NUTRITION_TRAITS_ALL);
+                List<int> searchTraits = new List<int>();
+
+                foreach(var trait in nutritionalTraits)
+                {
+                    switch (trait)
+                    {
+                        case TraitConstants.NUTRITION_HERBIVORE:
+                            searchTraits.Add(TraitConstants.FOOD_PLANT);
+                            break;
+                        case TraitConstants.NUTRITION_CARNIVORE:
+                            searchTraits.Add(TraitConstants.FOOD_MEAT);
+                            break;
+                        case TraitConstants.NUTRITION_SCAVENGER:
+                            searchTraits.Add(TraitConstants.FOOD_FERTILISER);
+                            break;
+                    }
+                }
+
+                Eat(searchTraits.ToArray(), TraitConstants.TERRAIN_GROUND, 10);
                 break;
             case AnimalStates.Horny:
                 break;
@@ -72,7 +104,7 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Awake()
     {
-        TraitData = TraitConstants.TERRAIN_GROUND;
+        TraitData = TraitConstants.CreateTraitData(TraitConstants.TERRAIN_GROUND, TraitConstants.NUTRITION_HERBIVORE);
         GameTimeManager.Tick.AddListener(Lifecycle);
     }
 }
