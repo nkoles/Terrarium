@@ -194,6 +194,13 @@ public class AnimalAI : MonoBehaviour
         }
     }
 
+    public void PurePeerGooningAkaPPG()
+    {
+        if(target == null)
+        {
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Ray[] directionalRays = new Ray[4]
