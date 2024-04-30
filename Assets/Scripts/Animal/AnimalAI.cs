@@ -6,6 +6,7 @@ using LerpingUtils;
 using System.Linq;
 using System;
 using static UnityEngine.ParticleSystem;
+using UnityEditor;
 
 public class AnimalAI : MonoBehaviour
 {
@@ -124,6 +125,31 @@ public class AnimalAI : MonoBehaviour
         return target;
     }
 
+    public ITerrariumProduct FindTargetWithSimilarTraits(TraitData traitData, int similarityCount, float range)
+    {
+        ITerrariumProduct target = null;
+
+        int maxColliders = 5;
+
+        Collider[] nearbyColliders = new Collider[maxColliders];
+        List<ITerrariumProduct> nearbyTargets = new List<ITerrariumProduct>();
+
+        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders, ~(1 << 6));
+
+        foreach (var collider in nearbyColliders)
+        {
+            if (collider != null && collider.GetComponent<ITerrariumProduct>() != null && collider.GetComponent<Animal>() != null)
+            {
+                if (collider.GetComponent<Animal>().currentState == AnimalStates.Horny && collider.GetComponent<ITerrariumProduct>().Traits.CompareAllTraitSimilarity(traitData) > similarityCount)
+                {
+                    nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
+                }
+            }
+        }
+
+        return target;
+    }
+
     public Vector3 ClosestTileToTarget(TerrainTraits terrainData)
     {
         Vector3[] nonFilteredAvailableTiles = AvailableTiles(terrainData);
@@ -194,10 +220,43 @@ public class AnimalAI : MonoBehaviour
         }
     }
 
-    public void PurePeerGooningAkaPPG()
+    public void FreakyTime(TraitData traitData)
+    {
+        int randomSpawn = 0;
+
+        if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender) != TraitUtils.HasTrait<MiscTraits>(target.Traits.miscTraits, MiscTraits.Gender))
+        {
+            if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender))
+            {
+                Vector3[] pos = AvailableTiles(traitData.terrainTraits);
+
+                if (pos.Length > 0)
+                {
+                    randomSpawn = UnityEngine.Random.Range(0, pos.Length);
+
+                    AnimalFactory.instance.CreateTerrariumObject(pos[randomSpawn], traitData + target.Traits);
+                }
+            }
+        }
+
+        target = null;
+    }
+
+    public void Breed(TraitData traitData, int similarityCount, float range)
     {
         if(target == null)
         {
+            Move(AvailableTiles(traitData.terrainTraits));
+            FindTargetWithSimilarTraits(traitData, similarityCount, range);
+        } else
+        {
+            if(!CheckForTarget())
+            {
+                Move(ClosestTileToTarget(traitData.terrainTraits));
+            } else
+            {
+                FreakyTime(traitData);
+            }
         }
     }
 

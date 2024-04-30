@@ -4742,7 +4742,7 @@ MonoBehaviour:
     terrainTraits: 1
     miscTraits: 0
   _position: {x: 0, y: 0, z: 0}
-  currentState: 1
+  currentState: 0
   isInitialised: 1
 --- !u!1001 &2000766865
 PrefabInstance:
