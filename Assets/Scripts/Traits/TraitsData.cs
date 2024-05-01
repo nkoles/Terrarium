@@ -47,7 +47,7 @@ namespace TerrariumTraits
 
     static public class TraitUtils
     {
-        static public void AddTrait<T>(T traitData, params T[] traitFlags) where T: Enum
+        static public void AddTrait<T>(ref T traitData, params T[] traitFlags) where T: Enum
         {
             foreach (var t in traitFlags)
             {
@@ -60,7 +60,7 @@ namespace TerrariumTraits
             }
         }
 
-        static public void RemoveTrait<T>(T traitData, params T[] traitFlags) where T: Enum
+        static public void RemoveTrait<T>(ref T traitData, params T[] traitFlags) where T: Enum
         {
             foreach (var t in traitFlags)
             {
@@ -111,23 +111,34 @@ namespace TerrariumTraits
             result.CombineTrait<NutritionalTraits>(t2);
             result.CombineTrait<FoodTraits>(t2);
             result.CombineTrait<TerrainTraits>(t2);
+            result.miscTraits = MiscTraits.None;
 
             return result;
         }
-        
+
         public TraitData CombineTrait<TEnum>(TraitData other) where TEnum: Enum
         {
             TraitData result = this;
 
             foreach (var value in Enum.GetValues(typeof(TEnum)))
             {
-                if (!TraitUtils.HasTrait<TEnum>(other.GetTraitFlags<TEnum>(), (TEnum)value))
+                TEnum selfData = GetTraitFlags<TEnum>();
+                TEnum otherData = other.GetTraitFlags<TEnum>();
+
+                if (!TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value) && TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value))
                 {
-                    TraitUtils.AddTrait<TEnum>(other.GetTraitFlags<TEnum>(), (TEnum)value);
+                    TraitUtils.AddTrait<TEnum>(ref selfData, (TEnum)value);
                 }
             }
 
             return result;
+        }
+
+        public void AddTrait<TEnum>(TEnum trait) where TEnum : Enum
+        {
+            TEnum traitType = this.GetTraitFlags<TEnum>();
+
+            TraitUtils.AddTrait<TEnum>(ref traitType, trait);
         }
 
         public TEnum GetTraitFlags<TEnum>() where TEnum : Enum

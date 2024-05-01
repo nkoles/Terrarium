@@ -14,8 +14,9 @@ public class AnimalFactory : TerrariumFactory
         GameObject instance = Instantiate(animalPrefab.gameObject, position, Quaternion.identity);
 
         Animal newAnimal = instance.GetComponent<Animal>();
+        newAnimal.Traits = traitData;
 
-        newAnimal.Initialise();
+        //newAnimal.Initialise();
 
         return newAnimal;
     }
@@ -27,13 +28,6 @@ public class AnimalFactory : TerrariumFactory
 
     private void Awake()
     {
-        if(instance != null)
-        {
-            instance = this;
-        } else
-        {
-            if (instance != this)
-                Destroy(this.gameObject);
-        }
+        instance = this;
     }
 }

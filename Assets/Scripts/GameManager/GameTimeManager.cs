@@ -31,7 +31,6 @@ public class GameTimeManager : MonoBehaviour
         if(_tickTimer >= tickFrequency)
         {
             print("TICK");
-            PreTick.Invoke();
             Tick.Invoke();
             _tickTimer = 0;
         }
