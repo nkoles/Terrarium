@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TerrariumTraits;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +14,7 @@ public class AnimalSelect : MonoBehaviour
 
     private Camera cam;
 
-    public UnityEvent animalSelectionChanged, animalSelectionNulled; 
+    public UnityEvent animalSelectionNulled; 
 
     void Awake() 
     {
@@ -39,7 +40,9 @@ public class AnimalSelect : MonoBehaviour
             {
                 Debug.Log(hit.transform.gameObject);
                 currentAnimal = hit.transform.gameObject.GetComponent<Animal>();
-                animalSelectionChanged.Invoke();
+                UIManager.instance.UpdateTraitsUI<NutritionalTraits>(currentAnimal.Traits.nutritionTraits);
+                UIManager.instance.UpdateTraitsUI<FoodTraits>(currentAnimal.Traits.foodTraits);
+                UIManager.instance.UpdateTraitsUI<TerrainTraits>(currentAnimal.Traits.terrainTraits);
             }
 
             if(!Physics.Raycast(ray, out hit, 100, animalLayer)) 

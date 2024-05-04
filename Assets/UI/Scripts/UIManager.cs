@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
 using UnityEngine.UI;
+using System.Linq;
+using System;
 
 public class UIManager : MonoBehaviour
 {
 
-    private static UIManager instance { get; set; }
+    public static UIManager instance { get; set; }
 
 
     [Header("UI Elements")]
-    [SerializeField] private Image[] traitSlots = new Image[3];
+    [SerializeField] private List<GameObject> traitsDisplay;
 
     private AnimalSelect animalSelect;
 
@@ -28,35 +30,33 @@ public class UIManager : MonoBehaviour
 
     void Start() 
     {
-        foreach(Image image in traitSlots) 
-        {
-            image.sprite = Resources.Load<Sprite>("TraitImages/Default");
-        }
+       
     }
 
-    public void UpdateTraitsUI() 
+    public void UpdateTraitsUI<TEnum>(TEnum input) where TEnum : Enum
     {
-        //nutrition traits
 
-        traitSlots[0].sprite = Resources.Load<Sprite>("TraitImages/NutritionTraits/" + animalSelect.currentAnimal.Traits.nutritionTraits.ToString()); 
+        foreach(Enum values in Enum.GetValues(input.GetType())) 
+        {
+            if(values.ToString() == "None" || values.ToString() == "Everything") continue;
 
-        //food traits
-
-        traitSlots[1].sprite = Resources.Load<Sprite>("TraitImages/FoodTraits/" + animalSelect.currentAnimal.Traits.foodTraits.ToString());
-
-        //terrain traits
-
-        traitSlots[2].sprite = Resources.Load<Sprite>("TraitImages/TerrainTraits/" + animalSelect.currentAnimal.Traits.terrainTraits.ToString());
-
-        // Debug.LogWarning("Function Called");
-        // Debug.LogWarning("TraitImages/NutritionTraits/" + animalSelect.currentAnimal.Traits.nutritionTraits.ToString());
+            if (input.HasFlag(values)) 
+            {
+                    Debug.LogWarning(values);
+                    traitsDisplay.Find(x => x.name.Contains(values.ToString())).SetActive(true);
+            }
+            else 
+            {
+                    traitsDisplay.Find(x => x.name.Contains(values.ToString())).SetActive(false);
+            }
+        }
     }
 
     public void HideTraits() 
     {
-        foreach(Image image in traitSlots) 
+        foreach(GameObject ga in traitsDisplay) 
         {
-            image.sprite = Resources.Load<Sprite>("TraitImages/Default");
+            ga.SetActive(false);
         }
     }
 }
