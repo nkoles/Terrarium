@@ -6,10 +6,13 @@ using UnityEngine.Events;
 
 public class InputDebug : MonoBehaviour
 {
-    public UnityEvent onClick;
+    public UnityEvent onClickW, onClickA, onClickS, onClickD;
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)) onClick.Invoke();
+        if(Input.GetKeyDown(KeyCode.W)) onClickW.Invoke();
+        if(Input.GetKeyDown(KeyCode.A)) onClickA.Invoke();
+        if(Input.GetKeyDown(KeyCode.S)) onClickS.Invoke();
+        if(Input.GetKeyDown(KeyCode.D)) onClickD.Invoke();
     }
 }
