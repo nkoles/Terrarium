@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class PanelManager : MonoBehaviour
 {
-    public GameObject slotPrefab;
+    //public GameObject slotPrefab;
     public List<InventorySlot> inventorySlots = new List<InventorySlot>(18);
+    private Inventory inv;
+    public bool isCraftingPanel;
+
+    private void Awake()
+    {
+        inv = FindObjectOfType<Inventory>();
+    }
 
     private void OnEnable()
     {
         Inventory.OnInventoryChange += UpdateInventory;
+        UpdateInventory(inv.inventory);
     }
 
     private void OnDisable()
@@ -17,7 +25,7 @@ public class PanelManager : MonoBehaviour
         Inventory.OnInventoryChange -= UpdateInventory;
     }
 
-    void UpdateInventory(List<InventoryItem> inventory)
+    public void UpdateInventory(List<InventoryItem> inventory)
     {
         if (inventory.Count > 0)
         {

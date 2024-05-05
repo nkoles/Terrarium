@@ -16,9 +16,11 @@ public class Inventory : MonoBehaviour, ICollectible
     public static event Action OnItemCollected;
     public static event Action<List<InventoryItem>> OnInventoryChange;
 
+    private PanelManager[] panelManager;
+
     private void OnEnable()
     {
-        
+        panelManager = FindObjectsOfType<PanelManager>();
     }
 
     private void OnDisable()
@@ -48,7 +50,7 @@ public class Inventory : MonoBehaviour, ICollectible
         if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
         {
             item.AddToStack();
-            Debug.Log(item.itemData.displayName + " total stack is now " + item.stackSize);
+            //Debug.Log(item.itemData.displayName + " total stack is now " + item.stackSize);
             OnInventoryChange?.Invoke(inventory);
         }
         else
@@ -58,7 +60,11 @@ public class Inventory : MonoBehaviour, ICollectible
                 InventoryItem newItem = new InventoryItem(itemData);
                 inventory.Add(newItem);
                 itemDictionary.Add(itemData, newItem);
-                Debug.Log("Added " + item.itemData.displayName + " to inventory for first time");
+                foreach (PanelManager pm in panelManager)
+                { pm.UpdateInventory(inventory); }
+                
+                Debug.Log("Added " + newItem.itemData.displayName + " to inventory for first time");
+                
             }
             else { Debug.Log("Inventory Full!"); }
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,7 +30,7 @@ public class InventorySlot : MonoBehaviour
         stackSizeText.enabled = true;
 
         icon.sprite = item.itemData.icon;
-        labelText.text = item.itemData.itemType.ToString();
+        labelText.text = item.itemData.displayName;
         stackSizeText.text = item.stackSize.ToString();
     }
 }

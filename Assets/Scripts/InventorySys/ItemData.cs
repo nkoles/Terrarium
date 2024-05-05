@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 public enum ItemType
@@ -10,20 +11,21 @@ public enum ItemType
 }
 
 [CreateAssetMenu]
+[CanEditMultipleObjects]
 public class ItemData : ScriptableObject
 {
     public ItemType itemType;
-    [HideInInspector] public string displayName;
+    public string displayName;
     public Sprite icon;
     // OTHER ITEM VARIABLES HERE
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
-        displayName = itemType.ToString();
+        //displayName = itemType.ToString();
     }
 
     private void OnDisable()
     {
-        displayName = null;
-    }
+        //displayName = null;
+    }*/
 }
