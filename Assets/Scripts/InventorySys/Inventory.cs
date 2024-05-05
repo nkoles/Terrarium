@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour, ICollectible
 {
     [Header("Inventory Contents")]
-    public List<InventoryItem> inventory = new List<InventoryItem>();
+    public List<InventoryItem> inventory = new List<InventoryItem>(); // this list contains the important data, will need to save this
     private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 
     [Header("Item Types")]
@@ -17,6 +17,9 @@ public class Inventory : MonoBehaviour, ICollectible
     public static event Action<List<InventoryItem>> OnInventoryChange;
 
     private PanelManager[] panelManager;
+
+    // MIGHT WANT TO MOVE THESE TO A DIFFERENT SCRIPT LATER (CRAFTING)
+    static public bool canCraft; // CHANGES DEPENDING ON WHICH UI MENU IS OPEN
 
     private void OnEnable()
     {

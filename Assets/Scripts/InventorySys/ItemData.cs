@@ -18,14 +18,4 @@ public class ItemData : ScriptableObject
     public string displayName;
     public Sprite icon;
     // OTHER ITEM VARIABLES HERE
-
-    /*private void OnEnable()
-    {
-        //displayName = itemType.ToString();
-    }
-
-    private void OnDisable()
-    {
-        //displayName = null;
-    }*/
 }

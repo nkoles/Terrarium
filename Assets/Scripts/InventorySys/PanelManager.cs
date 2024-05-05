@@ -7,7 +7,7 @@ public class PanelManager : MonoBehaviour
     //public GameObject slotPrefab;
     public List<InventorySlot> inventorySlots = new List<InventorySlot>(18);
     private Inventory inv;
-    public bool isCraftingPanel;
+    [SerializeField] private bool craftingPM;
 
     private void Awake()
     {
@@ -18,6 +18,14 @@ public class PanelManager : MonoBehaviour
     {
         Inventory.OnInventoryChange += UpdateInventory;
         UpdateInventory(inv.inventory);
+        if (craftingPM)
+        {
+            Inventory.canCraft = true;
+        }
+        else
+        {
+            Inventory.canCraft = false;
+        }
     }
 
     private void OnDisable()
