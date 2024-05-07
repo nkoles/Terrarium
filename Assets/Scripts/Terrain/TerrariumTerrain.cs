@@ -5,5 +5,8 @@ using TerrariumTraits;
 
 public class TerrariumTerrain : MonoBehaviour
 {
-    public TraitData traitData;
+    public TerrainTraits terrainFlag;
+
+    public float fertility = 0;
+    public float bloody = 0;
 }

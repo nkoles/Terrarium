@@ -32,7 +32,7 @@ public class AnimalAI : MonoBehaviour
         return false;
     }
 
-    public Vector3[] AvailableTiles(TerrainTraits terrainTraits)
+    public Vector3[] AvailableTiles(TraitData animalTraits)
     {
         List<Vector3> results = new List<Vector3>();
 
@@ -63,7 +63,7 @@ public class AnimalAI : MonoBehaviour
             {
                 Physics.Raycast(groundRays[i], out groundHits[i], 1f);
 
-                if (groundHits[i].collider != null && TraitUtils.HasTrait(terrainTraits, groundHits[i].collider.GetComponent<TerrariumTerrain>().traitData.terrainTraits))
+                if (groundHits[i].collider != null && animalTraits.HasTrait<TerrainTraits>(groundHits[i].collider.GetComponent<TerrariumTerrain>().terrainFlag))
                 {
                     Vector3Int cellPosition = terrainGrid.WorldToCell(groundHits[i].collider.gameObject.transform.position);
                     results.Add(new Vector3(cellPosition.x + 0.5f, transform.position.y, cellPosition.y+0.5f));
@@ -193,9 +193,9 @@ public class AnimalAI : MonoBehaviour
         return target;
     }
 
-    public Vector3 ClosestTileToTarget(TerrainTraits terrainData)
+    public Vector3 ClosestTileToTarget(TraitData animalTraits)
     {
-        Vector3[] nonFilteredAvailableTiles = AvailableTiles(terrainData);
+        Vector3[] nonFilteredAvailableTiles = AvailableTiles(animalTraits);
 
         int tileIndex = 0;
         float tempDistance = float.MaxValue;
@@ -240,7 +240,7 @@ public class AnimalAI : MonoBehaviour
 
     public bool Consume(TraitData traitData)
     {
-        if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Plant)){
+        if(!target.Traits.foodTraits.HasFlag(FoodTraits.Meat) && (target.Traits.foodTraits.HasFlag(FoodTraits.Plant) || target.Traits.foodTraits.HasFlag(FoodTraits.Fertilizer))){
             print("test");
             consumption++;
         } else
@@ -279,7 +279,7 @@ public class AnimalAI : MonoBehaviour
         if(target == null)
         {
             consumption = 0;
-            Move(AvailableTiles(traitData.terrainTraits), 70);
+            Move(AvailableTiles(traitData), 70);
             target = FindTargetWithTrait<FoodTraits>(searchTraits, range);
         } else
         {
@@ -289,7 +289,7 @@ public class AnimalAI : MonoBehaviour
             {
                 print("Getting to Target");
                 if(!CheckTargetDestruction())
-                    Move(ClosestTileToTarget(traitData.terrainTraits));
+                    Move(ClosestTileToTarget(traitData));
             }
             else
             {
@@ -309,7 +309,7 @@ public class AnimalAI : MonoBehaviour
         {
             if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender))
             {
-                Vector3[] pos = AvailableTiles(traitData.terrainTraits);
+                Vector3[] pos = AvailableTiles(traitData);
 
                 if (pos.Length > 0)
                 {
@@ -340,7 +340,7 @@ public class AnimalAI : MonoBehaviour
         {
             print("finding partner");
 
-            Move(AvailableTiles(traitData.terrainTraits), 70);
+            Move(AvailableTiles(traitData), 70);
             target = FindTargetWithSimilarTraits(traitData, similarityCount, range);
         } 
         else
@@ -351,7 +351,7 @@ public class AnimalAI : MonoBehaviour
             {
                 print("looking to get freaky");
                 if(!CheckTargetDestruction())
-                    Move(ClosestTileToTarget(traitData.terrainTraits));
+                    Move(ClosestTileToTarget(traitData));
             } else
             {
                 return FreakyTime(traitData);

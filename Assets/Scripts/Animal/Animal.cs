@@ -116,7 +116,7 @@ public class Animal : AnimalAI, ITerrariumProduct
                 if (CurrentAge % 20 == 0)
                     currentState = AnimalStates.Hungry;
 
-                Move(AvailableTiles(Traits.terrainTraits), 50);
+                Move(AvailableTiles(Traits), 50);
                 break;
             case AnimalStates.Hungry:
                 FoodTraits searchTraits = new FoodTraits();

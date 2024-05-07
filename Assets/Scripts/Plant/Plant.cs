@@ -5,6 +5,9 @@ using UnityEngine;
 
 public enum PlantStates
 {
+    Grow,
+    Bloom,
+    Wither
 }
 
 public class Plant : PlantAI, ITerrariumProduct

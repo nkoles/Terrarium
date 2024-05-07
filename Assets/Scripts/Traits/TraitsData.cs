@@ -157,6 +157,11 @@ namespace TerrariumTraits
             return (TEnum)result;
         }
 
+        public bool HasTrait<TEnum>(TEnum comparison) where TEnum : Enum
+        {
+            return GetTraitFlags<TEnum>().HasFlag(comparison);
+        }
+
         public int CompareAllTraitSimilarity(TraitData other)
         {
             int result = 0;
