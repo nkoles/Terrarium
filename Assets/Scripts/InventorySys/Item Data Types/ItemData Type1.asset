@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214e0c6d9f9b2284b836093c1fb6dcef, type: 3}
   m_Name: ItemData Type1
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 1
   displayName: Type 1
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 91e7094dd6565a746be445981ff65d60, type: 3}
+  isStackable: 1
