@@ -9,6 +9,7 @@ public class InventoryManagerV2 : MonoBehaviour
     [SerializeField] private int maxStack;
     [Header("Inventory Slots")]
     public InventorySlotV2[] inventorySlots;
+    public Transform[] parentTransforms;
     [Header("Item Types")]
     public ItemData[] itemTypes;
     [Header("Other")]
@@ -31,6 +32,9 @@ public class InventoryManagerV2 : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1)) { AddItem(itemTypes[0], debugAmountToAdd); }
             else if (Input.GetKeyDown(KeyCode.Alpha2)) { AddItem(itemTypes[1], debugAmountToAdd); }
             else if (Input.GetKeyDown(KeyCode.Alpha3)) { AddItem(itemTypes[2], debugAmountToAdd); }
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) { RemoveItem(itemTypes[0], debugAmountToAdd); }
+            else if (Input.GetKeyDown(KeyCode.Alpha5)) { RemoveItem(itemTypes[1], debugAmountToAdd); }
+            else if (Input.GetKeyDown(KeyCode.Alpha6)) { RemoveItem(itemTypes[2], debugAmountToAdd); }
         }
     }
 
@@ -92,10 +96,14 @@ public class InventoryManagerV2 : MonoBehaviour
                 itemInSlot.count -= amountToRemove;
                 if (itemInSlot.count == 0)
                 {
-                    Destroy(itemInSlot);
-                    Debug.Log("Removed " + amountToRemove + " of " + item.name + " from inventory");
-                    return;
+                    Destroy(itemInSlot.gameObject);
+                    //Debug.Log("Removed " + amountToRemove + " of " + item.name + " from inventory");
                 }
+                else
+                {
+                    itemInSlot.RefreshCount();
+                }
+                return;
             }
         }
     }
@@ -109,13 +117,23 @@ public class InventoryManagerV2 : MonoBehaviour
         invItem.RefreshCount();
     }
 
+    public void SwitchSlotParents(int index)
+    {
+        foreach (InventorySlotV2 slot in inventorySlots)
+        {
+            slot.transform.SetParent(parentTransforms[index], false);
+        }
+    }
+
     void SaveData()
     {
+        Debug.Log("The game would save if it had a function to do so");
         // SAVE DATA HERE
     }
 
     void LoadData()
     {
+        Debug.Log("The game would load if it had a function to do so");
         // LOAD DATA HERE
     }
 }
