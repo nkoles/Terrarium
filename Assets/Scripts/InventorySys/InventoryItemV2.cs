@@ -14,7 +14,7 @@ public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [Header("DEBUGGING - DONT CHANGE THESE VALUES")]
     public ItemData itemData;
     public Transform parentAfterDrag; // the new inventory slot for this item
-    public int count = 1;
+    public int count;
 
     private void Awake()
     {

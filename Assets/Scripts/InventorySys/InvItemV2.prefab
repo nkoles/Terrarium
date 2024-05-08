@@ -362,4 +362,4 @@ MonoBehaviour:
   nameText: {fileID: 1012396841823164905}
   itemData: {fileID: 0}
   parentAfterDrag: {fileID: 0}
-  count: 1
+  count: 0

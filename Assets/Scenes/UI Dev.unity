@@ -8125,6 +8125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1404163164}
   - component: {fileID: 1404163165}
+  - component: {fileID: 1404163166}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8185,6 +8186,22 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8388708274f5fa44e918aaa0c448564b, type: 2}
   inventoryItemV2Prefab: {fileID: 6871789392584625865, guid: 775a4e6fb9cf04c4a9e27e6fcd7cef4e, type: 3}
   debugMode: 1
+  debugAmountToAdd: 99
+--- !u!114 &1404163166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404163162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe525795b01d68944bed041641ab5038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisObjectName: 
+  newDict:
+    thisDictItems: []
 --- !u!114 &1409952292 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 342986135840836070, guid: 530ecf10a6b45e0459930ea468fe9203, type: 3}

@@ -92,4 +92,24 @@ public class Inventory : MonoBehaviour, ICollectible
         OnItemCollected?.Invoke();
         Add(itemArray[i]);
     }
+
+    /*void UpdateDictionary()
+    {
+        Debug.Log("Updating dictionary");
+        itemDictionary.Clear();
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].transform.childCount > 0)
+            {
+                Debug.Log("Inventory slot " + i + " has an inventory item!");
+                InventoryItemV2 invItem = inventorySlots[i].GetComponentInChildren<InventoryItemV2>();
+                itemDictionary.Add(inventorySlots[i], invItem);
+                Debug.Log(itemDictionary[inventorySlots[i]]);
+            }
+            else
+            {
+                Debug.Log("Inventory slot " + (i + 1) + " does not have an inventory item!");
+            }
+        }
+    }*/
 }
