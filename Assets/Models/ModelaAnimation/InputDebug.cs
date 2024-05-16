@@ -8,11 +8,26 @@ public class InputDebug : MonoBehaviour
 {
     public UnityEvent onClickW, onClickA, onClickS, onClickD;
 
+    public TickMovement[] guah;
+
+    public void Start()
+    {
+        guah = FindObjectsByType<TickMovement>(FindObjectsSortMode.None);
+    }
+
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.W)) onClickW.Invoke();
-        if(Input.GetKeyDown(KeyCode.A)) onClickA.Invoke();
-        if(Input.GetKeyDown(KeyCode.S)) onClickS.Invoke();
-        if(Input.GetKeyDown(KeyCode.D)) onClickD.Invoke();
+        if(Input.GetKeyDown(KeyCode.W)) moveArmy(0);
+        if(Input.GetKeyDown(KeyCode.A)) moveArmy(1);
+        if(Input.GetKeyDown(KeyCode.S)) moveArmy(2);
+        if(Input.GetKeyDown(KeyCode.D)) moveArmy(3);
+    }
+
+    public void moveArmy(int dir)
+    {
+        foreach (var animation in guah)
+        {
+            animation.startStepAnimation(dir);
+        }
     }
 }

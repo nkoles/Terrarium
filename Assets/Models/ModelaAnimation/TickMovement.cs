@@ -16,8 +16,7 @@ public class TickMovement : MonoBehaviour
     [Range(0f, 1f)] public float lerpAnimationHeight = 0.5f;
 
     public float heightDifferece = 1f;
-
-    Coroutine zRotationCoroutine, yRotationCoroutine, heightChangeCoroutine;
+    
 
     void Start()
     {
@@ -36,24 +35,30 @@ public class TickMovement : MonoBehaviour
     public void startStepAnimation(int rotation)
     {
 
+        //StopAllCoroutines();
         Debug.Log("Animation Triggered");
         float targetZAngle = _unlerpedZRot - ANGLE_STEP;
         _currentZRot = SpecialMath.RoundToNumber(_currentZRot, 90);
-        if(zRotationCoroutine != null) StopCoroutine(zRotationCoroutine);
-        zRotationCoroutine = StartCoroutine("rotateZAnimation", targetZAngle);
+
+        _currentZRot = targetZAngle;
+        
+        //StartCoroutine(rotateZAnimation(targetZAngle));
 
         _unlerpedZRot -= ANGLE_STEP;
 
         _currentYHeight = SpecialMath.RoundToNumber(_currentYHeight, heightDifferece);
 
-        if(heightChangeCoroutine != null) StopCoroutine(heightChangeCoroutine);
+        
         if (_unlerpedZRot / ANGLE_STEP % 2 != 0)
         {
-            heightChangeCoroutine = StartCoroutine("heightAnimation", heightDifferece);
+            //StartCoroutine(heightAnimation(heightDifferece));
+            _currentYHeight = heightDifferece;
+
         }
         else
         {
-            heightChangeCoroutine = StartCoroutine("heightAnimation", 0);
+            //StartCoroutine(heightAnimation(0));
+            _currentYHeight = 0;
         }
 
         switch (rotation)
@@ -77,8 +82,10 @@ public class TickMovement : MonoBehaviour
         }
 
         _currentYRot = SpecialMath.RoundToNumber(_currentYRot, 90);
-        if(yRotationCoroutine != null) StopCoroutine(yRotationCoroutine);
-        yRotationCoroutine = StartCoroutine("rotateDirectionAnimation", _unlerpedYRot);
+
+        _currentYRot = _unlerpedYRot;
+
+        //(rotateDirectionAnimation(_unlerpedYRot));
 
 
     }
