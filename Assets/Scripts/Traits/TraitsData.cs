@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TerrariumTraits
@@ -155,6 +156,21 @@ namespace TerrariumTraits
                 result = miscTraits;
 
             return (TEnum)result;
+        }
+
+        public TEnum[] GetTraitFlagsArray<TEnum>() where TEnum : Enum
+        {
+            List<TEnum> result = new List<TEnum>();
+
+            foreach(var value in Enum.GetValues(typeof(TEnum)))
+            {
+                if(this.GetTraitFlags<TEnum>().HasFlag((TEnum)value))
+                {
+                    result.Add((TEnum) value);
+                }
+            }
+
+            return result.ToArray();
         }
 
         public bool HasTrait<TEnum>(TEnum comparison) where TEnum : Enum

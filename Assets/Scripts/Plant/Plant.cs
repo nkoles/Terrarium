@@ -52,6 +52,11 @@ public class Plant : PlantAI, ITerrariumProduct
     {
     }
 
+    public void Evolve()
+    {
+
+    }
+
     public void Lifecycle()
     {
     }

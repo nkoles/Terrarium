@@ -21,5 +21,7 @@ public interface ITerrariumProduct
 
     public void Age();
 
+    public void Evolve();
+
     public void Lifecycle();
 }

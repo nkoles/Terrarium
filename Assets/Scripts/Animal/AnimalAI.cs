@@ -5,9 +5,8 @@ using TerrariumTraits;
 using LerpingUtils;
 using System.Linq;
 using System;
-using static UnityEngine.ParticleSystem;
 using UnityEditor;
-using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class AnimalAI : MonoBehaviour
 {
@@ -16,8 +15,11 @@ public class AnimalAI : MonoBehaviour
     public int consumptionTime;
     public ITerrariumProduct? target = null;
 
+    public Transform animalContainer;
+
     public Grid terrainGrid;
-    
+    public UnityEvent MoveEvent = new UnityEvent();
+
     public bool CheckTargetDestruction()
     {
         if(target != null)
@@ -96,7 +98,7 @@ public class AnimalAI : MonoBehaviour
         Move(tile, chanceToMove);
     }
 
-    public ITerrariumProduct FindTargetWithTrait<TEnum>(TEnum searchTrait, float range) where TEnum: Enum
+    public ITerrariumProduct FindTargetWithTrait<TEnum>(TEnum[] searchTraits, float range) where TEnum: Enum
     {
         ITerrariumProduct target = null;
 
@@ -115,9 +117,15 @@ public class AnimalAI : MonoBehaviour
 
                 print(collider.GetComponent<ITerrariumProduct>().Traits.GetTraitFlags<TEnum>());
 
-                if (TraitUtils.HasTrait<TEnum>(collider.GetComponent<ITerrariumProduct>().Traits.GetTraitFlags<TEnum>(), searchTrait) && !collider.GetComponent<ITerrariumProduct>().IsBaby)
+                if (!collider.GetComponent<ITerrariumProduct>().IsBaby)
                 {
-                    nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
+                    foreach(var trait in searchTraits)
+                    {
+                        if (collider.GetComponent<ITerrariumProduct>().Traits.HasTrait<TEnum>(trait))
+                        {
+                            nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
+                        }
+                    }
                 }
             }
         }
@@ -156,7 +164,7 @@ public class AnimalAI : MonoBehaviour
             if (collider != null && collider.GetComponent<Animal>() != null && collider.GetComponent<AnimalAI>() != this)
             {
                 print("Similarities" + collider.GetComponent<ITerrariumProduct>().Traits.CompareAllTraitSimilarity(traitData));
-                if (collider.GetComponent<ITerrariumProduct>().Traits.CompareAllTraitSimilarity(traitData) > similarityCount && collider.GetComponent<Animal>().currentState == AnimalStates.Horny)
+                if (collider.GetComponent<ITerrariumProduct>().Traits.CompareAllTraitSimilarity(traitData) > similarityCount)
                 {
                     nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
                 }
@@ -202,6 +210,9 @@ public class AnimalAI : MonoBehaviour
 
         for (int i = 0; i < nonFilteredAvailableTiles.Length; ++i)
         {
+            if (target == null)
+                break;
+
             Vector3 pos = target.SelfObject.transform.position;
 
             if (Vector3.Distance(nonFilteredAvailableTiles[i], pos) < tempDistance)
@@ -234,6 +245,9 @@ public class AnimalAI : MonoBehaviour
                 }
             }
         }
+
+        if (!CheckTargetDestruction() && target.SelfObject.transform.position == transform.position)
+            return true;
 
         return false;
     }
@@ -274,7 +288,7 @@ public class AnimalAI : MonoBehaviour
         return false;
     }
 
-    public bool Eat(TraitData traitData, FoodTraits searchTraits, float range)
+    public bool Eat(TraitData traitData, FoodTraits[] searchTraits, float range)
     {
         if(target == null)
         {
@@ -294,7 +308,8 @@ public class AnimalAI : MonoBehaviour
             else
             {
                 print("Consuming");
-                return Consume(traitData);
+                if(!CheckTargetDestruction())
+                    return Consume(traitData);
             }
         }
 
@@ -307,16 +322,13 @@ public class AnimalAI : MonoBehaviour
 
         if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender) != TraitUtils.HasTrait<MiscTraits>(target.Traits.miscTraits, MiscTraits.Gender))
         {
-            if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender))
+            Vector3[] pos = AvailableTiles(traitData);
+
+            if (pos.Length > 0)
             {
-                Vector3[] pos = AvailableTiles(traitData);
+                randomSpawn = UnityEngine.Random.Range(0, pos.Length);
 
-                if (pos.Length > 0)
-                {
-                    randomSpawn = UnityEngine.Random.Range(0, pos.Length);
-
-                    AnimalFactory.instance.CreateTerrariumObject(pos[randomSpawn], traitData + target.Traits);
-                }
+                AnimalFactory.instance.CreateTerrariumObject(pos[randomSpawn], traitData + target.Traits);
             }
         }
 
@@ -360,31 +372,4 @@ public class AnimalAI : MonoBehaviour
 
         return false;
     }
-
-//    private void OnDrawGizmos()
-//    {
-//        Ray[] directionalRays = new Ray[4]
-//{
-//                new Ray(transform.position, transform.forward),
-//                new Ray(transform.position, -transform.forward),
-//                new Ray(transform.position, transform.right),
-//                new Ray(transform.position, -transform.right)
-//};
-
-//        Ray[] groundRays = new Ray[4]
-//        {
-//                new Ray(transform.position + transform.forward, -transform.up),
-//                new Ray(transform.position - transform.forward, -transform.up),
-//                new Ray(transform.position + transform.right, -transform.up),
-//                new Ray(transform.position - transform.right, -transform.up)
-//        };
-
-//        for (int i = 0; i < 4; i++)
-//        {
-//            Gizmos.DrawRay(groundRays[i]);
-//            Gizmos.DrawRay(directionalRays[i]);
-//        }
-
-//        Gizmos.DrawWireSphere(transform.position, 5);
-//    }
 }

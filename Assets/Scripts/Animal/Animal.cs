@@ -49,6 +49,21 @@ public class Animal : AnimalAI, ITerrariumProduct
     private TraitData _traitData;
     public TraitData Traits { get { return _traitData; } set { _traitData = value; } }
 
+    public string targetName;
+
+    public String TargetName
+    {
+        get
+        {
+            if(target != null)
+            {
+                return target.SelfObject.name;
+            }
+
+            return "";
+        }
+    }
+
     public AnimalStates currentState;
 
     public bool isInitialised = false;
@@ -59,9 +74,14 @@ public class Animal : AnimalAI, ITerrariumProduct
     {
         TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
 
+        if((int)UnityEngine.Random.Range(0, 2) % 2 == 0)
+        {
+            TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Gender);
+        }
+
         _self = gameObject;
 
-        maxAge = UnityEngine.Random.Range(180, 241);
+        maxAge = UnityEngine.Random.Range(300, 600);
         maxVariable = 40;
 
         IsBaby = true;
@@ -102,31 +122,32 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Lifecycle()
     {
-        if (target != null)
-        {
-            if(target.SelfObject != null)
-                print(target.SelfObject.name);
-        }
-
         if (isInitialised)
             Age();
+
+        //if(target != null)
+        //    targetName = TargetName;
 
         switch (currentState){
             case AnimalStates.Idle:
                 if (CurrentAge % 20 == 0)
+                {
+                    target = null;
                     currentState = AnimalStates.Hungry;
+                }
+
 
                 Move(AvailableTiles(Traits), 50);
                 break;
             case AnimalStates.Hungry:
-                FoodTraits searchTraits = new FoodTraits();
+                List<FoodTraits> searchTraits = new List<FoodTraits>();
 
                 if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Herbivore))
-                    searchTraits |= FoodTraits.Plant;
+                    searchTraits.Add(FoodTraits.Plant);
                 if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Carnivore))
-                    searchTraits |= FoodTraits.Meat;
+                    searchTraits.Add(FoodTraits.Meat);
                 if (TraitUtils.HasTrait(Traits.nutritionTraits, NutritionalTraits.Scavenger))
-                    searchTraits |= FoodTraits.Fertilizer;
+                    searchTraits.Add(FoodTraits.Fertilizer);
 
                 if(AgeVariable < maxVariable)
                 {
@@ -134,26 +155,30 @@ public class Animal : AnimalAI, ITerrariumProduct
                 } else
                 {
                     AgeVariable = 0;
+                    target = null;
                     currentState = AnimalStates.Decomposing;
                 }
 
-                bool isFed = Eat(Traits, searchTraits, 10);
+                bool isFed = Eat(Traits, searchTraits.ToArray(), 10);
 
                 if (isFed)
                 {
                     AgeVariable = 0;
                     Evolve();
+                    target = null;
                     currentState = AnimalStates.Horny;
                 }
 
                 break;
             case AnimalStates.Horny:
-                if(AgeVariable < maxVariable)
+                if(AgeVariable < maxVariable/2)
                 {
                     AgeVariable++;
 
                 } else
                 {
+                    AgeVariable = 0;
+                    target = null;
                     currentState = AnimalStates.Idle;
                 }
 
@@ -162,6 +187,7 @@ public class Animal : AnimalAI, ITerrariumProduct
                 if (isBred)
                 {
                     AgeVariable = 0;
+                    target = null;
                     currentState = AnimalStates.Idle;
                 }
 
@@ -187,6 +213,7 @@ public class Animal : AnimalAI, ITerrariumProduct
     {
         terrainGrid = FindObjectOfType<Grid>();
         Initialise();
+        Evolve();
         GameTimeManager.Tick.AddListener(Lifecycle);
     }
 }

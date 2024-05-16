@@ -135,7 +135,8 @@ MonoBehaviour:
     foodTraits: 2
     terrainTraits: 1
     miscTraits: 0
+  targetName: 
   currentState: 0
   isInitialised: 1
-  herb: {fileID: 0}
-  carn: {fileID: 0}
+  herb: {fileID: 2100000, guid: 459e835a9a31f6e4883ab9c28b88afee, type: 2}
+  carn: {fileID: 2100000, guid: 4022924ced9b75a429878290bd2d9eee, type: 2}
