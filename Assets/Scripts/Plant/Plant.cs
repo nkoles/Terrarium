@@ -66,6 +66,9 @@ public class Plant : PlantAI, ITerrariumProduct
         isBlooming = false;
 
         Evolve();
+
+
+
     }
 
     public void Age()
@@ -136,7 +139,7 @@ public class Plant : PlantAI, ITerrariumProduct
             case PlantStates.Bloom:
                 if(!isBlooming || AgeVariable < bloomTime)
                 {
-                    isBlooming = Bloom(Traits);
+                    isBlooming = Bloom(targetTerrain.fertility, Traits);
 
                     if (isBlooming)
                     {
@@ -170,5 +173,7 @@ public class Plant : PlantAI, ITerrariumProduct
     {
         _self = gameObject;
         GameTimeManager.Tick.AddListener(Lifecycle);
+
+        Initialise();
     }
 }

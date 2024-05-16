@@ -15,7 +15,6 @@ public class TerrariumTerrain : MonoBehaviour
 
     public void CheckNearbyWaterTiles()
     {
-        Vector3 offset = new Vector3(0, 0.25f, 0);
         Vector3 size = new Vector3(1f, 0.25f, 1f);
 
         Collider[] colliders = new Collider[9];
@@ -35,7 +34,13 @@ public class TerrariumTerrain : MonoBehaviour
             }
         }
 
-        fertility = tempFertility/8;
+        if(tempFertility >= 1)
+        {
+            fertility = 1;
+        }else
+        {
+            fertility = tempFertility / 8;
+        }
     }
 
     public void Awake()

@@ -69,38 +69,41 @@ public class PlantAI : MonoBehaviour
         return result;
     }
 
-    public bool Bloom(TraitData plantData)
+    public bool Bloom(float fertilityLevel, TraitData plantData)
     {
         bool hasBloomed = false;
 
-        int range = (int)(3 * targetTerrain.fertility);
-        int[] posIdx = new int[range];
-
-        if (range != 0)
+        if(targetTerrain.fertility >= fertilityLevel)
         {
-            print("enough fertility");
+            int range = (int)(3 * fertilityLevel);
+            int[] posIdx = new int[range];
 
-            List<Vector3> availableTiles = CalculateAvailableBloomTiles(range);
-            List<int> takenTiles = new List<int>();
-
-            print("availableTiles" + availableTiles.Count);
-
-            if (availableTiles.Count > 0)
+            if(range!=0)
             {
-                for (int i = 0; i < range; ++i)
-                {
-                    int randomPos = Random.Range(0, availableTiles.Count);
+                print("enough fertility");
 
-                    while (takenTiles.Contains(randomPos))
+                List<Vector3> availableTiles = CalculateAvailableBloomTiles(range); 
+                List<int> takenTiles = new List<int>();
+
+                print("availableTiles" + availableTiles.Count);
+
+                if (availableTiles.Count > 0)
+                {
+                    for(int i = 0; i < range; ++i)
                     {
-                        randomPos = Random.Range(0, availableTiles.Count);
+                        int randomPos = Random.Range(0, availableTiles.Count);
+
+                        while (takenTiles.Contains(randomPos))
+                        {
+                            randomPos = Random.Range(0, availableTiles.Count);
+                        }
+
+                        takenTiles.Add(randomPos);
+                        PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos], plantData);
                     }
 
-                    takenTiles.Add(randomPos);
-                    PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos]);
+                    hasBloomed = true;
                 }
-
-                hasBloomed = true;
             }
         }
 

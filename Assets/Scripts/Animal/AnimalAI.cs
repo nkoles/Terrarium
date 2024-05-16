@@ -41,18 +41,18 @@ public class AnimalAI : MonoBehaviour
 
         Ray[] directionalRays = new Ray[4]
         {
-            new Ray(transform.position+offset, transform.forward),
-            new Ray(transform.position+offset, -transform.forward),
-            new Ray(transform.position+offset, transform.right),
-            new Ray(transform.position+offset, -transform.right)
+            new Ray(transform.position, transform.forward),
+            new Ray(transform.position, -transform.forward),
+            new Ray(transform.position, transform.right),
+            new Ray(transform.position, -transform.right)
         };
 
         Ray[] groundRays = new Ray[4]
         {
-            new Ray((transform.position + transform.forward)+offset*3, -transform.up),
-            new Ray((transform.position - transform.forward)+offset*3, -transform.up),
-            new Ray((transform.position + transform.right)+offset*3, -transform.up),
-            new Ray((transform.position - transform.right) + offset*3, -transform.up)
+            new Ray((transform.position + transform.forward), -transform.up),
+            new Ray((transform.position - transform.forward), -transform.up),
+            new Ray((transform.position + transform.right), -transform.up),
+            new Ray((transform.position - transform.right), -transform.up)
         };
 
         RaycastHit[] directionalHits = new RaycastHit[4];
@@ -69,7 +69,7 @@ public class AnimalAI : MonoBehaviour
                 if (groundHits[i].collider != null && animalTraits.HasTrait<TerrainTraits>(groundHits[i].collider.GetComponent<TerrariumTerrain>().traits.terrainTraits))
                 {
                     Vector3Int cellPosition = terrainGrid.WorldToCell(groundHits[i].collider.gameObject.transform.position);
-                    results.Add(new Vector3(cellPosition.x + 0.5f, groundHits[i].collider.transform.position.y + transform.localScale.y, cellPosition.y+0.5f));
+                    results.Add(new Vector3(cellPosition.x + 0.5f, transform.position.y, cellPosition.y+0.5f));
                 }
             }
         }
@@ -118,14 +118,11 @@ public class AnimalAI : MonoBehaviour
 
                 print(collider.GetComponent<ITerrariumProduct>().Traits.GetTraitFlags<TEnum>());
 
-                if (!collider.GetComponent<ITerrariumProduct>().IsBaby)
+                foreach (var trait in searchTraits)
                 {
-                    foreach(var trait in searchTraits)
+                    if (collider.GetComponent<ITerrariumProduct>().Traits.HasTrait<TEnum>(trait))
                     {
-                        if (collider.GetComponent<ITerrariumProduct>().Traits.HasTrait<TEnum>(trait))
-                        {
-                            nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
-                        }
+                        nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
                     }
                 }
             }
@@ -265,7 +262,7 @@ public class AnimalAI : MonoBehaviour
 
         if(consumption >= consumptionTime)
         {
-            traitData.foodTraits = FoodTraits.None;
+            //traitData.foodTraits = FoodTraits.None;
 
             if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Plant))
             {
@@ -323,16 +320,13 @@ public class AnimalAI : MonoBehaviour
     {
         int randomSpawn = 0;
 
-        if (TraitUtils.HasTrait<MiscTraits>(traitData.miscTraits, MiscTraits.Gender) != TraitUtils.HasTrait<MiscTraits>(target.Traits.miscTraits, MiscTraits.Gender))
+        Vector3[] pos = AvailableTiles(traitData);
+
+        if (pos.Length > 0)
         {
-            Vector3[] pos = AvailableTiles(traitData);
+            randomSpawn = UnityEngine.Random.Range(0, pos.Length);
 
-            if (pos.Length > 0)
-            {
-                randomSpawn = UnityEngine.Random.Range(0, pos.Length);
-
-                AnimalFactory.instance.CreateTerrariumObject(pos[randomSpawn], traitData + target.Traits);
-            }
+            AnimalFactory.instance.CreateTerrariumObject(pos[randomSpawn], traitData + target.Traits);
         }
 
         //Vector3[] pos = AvailableTiles(traitData.terrainTraits);
