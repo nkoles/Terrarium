@@ -24,7 +24,7 @@ public class InputDebug : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.S)) MoveArmy(2);
         if(Input.GetKeyDown(KeyCode.D)) MoveArmy(3);
 
-        if(Input.GetKeyDown(KeyCode.Space)) WaterArmy();
+        
     }
 
     public void MoveArmy(int dir)
@@ -35,12 +35,5 @@ public class InputDebug : MonoBehaviour
         }
     }
 
-    public void WaterArmy()
-    {
-        fuck = !fuck;
-        foreach (var animation in guah)
-        {
-            animation.setWaterHeight(fuck);
-        }
-    }
+    
 }

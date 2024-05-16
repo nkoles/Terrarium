@@ -18,7 +18,7 @@ public class TickMovement : MonoBehaviour
     public float heightDifferece = 1f;
 
     public float heightGround = 0f;
-    public float heightWater = 0f;
+    //public float heightWater = 0f;
 
     private float _baseHeight;
     
@@ -30,7 +30,7 @@ public class TickMovement : MonoBehaviour
         _currentYRot = _unlerpedYRot;
         _currentZRot = _unlerpedZRot;
 
-        setWaterHeight(false);
+        //setWaterHeight(false);
         _currentYHeight = _baseHeight;
 
         heightDifferece = heightDifferece * transform.localScale.x;
@@ -42,17 +42,12 @@ public class TickMovement : MonoBehaviour
         gameObject.transform.localPosition = new Vector3(0, _currentYHeight, 0);
     }
 
-    public void setWaterHeight(bool isOnWater)
-    {
-        if(isOnWater) _baseHeight = heightWater;
-        else _baseHeight = heightGround;
-    }
 
     public void startStepAnimation(int rotation)
     {
 
         //StopAllCoroutines();
-        Debug.Log("Animation Triggered");
+        //Debug.Log("Animation Triggered");
         float targetZAngle = _unlerpedZRot - ANGLE_STEP;
         _currentZRot = SpecialMath.RoundToNumber(_currentZRot, 90);
 

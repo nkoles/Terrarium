@@ -137,8 +137,7 @@ MonoBehaviour:
   lerpAnimationDirection: 0.1
   lerpAnimationHeight: 0.2
   heightDifferece: 8
-  heightGround: 6.84
-  heightWater: 1.53
+  heightGround: 0
 --- !u!114 &2499152933498618143
 MonoBehaviour:
   m_ObjectHideFlags: 0
