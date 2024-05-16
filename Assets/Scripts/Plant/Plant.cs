@@ -50,6 +50,22 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Initialise()
     {
+        currentState = PlantStates.Sapling;
+
+        maxAge = 180;
+        maxDecay = 90;
+        bloomTime = 20;
+
+        _currentBloom = 0;
+        _currentDecay = 0;
+        _isBaby = true;
+        TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
+
+        _self = gameObject;
+
+        isBlooming = false;
+
+        Evolve();
     }
 
     public void Age()
@@ -66,6 +82,7 @@ public class Plant : PlantAI, ITerrariumProduct
         }
         else
         {
+            TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
             currentState = PlantStates.Wither;
             IsDead = true;
         }
@@ -84,7 +101,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         Evolve();
 
-        if(targetTerrain.fertility <= 0.25)
+        if(targetTerrain.fertility <= 0.125)
         {
             if(currentState == PlantStates.Sapling)
             {
@@ -109,6 +126,7 @@ public class Plant : PlantAI, ITerrariumProduct
                         currentState = PlantStates.Bloom;
                     else
                     {
+                        TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
                         IsDead = true;
                         currentState = PlantStates.Wither;
                     }
@@ -118,7 +136,7 @@ public class Plant : PlantAI, ITerrariumProduct
             case PlantStates.Bloom:
                 if(!isBlooming || AgeVariable < bloomTime)
                 {
-                    isBlooming = Bloom(targetTerrain.fertility, Traits);
+                    isBlooming = Bloom(Traits);
 
                     if (isBlooming)
                     {

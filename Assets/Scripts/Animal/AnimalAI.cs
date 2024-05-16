@@ -66,7 +66,7 @@ public class AnimalAI : MonoBehaviour
             {
                 Physics.Raycast(groundRays[i], out groundHits[i], 2f);
 
-                if (groundHits[i].collider != null && animalTraits.HasTrait<TerrainTraits>(groundHits[i].collider.GetComponent<TerrariumTerrain>().terrainFlag))
+                if (groundHits[i].collider != null && animalTraits.HasTrait<TerrainTraits>(groundHits[i].collider.GetComponent<TerrariumTerrain>().traits.terrainTraits))
                 {
                     Vector3Int cellPosition = terrainGrid.WorldToCell(groundHits[i].collider.gameObject.transform.position);
                     results.Add(new Vector3(cellPosition.x + 0.5f, groundHits[i].collider.transform.position.y + transform.localScale.y, cellPosition.y+0.5f));
@@ -229,13 +229,12 @@ public class AnimalAI : MonoBehaviour
     public bool CheckForTarget()
     {
         List<Vector3> directions = new List<Vector3>() { transform.forward, -transform.forward, transform.right, -transform.right };
-        Vector3 offset = new Vector3(0, 0.25f, 0);
 
         RaycastHit[] hitData = new RaycastHit[4];
 
         for (int i = 0; i < 4; ++i)
         {
-            Physics.Raycast(transform.position+offset, directions[i]+offset, out hitData[i], 1f);
+            Physics.Raycast(transform.position, directions[i], out hitData[i], 1f);
 
             ITerrariumProduct terrariumProduct;
 

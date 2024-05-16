@@ -19,7 +19,7 @@ public class PlantAI : MonoBehaviour
 
             TerrariumTerrain tempTerrain;
 
-            if(hit.collider.TryGetComponent<TerrariumTerrain>(out tempTerrain) && plantTraits.HasTrait<TerrainTraits>(tempTerrain.terrainFlag))
+            if(hit.collider.TryGetComponent<TerrariumTerrain>(out tempTerrain) && plantTraits.HasTrait<TerrainTraits>(tempTerrain.traits.terrainTraits))
             {
                 targetTerrain = tempTerrain;
                 print("test");
@@ -69,41 +69,38 @@ public class PlantAI : MonoBehaviour
         return result;
     }
 
-    public bool Bloom(float fertilityLevel, TraitData plantData)
+    public bool Bloom(TraitData plantData)
     {
         bool hasBloomed = false;
 
-        if(targetTerrain.fertility >= fertilityLevel)
+        int range = (int)(3 * targetTerrain.fertility);
+        int[] posIdx = new int[range];
+
+        if (range != 0)
         {
-            int range = (int)(3 * fertilityLevel);
-            int[] posIdx = new int[range];
+            print("enough fertility");
 
-            if(range!=0)
+            List<Vector3> availableTiles = CalculateAvailableBloomTiles(range);
+            List<int> takenTiles = new List<int>();
+
+            print("availableTiles" + availableTiles.Count);
+
+            if (availableTiles.Count > 0)
             {
-                print("enough fertility");
-
-                List<Vector3> availableTiles = CalculateAvailableBloomTiles(range); 
-                List<int> takenTiles = new List<int>();
-
-                print("availableTiles" + availableTiles.Count);
-
-                if (availableTiles.Count > 0)
+                for (int i = 0; i < range; ++i)
                 {
-                    for(int i = 0; i < range; ++i)
+                    int randomPos = Random.Range(0, availableTiles.Count);
+
+                    while (takenTiles.Contains(randomPos))
                     {
-                        int randomPos = Random.Range(0, availableTiles.Count);
-
-                        while (takenTiles.Contains(randomPos))
-                        {
-                            randomPos = Random.Range(0, availableTiles.Count);
-                        }
-
-                        takenTiles.Add(randomPos);
-                        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), availableTiles[randomPos], Quaternion.identity);
+                        randomPos = Random.Range(0, availableTiles.Count);
                     }
 
-                    hasBloomed = true;
+                    takenTiles.Add(randomPos);
+                    PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos]);
                 }
+
+                hasBloomed = true;
             }
         }
 

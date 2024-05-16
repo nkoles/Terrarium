@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3468046336487970002
 Transform:
@@ -118,6 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5244a092ce924e845b1ffcc41279c346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainFlag: 2
-  fertility: 1
+  traits:
+    nutritionTraits: 0
+    foodTraits: 0
+    terrainTraits: 2
+    miscTraits: 0
+  fertility: 0
   bloody: 0
