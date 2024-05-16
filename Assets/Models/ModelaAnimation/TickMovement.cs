@@ -16,6 +16,11 @@ public class TickMovement : MonoBehaviour
     [Range(0f, 1f)] public float lerpAnimationHeight = 0.5f;
 
     public float heightDifferece = 1f;
+
+    public float heightGround = 0f;
+    public float heightWater = 0f;
+
+    private float _baseHeight;
     
 
     void Start()
@@ -24,12 +29,23 @@ public class TickMovement : MonoBehaviour
         _unlerpedYRot = 0;
         _currentYRot = _unlerpedYRot;
         _currentZRot = _unlerpedZRot;
+
+        setWaterHeight(false);
+        _currentYHeight = _baseHeight;
+
+        heightDifferece = heightDifferece * transform.localScale.x;
     }
 
     void Update()
     {
         gameObject.transform.localEulerAngles = new Vector3(0, _currentYRot, _currentZRot);
         gameObject.transform.localPosition = new Vector3(0, _currentYHeight, 0);
+    }
+
+    public void setWaterHeight(bool isOnWater)
+    {
+        if(isOnWater) _baseHeight = heightWater;
+        else _baseHeight = heightGround;
     }
 
     public void startStepAnimation(int rotation)
@@ -52,13 +68,13 @@ public class TickMovement : MonoBehaviour
         if (_unlerpedZRot / ANGLE_STEP % 2 != 0)
         {
             //StartCoroutine(heightAnimation(heightDifferece));
-            _currentYHeight = heightDifferece;
+            _currentYHeight = _baseHeight + heightDifferece;
 
         }
         else
         {
             //StartCoroutine(heightAnimation(0));
-            _currentYHeight = 0;
+            _currentYHeight = _baseHeight;
         }
 
         switch (rotation)
@@ -147,10 +163,7 @@ public class TickMovement : MonoBehaviour
             }
             yield return null;
         }
-
-        
     }
-
 }
 
 public class SpecialMath

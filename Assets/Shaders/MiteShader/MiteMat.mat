@@ -111,7 +111,7 @@ Material:
     - _CorpseDitherSize: 2
     - _CorpseOppacity: 1
     - _Cutoff: 0.5
-    - _DecayValue: 0.27
+    - _DecayValue: 21.4
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1

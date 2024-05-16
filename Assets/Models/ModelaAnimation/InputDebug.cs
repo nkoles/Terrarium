@@ -10,6 +10,8 @@ public class InputDebug : MonoBehaviour
 
     public TickMovement[] guah;
 
+    private bool fuck = false;
+
     public void Start()
     {
         guah = FindObjectsByType<TickMovement>(FindObjectsSortMode.None);
@@ -17,17 +19,28 @@ public class InputDebug : MonoBehaviour
 
     public void Update()
     {
-        if(Input.GetKeyDown(KeyCode.W)) moveArmy(0);
-        if(Input.GetKeyDown(KeyCode.A)) moveArmy(1);
-        if(Input.GetKeyDown(KeyCode.S)) moveArmy(2);
-        if(Input.GetKeyDown(KeyCode.D)) moveArmy(3);
+        if(Input.GetKeyDown(KeyCode.W)) MoveArmy(0);
+        if(Input.GetKeyDown(KeyCode.A)) MoveArmy(1);
+        if(Input.GetKeyDown(KeyCode.S)) MoveArmy(2);
+        if(Input.GetKeyDown(KeyCode.D)) MoveArmy(3);
+
+        if(Input.GetKeyDown(KeyCode.Space)) WaterArmy();
     }
 
-    public void moveArmy(int dir)
+    public void MoveArmy(int dir)
     {
         foreach (var animation in guah)
         {
             animation.startStepAnimation(dir);
+        }
+    }
+
+    public void WaterArmy()
+    {
+        fuck = !fuck;
+        foreach (var animation in guah)
+        {
+            animation.setWaterHeight(fuck);
         }
     }
 }
