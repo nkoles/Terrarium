@@ -82,7 +82,7 @@ public class Animal : AnimalAI, ITerrariumProduct
         _self = gameObject;
 
         maxAge = UnityEngine.Random.Range(300, 600);
-        maxVariable = 40;
+        maxVariable = 60;
 
         IsBaby = true;
         currentState = AnimalStates.Idle;
@@ -112,12 +112,6 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Evolve()
     {
-        GetComponent<Renderer>().material = herb;
-
-        if (TraitUtils.HasTrait<NutritionalTraits>(Traits.nutritionTraits, NutritionalTraits.Carnivore))
-        {
-            GetComponent<Renderer>().material = carn;
-        }
     }
 
     public void Lifecycle()
@@ -128,9 +122,11 @@ public class Animal : AnimalAI, ITerrariumProduct
         //if(target != null)
         //    targetName = TargetName;
 
+        Evolve();
+
         switch (currentState){
             case AnimalStates.Idle:
-                if (CurrentAge % 20 == 0)
+                if (CurrentAge % 40 == 0)
                 {
                     target = null;
                     currentState = AnimalStates.Hungry;
@@ -211,9 +207,9 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Awake()
     {
+        _self = gameObject;
         terrainGrid = FindObjectOfType<Grid>();
-        Initialise();
-        Evolve();
         GameTimeManager.Tick.AddListener(Lifecycle);
+        Initialise();
     }
 }

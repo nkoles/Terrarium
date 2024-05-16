@@ -13,13 +13,16 @@ public class PlantAI : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Linecast(transform.position, transform.position - Vector3.down, out hit))
+        if (Physics.Linecast(transform.position, transform.position + Vector3.down, out hit, 1<<6))
         {
+            print(hit.collider);
+
             TerrariumTerrain tempTerrain;
 
-            if(hit.collider.TryGetComponent<TerrariumTerrain>(out tempTerrain) && plantTraits.HasTrait<TerrainTraits>(tempTerrain.terrainFlag))
+            if(hit.collider.TryGetComponent<TerrariumTerrain>(out tempTerrain) && plantTraits.HasTrait<TerrainTraits>(tempTerrain.traits.terrainTraits))
             {
                 targetTerrain = tempTerrain;
+                print("test");
                 return true;
             }
         }
@@ -29,13 +32,15 @@ public class PlantAI : MonoBehaviour
 
     public List<Vector3> CalculateAvailableBloomTiles(int range)
     {
+        print("entered");
+
         List<Vector3> result = new List<Vector3>();
 
         Vector3 selfPos = transform.position;
 
-        for(int i = 0; i < range; ++i)
+        for(int i = -range; i < range; ++i)
         {
-            for(int j = 0; j < range; ++j)
+            for(int j = -range; j < range; ++j)
             {
                 if (i == 0 && j == 0)
                     continue;
@@ -43,11 +48,20 @@ public class PlantAI : MonoBehaviour
                 Collider[] hitColliders = new Collider[1];
 
                 Vector3 offset = new Vector3(i, 0, j);
-                Vector3 size = transform.lossyScale / 2;
+                Vector3 size = new Vector3(0.4f, 0.4f, 0.4f);
 
-                if(Physics.OverlapBoxNonAlloc(transform.position + offset, size, hitColliders) == 0 && Physics.Linecast(transform.position+offset, transform.position + offset + Vector3.down, 1 << 6))
+                print(i);
+                print(j);
+                
+                Physics.OverlapBoxNonAlloc(transform.position + offset, size, hitColliders);
+
+                if (hitColliders[0] == null)
                 {
-                    result.Add(transform.position + offset);
+                    if(Physics.Linecast(transform.position + offset, transform.position + offset + Vector3.down, 1 << 6))
+                    {
+                        print("hello?");
+                        result.Add(transform.position + offset);
+                    }
                 }
             }
         }
@@ -66,8 +80,12 @@ public class PlantAI : MonoBehaviour
 
             if(range!=0)
             {
-                List<Vector3> availableTiles = CalculateAvailableBloomTiles(range);
+                print("enough fertility");
+
+                List<Vector3> availableTiles = CalculateAvailableBloomTiles(range); 
                 List<int> takenTiles = new List<int>();
+
+                print("availableTiles" + availableTiles.Count);
 
                 if (availableTiles.Count > 0)
                 {
@@ -75,19 +93,33 @@ public class PlantAI : MonoBehaviour
                     {
                         int randomPos = Random.Range(0, availableTiles.Count);
 
-                        while (!takenTiles.Contains(randomPos))
+                        while (takenTiles.Contains(randomPos))
                         {
                             randomPos = Random.Range(0, availableTiles.Count);
                         }
 
                         takenTiles.Add(randomPos);
-
-                        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), availableTiles[randomPos], Quaternion.identity);
+                        PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos], plantData);
                     }
+
+                    hasBloomed = true;
                 }
             }
         }
 
         return hasBloomed;
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    for (int i = -3; i < 3; ++i)
+    //    {
+    //        for (int j = -3; j < 3; ++j)
+    //        {
+    //            Vector3 offset = new Vector3(i, 0, j);
+
+    //            Gizmos.DrawCube(transform.position + offset, new Vector3(0.5f, 0.5f, 0.5f));
+    //        }
+    //    }
+    //}
 }

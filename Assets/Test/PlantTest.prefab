@@ -118,13 +118,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46748f0b2d76c2d4b96ad9c259d81cc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAge: 0
+  targetTerrain: {fileID: 0}
+  seedPrefab: {fileID: 0}
+  maxAge: 300
   _currentAge: 0
-  bloomTime: 0
+  bloomTime: 20
   _currentBloom: 0
-  maxDecay: 0
+  maxDecay: 30
   _currentDecay: 0
-  _isBaby: 0
+  _isBaby: 1
   _isDead: 0
   _self: {fileID: 0}
   _traitData:
@@ -132,3 +134,4 @@ MonoBehaviour:
     foodTraits: 1
     terrainTraits: 1
     miscTraits: 0
+  currentState: 0
