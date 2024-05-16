@@ -18,7 +18,6 @@ public class AnimalAI : MonoBehaviour
     public Transform animalContainer;
 
     public Grid terrainGrid;
-    public UnityEvent MoveEvent = new UnityEvent();
 
     public bool CheckTargetDestruction()
     {

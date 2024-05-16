@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum PlantStates
 {
+    Sapling,
     Grow,
     Bloom,
     Wither
@@ -43,13 +44,30 @@ public class Plant : PlantAI, ITerrariumProduct
     private TraitData _traitData;
     public TraitData Traits { get { return _traitData; } set { _traitData = value; } }
 
+    public PlantStates currentState = PlantStates.Sapling;
+
     public void Initialise()
     {
-
     }
 
     public void Age()
     {
+        if (!IsDead && CurrentAge < maxAge)
+        {
+            if (CurrentAge > (int)(maxAge / 4))
+            {
+                TraitUtils.RemoveTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
+
+                IsBaby = false;
+            }
+
+            CurrentAge++;
+        }
+        else
+        {
+            currentState = PlantStates.Wither;
+            IsDead = true;
+        }
     }
 
     public void Evolve()
@@ -59,6 +77,27 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Lifecycle()
     {
+        Age();
+
+        switch (currentState)
+        {
+            case PlantStates.Sapling:
+                break;
+            case PlantStates.Grow:
+
+                break;
+            case PlantStates.Bloom:
+                break;
+            case PlantStates.Wither:
+                CurrentDecay++;
+
+                if(CurrentDecay > maxDecay)
+                {
+
+                }
+
+                break;
+        }
     }
 
     public void Awake()

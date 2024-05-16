@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5244a092ce924e845b1ffcc41279c346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  traitData:
-    nutritionTraits: 0
-    foodTraits: 0
-    terrainTraits: 1
-    miscTraits: 0
+  terrainFlag: 0
+  fertility: 1
+  bloody: 0

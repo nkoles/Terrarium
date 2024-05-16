@@ -27,7 +27,7 @@ public class PlantAI : MonoBehaviour
         return false;
     }
 
-    public Vector3[] CalculateAvailableBloomTiles(int range)
+    public List<Vector3> CalculateAvailableBloomTiles(int range)
     {
         List<Vector3> result = new List<Vector3>();
 
@@ -52,7 +52,7 @@ public class PlantAI : MonoBehaviour
             }
         }
 
-        return result.ToArray();
+        return result;
     }
 
     public bool Bloom(float fertilityLevel, TraitData plantData)
@@ -61,9 +61,31 @@ public class PlantAI : MonoBehaviour
 
         if(targetTerrain.fertility >= fertilityLevel)
         {
-            int range;
+            int range = (int)(3 * fertilityLevel);
+            int[] posIdx = new int[range];
 
-            return false;
+            if(range!=0)
+            {
+                List<Vector3> availableTiles = CalculateAvailableBloomTiles(range);
+                List<int> takenTiles = new List<int>();
+
+                if (availableTiles.Count > 0)
+                {
+                    for(int i = 0; i < range; ++i)
+                    {
+                        int randomPos = Random.Range(0, availableTiles.Count);
+
+                        while (!takenTiles.Contains(randomPos))
+                        {
+                            randomPos = Random.Range(0, availableTiles.Count);
+                        }
+
+                        takenTiles.Add(randomPos);
+
+                        Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), availableTiles[randomPos], Quaternion.identity);
+                    }
+                }
+            }
         }
 
         return hasBloomed;
