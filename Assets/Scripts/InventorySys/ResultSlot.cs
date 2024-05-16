@@ -7,6 +7,15 @@ public class ResultSlot : MonoBehaviour, IPointerClickHandler
 {
     public InventoryItemV2 craftedItem;
     [SerializeField] private InventoryManagerV2 inventoryManager;
+
+    void Update()
+    {
+        if (craftedItem != null)
+        {
+            craftedItem.OnItemUsed.Invoke();
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         //Debug.Log("OnPointerclick");

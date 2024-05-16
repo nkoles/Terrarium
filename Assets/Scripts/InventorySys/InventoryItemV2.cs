@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
 using TMPro;
+using UnityEngine.Events;
 
 public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -15,10 +16,12 @@ public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public ItemData itemData;
     public Transform parentAfterDrag; // the new inventory slot for this item
     public int count;
+    public UnityEvent OnItemUsed = new UnityEvent();
 
     private void Awake()
     {
         icon = GetComponent<Image>();
+        OnItemUsed.AddListener(CheckCount);
     }
 
     public void RefreshCount() // Update count text
@@ -42,16 +45,34 @@ public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         icon.raycastTarget = false; // prevents dropping on own slot
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
+        CheckCount();
     }
 
     public void OnDrag(PointerEventData eventData) 
     {
         transform.position = Input.mousePosition; // while being dragged, follows mouse pos
+        CheckCount();
     }
 
     public void OnEndDrag(PointerEventData eventData) // NOT OnDrop, which is called on InvSlotV2
     {
         icon.raycastTarget = true; // reset 
         transform.SetParent(parentAfterDrag);
+        CheckCount();
+    }
+
+    public void CheckCount()
+    {
+        RefreshCount();
+        if (count == 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTransformParentChanged()
+    {
+        Debug.Log("Parent changed");
+        CheckCount();
     }
 }

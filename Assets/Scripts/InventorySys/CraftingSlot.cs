@@ -13,13 +13,14 @@ public class CraftingSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        craftingSystem.RemoveEmptyFromList();
         // make a duplicate of the inventoryItem dropped and display it here
         if (currentItemObj == null && eventData.pointerDrag.GetComponent<InventoryItemV2>() != null)
         {
             currentItemObj = Instantiate(eventData.pointerDrag.gameObject, transform);
             currentItem = currentItemObj.GetComponent<InventoryItemV2>();
-            craftingSystem.itemsInCrafting.Add(currentItem);
             otherItemLink = eventData.pointerDrag.gameObject.GetComponent<InventoryItemV2>();
+            craftingSystem.itemsInCrafting.Add(currentItem);
         }
         else if (currentItemObj != null && eventData.pointerDrag.GetComponent<InventoryItemV2>() != null)
         {

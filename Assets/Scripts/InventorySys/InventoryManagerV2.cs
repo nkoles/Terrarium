@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -11,7 +12,7 @@ public class InventoryManagerV2 : MonoBehaviour
     public InventorySlotV2[] inventorySlots;
     public Transform[] parentTransforms;
     [Header("Item Types")]
-    public ItemData[] itemTypes;
+    public List<ItemData> itemTypes;
     [Header("Other")]
     public GameObject inventoryItemV2Prefab;
     [Header("Debug")]
@@ -66,7 +67,8 @@ public class InventoryManagerV2 : MonoBehaviour
                     itemInSlot.count = maxStack; // Lazy workaround because I crashed unity
                 }
                 else { itemInSlot.count += amountToAdd; }
-                itemInSlot.RefreshCount();
+                itemInSlot.OnItemUsed.Invoke();
+                //itemInSlot.RefreshCount();
                 //Debug.Log("Successfully added item to stack!");
                 return;
             }
@@ -78,7 +80,8 @@ public class InventoryManagerV2 : MonoBehaviour
             InventoryItemV2 itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItemV2>();
             if (itemInSlot == null) // if the item slot is empty
             {
-                SpawnNewItem(item, inventorySlots[i], amountToAdd);
+                
+                SpawnNewItem(item, inventorySlots[i], amountToAdd);// Data type does exist, add this data type
                 //Debug.Log("Successfully added new item to inventory!");
                 return;
             }
@@ -91,18 +94,21 @@ public class InventoryManagerV2 : MonoBehaviour
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventoryItemV2 itemInSlot = inventorySlots[i].GetComponentInChildren<InventoryItemV2>();
-            if (itemInSlot != null && itemInSlot.itemData != null && itemInSlot.count >= amountToRemove)
+            if (itemInSlot != null && itemInSlot.itemData != null && itemInSlot.count >= amountToRemove && itemInSlot.itemData == item)
             {
                 itemInSlot.count -= amountToRemove;
-                if (itemInSlot.count == 0)
+                itemInSlot.OnItemUsed.Invoke();
+                //if (itemInSlot != null) { itemInSlot.RefreshCount(); }
+                /*if (itemInSlot.count == 0)
                 {
-                    Destroy(itemInSlot.gameObject);
+                    //Destroy(itemInSlot.gameObject);
+                    item.
                     //Debug.Log("Removed " + amountToRemove + " of " + item.name + " from inventory");
                 }
                 else
                 {
                     itemInSlot.RefreshCount();
-                }
+                }*/
                 return;
             }
         }
@@ -114,7 +120,8 @@ public class InventoryManagerV2 : MonoBehaviour
         InventoryItemV2 invItem = newItemGO.GetComponent<InventoryItemV2>();
         invItem.InitialiseItem(itemData);
         invItem.count += amount;
-        invItem.RefreshCount();
+        invItem.OnItemUsed.Invoke();
+        //invItem.RefreshCount();
     }
 
     public void SwitchSlotParents(int index)
@@ -127,13 +134,13 @@ public class InventoryManagerV2 : MonoBehaviour
 
     public void SaveData()
     {
-        Debug.Log("The game would save if it had a function to do so");
+        //Debug.Log("The game would save if it had a function to do so");
         // SAVE DATA HERE
     }
 
     public void LoadData()
     {
-        Debug.Log("The game would load if it had a function to do so");
+        //Debug.Log("The game would load if it had a function to do so");
         // LOAD DATA HERE
     }
 }

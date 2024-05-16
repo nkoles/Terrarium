@@ -126,7 +126,7 @@ namespace TerrariumTraits
                 TEnum selfData = GetTraitFlags<TEnum>();
                 TEnum otherData = other.GetTraitFlags<TEnum>();
 
-                if (!TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value) && TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value))
+                if (!TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value) && TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value) || (!TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value) && TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value)))
                 {
                     TraitUtils.AddTrait<TEnum>(ref selfData, (TEnum)value);
                 }

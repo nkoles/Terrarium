@@ -4,14 +4,13 @@ using TerrariumTraits;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class CraftingSystem : MonoBehaviour
 {
-    [SerializeField] private CraftingSlot[] craftingSlot;
     public List<InventoryItemV2> itemsInCrafting;
     [SerializeField] private GameObject resultSlot;
     private InventoryManagerV2 inventoryManager;
-    //[SerializeField] private GameObject itemPrefab;
 
     private void Awake()
     {
@@ -28,23 +27,34 @@ public class CraftingSystem : MonoBehaviour
             ItemData itemData1 = itemsInCrafting[0].itemData;
             ItemData itemData2 = itemsInCrafting[1].itemData;
             ItemData newItemData = itemData1; // the item data for the output item
-            newItemData.traits += itemData2.traits;
+
+            newItemData.traits = UpdatedTraitData(itemData1.traits, itemData2.traits);
+
+            Debug.Log("Nutrition traits = " + newItemData.traits.nutritionTraits);
+            Debug.Log("Food traits = " + newItemData.traits.foodTraits);
+            Debug.Log("Terrain traits = " + newItemData.traits.terrainTraits);
+            Debug.Log("Misc traits = " + newItemData.traits.miscTraits);
+            // CHECK IF THIS IS A NEW TYPE OF TRAIT, IF IT IS, INSTANTIATE A NEW SCRIPTABLE OBJECT
+            bool newDataType = true;
+            for (int i = 0; i < inventoryManager.itemTypes.Count; i++)
+            {
+                if (newItemData.itemType == inventoryManager.itemTypes[i].itemType && newItemData.traits == inventoryManager.itemTypes[i].traits) // Check if this itemData type already exists
+                {
+                    Debug.Log("Not a new item type");
+                    newDataType = false;
+                    break;
+                }
+            }
+            if (newDataType) // Data type doesnt exist, create a new one
+            {
+                Debug.Log("Instantiating new data type SO, yippee!!");
+                ItemData data = ItemData.CreateInstance(newItemData.itemType, "Custom Data Type", newItemData.icon, newItemData.isStackable, newItemData.traits);
+                inventoryManager.itemTypes.Add(data);
+                newItemData = data;
+            }
 
             InventoryItemV2 outputItem = itemsInCrafting[0];
             outputItem.itemData = newItemData;
-
-            for (int i = 0; i < itemsInCrafting.Count; i++)
-            {
-                Debug.Log("Foreach running on item " + itemsInCrafting[i] + " of type " + itemsInCrafting[i].itemData.displayName);
-                itemsInCrafting[i].count--;
-                inventoryManager.RemoveItem(itemsInCrafting[i].itemData, 1);
-                itemsInCrafting[i].RefreshCount();
-                if (itemsInCrafting[i].count == 0) // if out of item, remove it from crafting
-                {
-                    itemsInCrafting.Remove(itemsInCrafting[i]);
-                    Destroy(itemsInCrafting[i].gameObject);
-                }
-            }
 
             if (resultSlot.GetComponentInChildren<InventoryItemV2>() != null) // if theres an item in the result slot
             {
@@ -54,12 +64,14 @@ public class CraftingSystem : MonoBehaviour
                     GameObject prefabOutput = Instantiate(itemsInCrafting[0].gameObject, resultSlot.transform); // create new item gameobject
                     InventoryItemV2 prefabItem = prefabOutput.GetComponent<InventoryItemV2>();
                     prefabItem = outputItem;
+                    UpdateOutput();
                     Debug.Log("Item in result slot is different from one crafted, sent to inventory.");
                 }
                 else if (resultSlot.GetComponentInChildren<InventoryItemV2>().itemData == outputItem.itemData) // if the item in result slot is the same as this item
                 {
                     resultSlot.GetComponentInChildren<InventoryItemV2>().count++; // add to the count
-                    resultSlot.GetComponentInChildren<InventoryItemV2>().RefreshCount(); // refresh count
+                    resultSlot.GetComponentInChildren<InventoryItemV2>().OnItemUsed.Invoke(); // refresh count
+                    UpdateOutput();
                     Debug.Log("Item in result slot is same as one crafted, count updated.");
                 }
             }
@@ -68,6 +80,9 @@ public class CraftingSystem : MonoBehaviour
                 GameObject prefabOutput = Instantiate(itemsInCrafting[0].gameObject, resultSlot.transform); // create new item gameobject
                 InventoryItemV2 prefabItem = prefabOutput.GetComponent<InventoryItemV2>();
                 prefabItem = outputItem;
+                prefabItem.count = 1;
+                prefabItem.OnItemUsed.Invoke();
+                UpdateOutput();
                 Debug.Log("No item in result slot, item instantiated.");
             }
 
@@ -89,5 +104,44 @@ public class CraftingSystem : MonoBehaviour
         {
             Debug.Log("Wrong amount of items in crafting somehow :/");
         }
+    }
+
+    public void UpdateOutput()
+    {
+        Debug.Log("Update output");
+        for (int i = 0; i < itemsInCrafting.Count; i++)
+        {
+            itemsInCrafting[i].count--;
+            inventoryManager.RemoveItem(itemsInCrafting[i].itemData, 1);
+            if (itemsInCrafting[i] != null) { itemsInCrafting[i].OnItemUsed.Invoke(); }
+
+        }
+    }
+
+    TraitData UpdatedTraitData(TraitData traitData1, TraitData traitData2)
+    {
+        NutritionalTraits nutritionalTraits = new NutritionalTraits();
+        FoodTraits foodTraits = new FoodTraits();
+        TerrainTraits terrainTraits = new TerrainTraits();
+        MiscTraits miscTraits = new MiscTraits();
+
+        if (traitData1.nutritionTraits == NutritionalTraits.None) { nutritionalTraits = traitData2.nutritionTraits; }
+        else { nutritionalTraits = traitData1.nutritionTraits; }
+
+        if (traitData1.foodTraits == FoodTraits.None) { foodTraits = traitData2.foodTraits; }
+        else { foodTraits = traitData1.foodTraits; }
+
+        if (traitData1.terrainTraits == TerrainTraits.None) { terrainTraits = traitData2.terrainTraits; }
+        else { terrainTraits = traitData1.terrainTraits; }
+
+        if (traitData1.miscTraits == MiscTraits.None) { miscTraits = traitData2.miscTraits; }
+        else { miscTraits = traitData1.miscTraits; }
+
+        return new TraitData(nutritionalTraits, foodTraits, terrainTraits, miscTraits);
+    }
+
+    public void RemoveEmptyFromList()
+    {
+        itemsInCrafting.RemoveAll(item => item == null);
     }
 }

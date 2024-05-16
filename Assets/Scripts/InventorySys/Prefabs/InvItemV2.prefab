@@ -363,3 +363,6 @@ MonoBehaviour:
   itemData: {fileID: 0}
   parentAfterDrag: {fileID: 0}
   count: 0
+  OnItemUsed:
+    m_PersistentCalls:
+      m_Calls: []
