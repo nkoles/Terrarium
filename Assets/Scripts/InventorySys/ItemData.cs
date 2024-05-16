@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TerrariumTraits;
 using UnityEditor;
 using UnityEngine;
 
 public enum ItemType
 {
-    Type0,
-    Type1,
-    Type2
+    Seed,
+    LiquidWater,
+    LiquidBlood,
+    Corpse,
+    Egg
 }
 
 [CreateAssetMenu(menuName = "ScriptableObjects/ItemDataType")]
@@ -18,5 +21,6 @@ public class ItemData : ScriptableObject
     public string displayName;
     public Sprite icon;
     public bool isStackable = true; // just in case we want items that dont stack
+    public TraitData traits;
     // OTHER ITEM VARIABLES HERE
 }

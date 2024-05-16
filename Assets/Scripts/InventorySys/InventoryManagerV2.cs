@@ -125,13 +125,13 @@ public class InventoryManagerV2 : MonoBehaviour
         }
     }
 
-    void SaveData()
+    public void SaveData()
     {
         Debug.Log("The game would save if it had a function to do so");
         // SAVE DATA HERE
     }
 
-    void LoadData()
+    public void LoadData()
     {
         Debug.Log("The game would load if it had a function to do so");
         // LOAD DATA HERE

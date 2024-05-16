@@ -23,6 +23,7 @@ public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void RefreshCount() // Update count text
     {
+        countText.enabled = true; nameText.enabled = true; icon.enabled = true;
         countText.text = count.ToString();
         bool textActive = count > 1;
         countText.gameObject.SetActive(textActive); // If count <= 1, disable count text

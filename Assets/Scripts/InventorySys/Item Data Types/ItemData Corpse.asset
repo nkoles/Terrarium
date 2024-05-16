@@ -10,9 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 214e0c6d9f9b2284b836093c1fb6dcef, type: 3}
-  m_Name: ItemData Type0
+  m_Name: ItemData Corpse
   m_EditorClassIdentifier: 
-  itemType: 0
-  displayName: Type 0
-  icon: {fileID: 21300000, guid: fa09cd42138051c428a6dea62edd426c, type: 3}
+  itemType: 3
+  displayName: Corpse
+  icon: {fileID: 21300000, guid: 44c7c7fa3336f054396b6e9a45b0dc68, type: 3}
   isStackable: 1
+  traits:
+  - nutritionTraits: 0
+    foodTraits: 0
+    terrainTraits: 0
+    miscTraits: 0
