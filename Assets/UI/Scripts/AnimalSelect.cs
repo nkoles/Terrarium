@@ -47,6 +47,7 @@ public class AnimalSelect : MonoBehaviour
                     Debug.Log(hit.transform.gameObject);
                     currentAnimal = hit.transform.gameObject.GetComponent<Animal>();
                     currentPlant = null;
+                    currentAnimal.gameObject.AddComponent<Outline>();
                     UIManager.instance.UpdateTraitsUI<NutritionalTraits>(currentAnimal.Traits.nutritionTraits);
                     UIManager.instance.UpdateTraitsUI<FoodTraits>(currentAnimal.Traits.foodTraits);
                     UIManager.instance.UpdateTraitsUI<TerrainTraits>(currentAnimal.Traits.terrainTraits);
@@ -58,6 +59,7 @@ public class AnimalSelect : MonoBehaviour
                     Debug.Log(hit.transform.gameObject);
                     currentPlant = hit.transform.gameObject.GetComponent<Plant>();
                     currentAnimal = null;
+                    currentPlant.gameObject.AddComponent<Outline>();
                     UIManager.instance.UpdateTraitsUI<NutritionalTraits>(currentPlant.Traits.nutritionTraits);
                     UIManager.instance.UpdateTraitsUI<FoodTraits>(currentPlant.Traits.foodTraits);
                     UIManager.instance.UpdateTraitsUI<TerrainTraits>(currentPlant.Traits.terrainTraits);
@@ -69,6 +71,8 @@ public class AnimalSelect : MonoBehaviour
 
             if(!Physics.Raycast(ray, out hit, 100, gameLayer)) 
             {
+                Destroy(currentAnimal.GetComponent<Outline>());
+                Destroy(currentPlant.GetComponent<Outline>());
                 currentAnimal = null;
                 currentPlant = null;
                 animalSelectionNulled.Invoke();

@@ -77,7 +77,29 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAnimalName(Animal currentAnimal) 
     {
-        nameText.text = "Mite";
+        string temp = "";
+
+        if(currentAnimal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Herbivore))
+            temp += "Herbivorous ";
+
+        if(currentAnimal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Carnivore))
+            temp += "Carnivorous ";
+
+        if(currentAnimal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Scavenger))
+            temp += "Scavenging ";
+
+        if(currentAnimal.Traits.terrainTraits.HasFlag(TerrainTraits.Ground))
+            temp += "Walking ";
+
+        if(currentAnimal.Traits.terrainTraits.HasFlag(TerrainTraits.Water))
+            temp += "Swimming ";
+
+        if(currentAnimal.Traits.terrainTraits.HasFlag(TerrainTraits.Air))
+            temp += "Flying ";
+
+        nameText.text = temp + "Mite";
+
+        
 
     }
 
