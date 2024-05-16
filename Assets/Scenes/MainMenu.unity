@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 781001373}
   - component: {fileID: 781001372}
   m_Layer: 5
-  m_Name: Play Button (1)
+  m_Name: Controis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,8 +376,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: -338979584, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
-    m_PressedSprite: {fileID: 1562704415, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
+    m_HighlightedSprite: {fileID: -708596678, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
+    m_PressedSprite: {fileID: -1550125241, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -411,7 +411,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1147793002, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
+  m_Sprite: {fileID: -1689131680, guid: fc204ddbc5a16124595549f3bd50ccf6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

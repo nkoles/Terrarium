@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6be8b03300cbb6641ad7f18bdcfe7876
-      internalID: -1147793002
+      spriteID: 5a072a28b8f42fd4184f97d476571b15
+      internalID: -1689131680
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 533c2c260de76fe4d8e3a5fc0ecdecf8
-      internalID: -338979584
+      spriteID: 384119f082c8acf468285897bb1d228d
+      internalID: -708596678
       vertices: []
       indices: 
       edges: []
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c0d63f35d566594ea519cb52e5f9312
-      internalID: 1562704415
+      spriteID: 1b5acd4203970e142a509b238817acdf
+      internalID: -1550125241
       vertices: []
       indices: 
       edges: []
@@ -175,7 +175,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 95d8e478c93fee4439eec737044db1d5
+    spriteID: 0d41401c98478a842a88a4792f13deca
     internalID: 0
     vertices: []
     indices: 
@@ -183,9 +183,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ControlButton_0: -1147793002
-      ControlButton_1: -338979584
-      ControlButton_2: 1562704415
+      ControlButton_0: -1689131680
+      ControlButton_1: -708596678
+      ControlButton_2: -1550125241
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
