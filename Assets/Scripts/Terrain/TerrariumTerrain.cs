@@ -9,4 +9,14 @@ public class TerrariumTerrain : MonoBehaviour
 
     public float fertility = 0;
     public float bloody = 0;
+
+    public void CheckNearbyWaterTiles()
+    {
+
+    }
+
+    public void Awake()
+    {
+        GameTimeManager.Tick.AddListener(CheckNearbyWaterTiles);
+    }
 }

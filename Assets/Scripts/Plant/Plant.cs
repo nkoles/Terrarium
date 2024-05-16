@@ -46,6 +46,8 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public PlantStates currentState = PlantStates.Sapling;
 
+    public bool isBlooming = false;
+
     public void Initialise()
     {
     }
@@ -54,10 +56,9 @@ public class Plant : PlantAI, ITerrariumProduct
     {
         if (!IsDead && CurrentAge < maxAge)
         {
-            if (CurrentAge > (int)(maxAge / 4))
+            if (CurrentAge > (int)(maxAge / 8))
             {
                 TraitUtils.RemoveTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
-
                 IsBaby = false;
             }
 
@@ -79,21 +80,68 @@ public class Plant : PlantAI, ITerrariumProduct
     {
         Age();
 
+        CheckForCorrectGround(Traits);
+
+        Evolve();
+
+        if(targetTerrain.fertility <= 0.25)
+        {
+            if(currentState == PlantStates.Sapling)
+            {
+                Destroy(gameObject);
+            }else if (currentState == PlantStates.Grow)
+            {
+                IsDead = true;
+                currentState = PlantStates.Wither;
+            }
+        }
+
         switch (currentState)
         {
             case PlantStates.Sapling:
+                if(CurrentAge > (int)maxAge / 8)
+                    currentState = PlantStates.Grow;
                 break;
             case PlantStates.Grow:
+                if(CurrentAge % 20 == 0)
+                {
+                    if(!isBlooming)
+                        currentState = PlantStates.Bloom;
+                    else
+                    {
+                        IsDead = true;
+                        currentState = PlantStates.Wither;
+                    }
+                }
 
                 break;
             case PlantStates.Bloom:
+                if(!isBlooming || AgeVariable < bloomTime)
+                {
+                    isBlooming = Bloom(targetTerrain.fertility, Traits);
+
+                    if (isBlooming)
+                    {
+                        AgeVariable = 0;
+
+                        currentState = PlantStates.Grow;
+                    }
+                    else
+                        AgeVariable++;
+                } else
+                {
+                    AgeVariable = 0;
+
+                    currentState = PlantStates.Grow;
+                }
+
                 break;
             case PlantStates.Wither:
                 CurrentDecay++;
 
                 if(CurrentDecay > maxDecay)
                 {
-
+                    Destroy(gameObject);
                 }
 
                 break;
