@@ -640,9 +640,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayDepth: 20
-  animalLayer:
+  gameLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 896
   animalSelectionNulled:
     m_PersistentCalls:
       m_Calls:
@@ -1201,11 +1201,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3468046336487970002, guid: 69e7eb899c97e2d41b45689dd5fe5767, type: 3}
   m_PrefabInstance: {fileID: 239413649}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &256496558 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6726479889872466664, guid: c867fbe614e4f1a40bbf0b11ca636df5, type: 3}
-  m_PrefabInstance: {fileID: 1637340838}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &261988336
 PrefabInstance:
@@ -1891,11 +1886,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 491883194}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_Name
       value: PlantTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6597415887816704244, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1942,11 +1941,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
---- !u!4 &437189361 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6597415887816704244, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
-  m_PrefabInstance: {fileID: 437189360}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &450711248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2070,6 +2064,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3468046336487970002, guid: 69e7eb899c97e2d41b45689dd5fe5767, type: 3}
   m_PrefabInstance: {fileID: 460274452}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &473124420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6726479889872466664, guid: c867fbe614e4f1a40bbf0b11ca636df5, type: 3}
+  m_PrefabInstance: {fileID: 341609583}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &473391800
 GameObject:
@@ -2551,7 +2550,7 @@ GameObject:
   - component: {fileID: 561505815}
   - component: {fileID: 561505814}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2698,7 +2697,7 @@ GameObject:
   - component: {fileID: 581063262}
   - component: {fileID: 581063261}
   - component: {fileID: 581063260}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plant (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2717,11 +2716,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46748f0b2d76c2d4b96ad9c259d81cc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTerrain: {fileID: 0}
+  seedPrefab: {fileID: 0}
+  maxAge: 0
+  _currentAge: 0
+  bloomTime: 0
+  _currentBloom: 0
+  maxDecay: 0
+  _currentDecay: 0
+  _isBaby: 0
+  _isDead: 0
+  _self: {fileID: 0}
   _traitData:
     nutritionTraits: 0
     foodTraits: 1
     terrainTraits: 1
     miscTraits: 0
+  currentState: 0
 --- !u!65 &581063261
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3171,7 +3182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 623695571}
   - component: {fileID: 623695573}
-  - component: {fileID: 623695572}
+  - component: {fileID: 623695574}
   m_Layer: 5
   m_Name: RenderTextureHere
   m_TagString: Untagged
@@ -3188,46 +3199,16 @@ RectTransform:
   m_GameObject: {fileID: 623695570}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6238249, y: 0.59159, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 595968866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 187.5, y: -162.5}
+  m_AnchoredPosition: {x: 135.8, y: -118}
   m_SizeDelta: {x: 375, y: 325}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &623695572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623695570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &623695573
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3236,6 +3217,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623695570}
   m_CullTransparentMesh: 1
+--- !u!114 &623695574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623695570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: cf0fd9805ecc8ca4bb31e43aaa36058b, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1001 &643842289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4898,12 +4906,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1500328448}
-  - {fileID: 256496558}
-  - {fileID: 108697850}
-  - {fileID: 1732075869}
   - {fileID: 957681613}
-  - {fileID: 1287748342}
+  - {fileID: 473124420}
   m_Father: {fileID: 1219944449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &940148342
@@ -6024,7 +6028,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1828026833}
-  - {fileID: 491883194}
   - {fileID: 940148341}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6119,6 +6122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d830841d699b36c42bd3146490945e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIState: 0
   traitsDisplay:
   - {fileID: 1935686770}
   - {fileID: 599474002}
@@ -6129,6 +6133,9 @@ MonoBehaviour:
   - {fileID: 2120812485}
   - {fileID: 1117025080}
   - {fileID: 567125203}
+  UICamera: {fileID: 2057478653}
+  renderTexture: {fileID: 623695570}
+  nameText: {fileID: 561505814}
 --- !u!4 &1268678071
 Transform:
   m_ObjectHideFlags: 0
@@ -9553,7 +9560,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 491883194}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2549499084862177201, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: _traitData.foodTraits
@@ -9562,6 +9569,10 @@ PrefabInstance:
     - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_Name
       value: PlantTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6597415887816704244, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9608,11 +9619,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
---- !u!4 &1855216952 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6597415887816704244, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
-  m_PrefabInstance: {fileID: 1855216951}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1875112234
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9979,22 +9985,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 871c8c1d55c47a14aa1bec91203c9c12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  consumption: 0
+  consumptionTime: 0
+  animalContainer: {fileID: 0}
   terrainGrid: {fileID: 1219944448}
   maxAge: 0
-  currentAge: 0
-  isBaby: 0
+  _currentAge: 0
+  maxVariable: 0
+  _currentVariable: 0
+  maxDecay: 0
+  _currentDecay: 0
+  _isBaby: 0
   _isDead: 0
-  maxHunger: 40
-  currentHunger: 0
+  _self: {fileID: 0}
   _traitData:
     nutritionTraits: 1
     foodTraits: 2
     terrainTraits: 1
     miscTraits: 0
-  _position: {x: 0, y: 0, z: 0}
+  targetName: 
   currentState: 1
   isInitialised: 0
+  herb: {fileID: 0}
+  carn: {fileID: 0}
 --- !u!1 &1935686770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2278392289082131972, guid: 0358a68603e657541927c075440d809b, type: 3}
@@ -10392,6 +10405,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3468046336487970002, guid: 69e7eb899c97e2d41b45689dd5fe5767, type: 3}
   m_PrefabInstance: {fileID: 2000766865}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2057478653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057478654}
+  - component: {fileID: 2057478656}
+  m_Layer: 0
+  m_Name: UICamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2057478654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057478653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.30360296, y: -0.56242216, z: 0.23296265, w: 0.7329632}
+  m_LocalPosition: {x: -16.8, y: 3.01, z: -3.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -75, z: 0}
+--- !u!20 &2057478656
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057478653}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: cf0fd9805ecc8ca4bb31e43aaa36058b, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!1001 &2061396755
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10935,8 +11031,10 @@ SceneRoots:
   - {fileID: 1219944449}
   - {fileID: 1346896809}
   - {fileID: 1910837654}
-  - {fileID: 294143108}
-  - {fileID: 1066659155}
   - {fileID: 581063264}
   - {fileID: 1477927750}
   - {fileID: 1268678071}
+  - {fileID: 437189360}
+  - {fileID: 1595374137}
+  - {fileID: 1855216951}
+  - {fileID: 2057478654}
