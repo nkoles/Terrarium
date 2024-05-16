@@ -15,10 +15,19 @@ public class FeatureShowCase : MonoBehaviour
         GameTimeManager.Tick.AddListener(UpdateFeatures);
     }
 
+    //USING FOR DEBUG MAKE SURE TO DELETE AFTER!!!!!
+    private void Update()
+    {
+        UpdateFeatures();
+    }
+
     public void UpdateFeatures()
     {
-        traitModels[0].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Carnivore));
-        traitModels[1].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Herbivore));
+        traitModels[0].SetActive(currentTraitData.terrainTraits.HasFlag(TerrainTraits.Water));
+        traitModels[1].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Scavenger));
+        traitModels[2].SetActive(currentTraitData.foodTraits.HasFlag(FoodTraits.Fertilizer));
+        traitModels[3].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Carnivore));
+        traitModels[4].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Herbivore));
     }
     
 }
