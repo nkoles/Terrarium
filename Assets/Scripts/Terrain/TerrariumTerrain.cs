@@ -11,10 +11,10 @@ public class TerrariumTerrain : MonoBehaviour
     public float fertility = 0;
     public bool isBloody;
 
-    public bool isNearWater = false;
+    public float bloodTimer = 5;
 
     static public UnityEvent OnTerrainCreation = new UnityEvent(); 
-
+    public UnityEvent OnBlood = new UnityEvent();
     public void CheckNearbyWaterTiles()
     {
         Vector3 size = new Vector3(0.5f, 0.5f, 0.5f);
@@ -44,7 +44,7 @@ public class TerrariumTerrain : MonoBehaviour
             }
         }
 
-        fertility = tempCol.Count*0.125f;
+        fertility = tempCol.Count*0.25f;
 
         if(fertility >= 1)
         {
@@ -55,10 +55,11 @@ public class TerrariumTerrain : MonoBehaviour
     public bool CheckForBlood()
     {
         RaycastHit hit;
-        Physics.Raycast(transform.position, transform.up, out hit, 1, ~1 << 6);
+        Physics.Linecast(transform.position, transform.position + transform.up, out hit, ~(1<<6));
 
-        if (hit.collider != null && TryGetComponent<Animal>(out Animal deadAnim) && deadAnim.IsDead)
+        if (hit.collider != null && hit.collider.TryGetComponent<Animal>(out Animal deadAnim) && deadAnim.IsDead)
         {
+            OnBlood.Invoke();
             return true;            
         }
 
@@ -67,7 +68,20 @@ public class TerrariumTerrain : MonoBehaviour
 
     private void OnTick()
     {
-        isBloody = CheckForBlood();
+        CheckForBlood();
+    }
+
+    private void OnBloody()
+    {
+        StopAllCoroutines();
+        StartCoroutine(BloodTimer());
+    }
+
+    private IEnumerator BloodTimer()
+    {
+        yield return new WaitForSeconds(bloodTimer);
+
+        isBloody = false;
     }
 
     public void Awake()
@@ -75,6 +89,7 @@ public class TerrariumTerrain : MonoBehaviour
         if(traits.terrainTraits.HasFlag(TerrainTraits.Ground))
         {
             OnTerrainCreation.AddListener(CheckNearbyWaterTiles);
+            OnBlood.AddListener(OnBloody);
             GameTimeManager.Tick.AddListener(OnTick);
         }
 

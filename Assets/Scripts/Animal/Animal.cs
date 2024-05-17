@@ -70,8 +70,6 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public bool isInitialised = false;
 
-    public Material herb, carn;
-
     public void Initialise()
     {
         TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
@@ -84,7 +82,6 @@ public class Animal : AnimalAI, ITerrariumProduct
         _self = gameObject;
 
         maxAge = UnityEngine.Random.Range(300, 600);
-        maxVariable = 60;
 
         IsBaby = true;
         currentState = AnimalStates.Idle;
@@ -191,6 +188,7 @@ public class Animal : AnimalAI, ITerrariumProduct
 
                 break;
             case AnimalStates.Decomposing:
+                IsDead = true;
                 TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
                 Traits.foodTraits = FoodTraits.Fertilizer;
 
@@ -215,5 +213,12 @@ public class Animal : AnimalAI, ITerrariumProduct
         GameTimeManager.PreTick.AddListener(OnPreTick);
         terrainGrid = FindObjectOfType<Grid>();
         GameTimeManager.Tick.AddListener(Lifecycle);
+
+        Initialise();
+    }
+
+    private void OnDestroy()
+    {
+        AnimalFactory.instance.currentAnimalCount--;
     }
 }

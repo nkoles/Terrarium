@@ -47,6 +47,7 @@ public class Plant : PlantAI, ITerrariumProduct
     public PlantStates currentState = PlantStates.Sapling;
 
     public bool isBlooming = false;
+    public bool isInitialised = false;
 
     public void Initialise()
     {
@@ -65,10 +66,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         isBlooming = false;
 
-        Evolve();
-
-
-
+        isInitialised = true;
     }
 
     public void Age()
@@ -98,13 +96,17 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Lifecycle()
     {
-        Age();
+        if (isInitialised)
+        {
+            Age();
 
-        CheckForCorrectGround(Traits);
+            CheckForCorrectGround(Traits);
 
-        Evolve();
+            Evolve();
+        }
 
-        if(targetTerrain == null || targetTerrain.fertility <= 0.125)
+
+        if(targetTerrain == null || targetTerrain.fertility < 0.125)
         {
             if(currentState == PlantStates.Sapling)
             {
@@ -119,19 +121,22 @@ public class Plant : PlantAI, ITerrariumProduct
         switch (currentState)
         {
             case PlantStates.Sapling:
-                if(CurrentAge > (int)maxAge / 8)
+                if(CurrentAge > (int)maxAge / 4)
                     currentState = PlantStates.Grow;
 
                 // if (targetTerrain.isBloody)
                 //     Traits.foodTraits |= FoodTraits.Meat;
                 break;
             case PlantStates.Grow:
-                if(CurrentAge % 20 == 0)
+                if(CurrentAge % maxAge/2 == 0)
                 {
                     if(AgeVariable >= bloomTime)
                     {
                         if (!isBlooming)
+                        {
                             currentState = PlantStates.Bloom;
+                            AgeVariable = 0;
+                        }
                         else
                         {
                             TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
@@ -186,5 +191,10 @@ public class Plant : PlantAI, ITerrariumProduct
         GameTimeManager.Tick.AddListener(Lifecycle);
 
         Initialise();
+    }
+
+    private void OnDestroy()
+    {
+        PlantFactory.instance.currentCount--;
     }
 }

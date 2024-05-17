@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: f3820a9d0838afb4a926aed33a308ae2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - animal: {instanceID: 0}
+  - miteShader: {fileID: -6465566751694194690, guid: 4366d4dc4af5ed94098abc9c76e5f8a6, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
