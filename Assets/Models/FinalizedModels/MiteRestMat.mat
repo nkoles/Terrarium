@@ -56,9 +56,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
+    - _BendControls: 0.3
     - _ColorBlendOppacity: 0.5
     - _CorpseDitherSize: 1
     - _DecayValue: 0
     m_Colors:
+    - _BendDirection: {r: 0, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
