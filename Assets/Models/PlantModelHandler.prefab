@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 820633173757901356}
   - component: {fileID: 4375578125033597180}
+  - component: {fileID: 4449060674821900555}
   m_Layer: 0
   m_Name: PlantModelHandler
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1487474335332178590}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -55,6 +56,20 @@ MonoBehaviour:
   - {fileID: -2432090755550338912, guid: 1e4c36478e3b05c4f8d5a389eade03fb, type: 3}
   - {fileID: -2432090755550338912, guid: f466e7e949213b6428ef9066435f408d, type: 3}
   - {fileID: -2432090755550338912, guid: 493c9fa8c25d44e4db50c7257a25c30f, type: 3}
+  isWater: 0
+--- !u!114 &4449060674821900555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487474335332178590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3471197b32937384296a1024868941c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterHeightY: -0.56
   isWater: 0
 --- !u!1 &2677117852643408594
 GameObject:
