@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TerrariumTraits;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static UnityEditor.Progress;
 //using static UnityEditor.Progress;
 
 public class CraftingSystem : MonoBehaviour
