@@ -11,6 +11,7 @@ public class TooltipUI : MonoBehaviour
     private RectTransform backgroundRectTransform;
     private static TooltipUI instance;
     [SerializeField] private Transform[] parents;
+    [SerializeField] private Vector2 offset;
 
     private void Awake()
     {
@@ -23,13 +24,16 @@ public class TooltipUI : MonoBehaviour
 
     private void Update()
     {
-        Vector2 localPoint;
+        /*Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.parent.GetComponent<RectTransform>(), Input.mousePosition, myCamera, out localPoint);
-        transform.localPosition = localPoint;
+        transform.localPosition = localPoint;*/
+        transform.position = new Vector2(Input.mousePosition.x + offset.x, Input.mousePosition.y + offset.y);
     }
 
     public void ShowTooltip(string tooltipString)
     {
+        transform.localScale = Vector3.one;
+        Debug.Log("Showtooltip");
         gameObject.SetActive(true);
         tooltipText.gameObject.SetActive(true);
         backgroundRectTransform.gameObject.SetActive(true);

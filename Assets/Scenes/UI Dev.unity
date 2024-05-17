@@ -12011,6 +12011,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1057078187}
     - target: {fileID: 5184550848095473253, guid: d060b501e0e5bbf43b71ab2aa4ae4532, type: 3}
+      propertyPath: offset.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184550848095473253, guid: d060b501e0e5bbf43b71ab2aa4ae4532, type: 3}
+      propertyPath: offset.y
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184550848095473253, guid: d060b501e0e5bbf43b71ab2aa4ae4532, type: 3}
       propertyPath: parents.Array.size
       value: 3
       objectReference: {fileID: 0}
