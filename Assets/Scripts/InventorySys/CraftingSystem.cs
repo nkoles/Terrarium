@@ -30,7 +30,7 @@ public class CraftingSystem : MonoBehaviour
             TraitData newTraitData = UpdatedTraitData(itemData1.traits, itemData2.traits); // the item data for the output item
 
             //newItemData.traits = UpdatedTraitData(itemData1.traits, itemData2.traits);
-            Debug.Log(CompareTraitData(newTraitData, itemData1.traits));
+            /*Debug.Log(CompareTraitData(newTraitData, itemData1.traits));
 
             Debug.Log("newTraitData Nutrition traits = " + newTraitData.nutritionTraits);
             Debug.Log("itemdata1 Nutrition traits = " + itemData1.traits.nutritionTraits);
@@ -39,7 +39,7 @@ public class CraftingSystem : MonoBehaviour
             Debug.Log("newTraitData Terrain traits = " + newTraitData.terrainTraits);
             Debug.Log("itemdata1 Terrain traits = " + itemData1.traits.terrainTraits);
             Debug.Log("newTraitData Misc traits = " + newTraitData.miscTraits);
-            Debug.Log("itemdata1 Misc traits = " + itemData1.traits.miscTraits);
+            Debug.Log("itemdata1 Misc traits = " + itemData1.traits.miscTraits);*/
 
             // CHECK IF THIS IS A NEW TYPE OF TRAIT, IF IT IS, INSTANTIATE A NEW SCRIPTABLE OBJECT
             bool newDataType = true;

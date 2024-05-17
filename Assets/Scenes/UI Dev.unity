@@ -11769,6 +11769,10 @@ PrefabInstance:
       value: CraftingSlot
       objectReference: {fileID: 0}
     - target: {fileID: 4112388740986512839, guid: c30703a4838d32746be9884ff837da4f, type: 3}
+      propertyPath: isFirstSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4112388740986512839, guid: c30703a4838d32746be9884ff837da4f, type: 3}
       propertyPath: craftingSystem
       value: 
       objectReference: {fileID: 1404163166}
