@@ -10,9 +10,9 @@ public class ResultSlot : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
-        if (craftedItem != null)
+        if (transform.childCount > 0)
         {
-            craftedItem.OnItemUsed.Invoke();
+            transform.GetComponentInChildren<InventoryItemV2>().OnItemUsed.Invoke();
         }
     }
 

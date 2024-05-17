@@ -21,7 +21,7 @@ public class RaycastInteractable : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Coroutine active = " + coroutineActive);
+        //Debug.Log("Coroutine active = " + coroutineActive);
     }
 
     public void MyBehaviour()
@@ -38,6 +38,11 @@ public class RaycastInteractable : MonoBehaviour
                 case "Reset":
                     {
                         StartCoroutine(ResetBehaviour());
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Log("PANIC");
                         break;
                     }
             }

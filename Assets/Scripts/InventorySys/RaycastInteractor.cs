@@ -32,7 +32,7 @@ public class RaycastInteractor : MonoBehaviour
 
     void PerformRaycast()
     {
-        Debug.Log("Performing raycast...");
+        //Debug.Log("Performing raycast...");
         waitingForRaycast = false;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -40,7 +40,7 @@ public class RaycastInteractor : MonoBehaviour
         {
             if (hit.transform.gameObject.GetComponent<RaycastInteractable>() != null)
             {
-                Debug.Log("Got a hit on " + hit.transform.gameObject);
+                //Debug.Log("Got a hit on " + hit.transform.gameObject);
                 //hit.transform.gameObject.GetComponent<RaycastInteractable>().raycastInteractor = this;
                 hit.transform.gameObject.GetComponent<RaycastInteractable>().MyBehaviour();
             }
