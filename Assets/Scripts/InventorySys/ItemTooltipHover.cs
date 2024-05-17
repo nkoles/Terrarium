@@ -22,7 +22,6 @@ public class ItemTooltipHover : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             isOnItemPrefab = false;
         }
-        //itemData = parentItem.itemData;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -35,42 +34,7 @@ public class ItemTooltipHover : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
         else
         {
-            /*switch (gameObject.name)
-            {
-                case "Herbivore":
-                    {
-                        break;
-                    }
-                case "Carnivore":
-                    {
-                        break;
-                    }
-                case "Scavenger":
-                    {
-
-                    }
-                case "Meat":
-                    {
-
-                    }
-                case "Fertilizer":
-                    {
-
-                    }
-                case "Ground":
-                    {
-
-                    }
-                case "Water":
-                    {
-
-                    }
-                default:
-                    {
-                        Debug.Log("DEFAULT RUN UH OH! on gameObject " + gameObject);
-                        break;
-                    }
-            }*/
+            tooltip.ShowTooltip(eventData.pointerDrag.gameObject.name);
             tooltip.ShowTooltip(gameObject.name);
         }
     }

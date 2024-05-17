@@ -27,10 +27,13 @@ public class CraftingSystem : MonoBehaviour
             ItemData itemData1 = itemsInCrafting[0].itemData;
             ItemData itemData2 = itemsInCrafting[1].itemData;
             ItemData newItemData;
+
+            // CORPSES ONLY GIVE EGG if in 1st slot
+
             TraitData newTraitData = UpdatedTraitData(itemData1.traits, itemData2.traits); // the item data for the output item
 
             //newItemData.traits = UpdatedTraitData(itemData1.traits, itemData2.traits);
-            Debug.Log(CompareTraitData(newTraitData, itemData1.traits));
+            /*Debug.Log(CompareTraitData(newTraitData, itemData1.traits));
 
             Debug.Log("newTraitData Nutrition traits = " + newTraitData.nutritionTraits);
             Debug.Log("itemdata1 Nutrition traits = " + itemData1.traits.nutritionTraits);
@@ -39,7 +42,7 @@ public class CraftingSystem : MonoBehaviour
             Debug.Log("newTraitData Terrain traits = " + newTraitData.terrainTraits);
             Debug.Log("itemdata1 Terrain traits = " + itemData1.traits.terrainTraits);
             Debug.Log("newTraitData Misc traits = " + newTraitData.miscTraits);
-            Debug.Log("itemdata1 Misc traits = " + itemData1.traits.miscTraits);
+            Debug.Log("itemdata1 Misc traits = " + itemData1.traits.miscTraits);*/
 
             // CHECK IF THIS IS A NEW TYPE OF TRAIT, IF IT IS, INSTANTIATE A NEW SCRIPTABLE OBJECT
             bool newDataType = true;
@@ -47,17 +50,27 @@ public class CraftingSystem : MonoBehaviour
             {
                 if (itemData1.itemType == inventoryManager.itemTypes[i].itemType && CompareTraitData(newTraitData, inventoryManager.itemTypes[i].traits)) // Check if this itemData type already exists
                 {
-                    Debug.Log("Not a new item type");
+                    //Debug.Log("Not a new item type");
                     newDataType = false;
                     break;
                 }
             }
             if (newDataType) // Data type doesnt exist, create a new one
             {
-                Debug.Log("Instantiating new data type SO, yippee!!");
-                ItemData data = ItemData.CreateInstance(itemData1.itemType, "Custom Data Type", itemData1.icon, itemData1.isStackable, newTraitData);
-                inventoryManager.itemTypes.Add(data);
-                newItemData = data;
+                //Debug.Log("Instantiating new data type SO, yippee!!");
+                if (itemData1.itemType == ItemType.Corpse)
+                {
+                    //Debug.Log("EGG!");
+                    ItemData data = ItemData.CreateInstance(ItemType.Egg, "Egg", inventoryManager.itemTypes[2].icon, itemData1.isStackable, newTraitData);
+                    inventoryManager.itemTypes.Add(data);
+                    newItemData = data;
+                }
+                else
+                {
+                    ItemData data = ItemData.CreateInstance(itemData1.itemType, itemData1.displayName, itemData1.icon, itemData1.isStackable, newTraitData);
+                    inventoryManager.itemTypes.Add(data);
+                    newItemData = data;
+                }
             }
             else
             {
@@ -75,15 +88,17 @@ public class CraftingSystem : MonoBehaviour
                     GameObject prefabOutput = Instantiate(itemsInCrafting[0].gameObject, resultSlot.transform); // create new item gameobject
                     InventoryItemV2 prefabItem = prefabOutput.GetComponent<InventoryItemV2>();
                     prefabItem = outputItem;
+                    //prefabItem.OnItemUsed.Invoke();
+                    resultSlot.GetComponentInChildren<InventoryItemV2>().OnItemUsed.Invoke();
                     UpdateOutput();
-                    Debug.Log("Item in result slot is different from one crafted, sent to inventory.");
+                    //Debug.Log("Item in result slot is different from one crafted, sent to inventory.");
                 }
-                else if (resultSlot.GetComponentInChildren<InventoryItemV2>().itemData == outputItem.itemData) // if the item in result slot is the same as this item
+                else if (resultSlot.GetComponentInChildren<InventoryItemV2>().itemData == outputItem.itemData && outputItem.itemData.isStackable) // if the item in result slot is the same as this item
                 {
                     resultSlot.GetComponentInChildren<InventoryItemV2>().count++; // add to the count
                     resultSlot.GetComponentInChildren<InventoryItemV2>().OnItemUsed.Invoke(); // refresh count
                     UpdateOutput();
-                    Debug.Log("Item in result slot is same as one crafted, count updated.");
+                    //Debug.Log("Item in result slot is same as one crafted, count updated.");
                 }
             }
             else // if theres no item in the result slot
@@ -94,7 +109,7 @@ public class CraftingSystem : MonoBehaviour
                 prefabItem.count = 1;
                 prefabItem.OnItemUsed.Invoke();
                 UpdateOutput();
-                Debug.Log("No item in result slot, item instantiated.");
+                //Debug.Log("No item in result slot, item instantiated.");
             }
 
             /*foreach (InventoryItemV2 item in itemsInCrafting) // updating counts
@@ -113,13 +128,13 @@ public class CraftingSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("Wrong amount of items in crafting somehow :/");
+            //Debug.Log("Wrong amount of items in crafting somehow :/");
         }
     }
 
     public void UpdateOutput()
     {
-        Debug.Log("Update output");
+        //Debug.Log("Update output");
         for (int i = 0; i < itemsInCrafting.Count; i++)
         {
             itemsInCrafting[i].count--;

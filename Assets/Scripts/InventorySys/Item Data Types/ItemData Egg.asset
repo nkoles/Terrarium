@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 4
   displayName: Egg
-  icon: {fileID: 21300000, guid: fa09cd42138051c428a6dea62edd426c, type: 3}
+  icon: {fileID: 21300000, guid: 9f3b9a11367325147a20dfd047bcaf0b, type: 3}
   isStackable: 0
   traits:
     nutritionTraits: 0

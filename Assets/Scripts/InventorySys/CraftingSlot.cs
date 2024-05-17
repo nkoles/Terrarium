@@ -10,9 +10,17 @@ public class CraftingSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     [SerializeField] private CraftingSystem craftingSystem;
     private InventoryItemV2 currentItem;
     public InventoryItemV2 otherItemLink;
+    [SerializeField] private bool isFirstSlot;
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (isFirstSlot)
+        {
+            if (eventData.pointerDrag.gameObject.GetComponent<InventoryItemV2>().itemData.itemType == ItemType.LiquidWater || eventData.pointerDrag.gameObject.GetComponent<InventoryItemV2>().itemData.itemType == ItemType.LiquidBlood)
+            {
+                return;
+            }
+        }
         craftingSystem.RemoveEmptyFromList();
         // make a duplicate of the inventoryItem dropped and display it here
         if (currentItemObj == null && eventData.pointerDrag.GetComponent<InventoryItemV2>() != null)

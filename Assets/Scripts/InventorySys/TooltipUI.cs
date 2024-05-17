@@ -36,6 +36,7 @@ public class TooltipUI : MonoBehaviour
         Debug.Log("Showtooltip");
         gameObject.SetActive(true);
         tooltipText.gameObject.SetActive(true);
+        tooltipText.text = "";
         backgroundRectTransform.gameObject.SetActive(true);
 
         // Update tooltip size

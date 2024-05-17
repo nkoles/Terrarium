@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   displayName: Water
-  icon: {fileID: 21300000, guid: 91e7094dd6565a746be445981ff65d60, type: 3}
+  icon: {fileID: 21300000, guid: ab8cefa1fd603894a9d9aa380c0798de, type: 3}
   isStackable: 0
   traits:
     nutritionTraits: 0

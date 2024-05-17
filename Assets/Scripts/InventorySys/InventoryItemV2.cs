@@ -30,6 +30,8 @@ public class InventoryItemV2 : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         countText.text = count.ToString();
         bool textActive = count > 1;
         countText.gameObject.SetActive(textActive); // If count <= 1, disable count text
+        nameText.text = itemData.displayName;
+        icon.sprite = itemData.icon;
     }
 
     public void InitialiseItem(ItemData newItemData) // Initialise an item not currently in inventory

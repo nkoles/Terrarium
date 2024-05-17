@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   displayName: Seed
-  icon: {fileID: 21300000, guid: fa09cd42138051c428a6dea62edd426c, type: 3}
+  icon: {fileID: 21300000, guid: 42f7ccae4563d954a87f1b51f08a42ae, type: 3}
   isStackable: 0
   traits:
     nutritionTraits: 0
-    foodTraits: 0
-    terrainTraits: 1
+    foodTraits: 1
+    terrainTraits: 0
     miscTraits: 0
