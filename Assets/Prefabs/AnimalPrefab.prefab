@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5520732021098361968}
   - component: {fileID: 2680935994349256744}
   m_Layer: 0
-  m_Name: CarnivoreTest
+  m_Name: AnimalPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,9 +133,9 @@ MonoBehaviour:
   isMoving: 0
   animationHandler: {fileID: 2336039451270993700}
   waterLevelHandler: {fileID: 7514409021477162676}
-  maxAge: 180
+  maxAge: 0
   _currentAge: 0
-  maxVariable: 40
+  maxVariable: 60
   _currentVariable: 0
   maxDecay: 20
   _currentDecay: 0

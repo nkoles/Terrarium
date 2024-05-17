@@ -20,6 +20,7 @@ public class TerrainFactory : MonoBehaviour
             TerrariumTerrain terrain = Instantiate(groundPrefab, pos, Quaternion.identity, terrainContainer);
 
             terrain.isBloody = isBloody;
+            //hi
         }
 
     }

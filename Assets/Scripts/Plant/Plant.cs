@@ -47,6 +47,7 @@ public class Plant : PlantAI, ITerrariumProduct
     public PlantStates currentState = PlantStates.Sapling;
 
     public bool isBlooming = false;
+    public bool isInitialised = false;
 
     public void Initialise()
     {
@@ -65,10 +66,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         isBlooming = false;
 
-        Evolve();
-
-
-
+        isInitialised = true;
     }
 
     public void Age()
@@ -98,11 +96,15 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Lifecycle()
     {
-        Age();
+        if (isInitialised)
+        {
+            Age();
 
-        CheckForCorrectGround(Traits);
+            CheckForCorrectGround(Traits);
 
-        Evolve();
+            Evolve();
+        }
+
 
         if(targetTerrain == null || targetTerrain.fertility < 0.125)
         {
@@ -189,5 +191,10 @@ public class Plant : PlantAI, ITerrariumProduct
         GameTimeManager.Tick.AddListener(Lifecycle);
 
         Initialise();
+    }
+
+    private void OnDestroy()
+    {
+        PlantFactory.instance.currentCount--;
     }
 }

@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 5475923392589424532}
   - component: {fileID: 3926539282610256503}
   - component: {fileID: 4054908551413467788}
-  - component: {fileID: 2549499084862177201}
   m_Layer: 0
-  m_Name: PlantTest
+  m_Name: GroundPlantPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,36 +106,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2549499084862177201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2999358259682261760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46748f0b2d76c2d4b96ad9c259d81cc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTerrain: {fileID: 0}
-  seedPrefab: {fileID: 1892504196852776343, guid: c6f7319c7942a5a458dc6697e003efd9, type: 3}
-  maxAge: 300
-  _currentAge: 0
-  bloomTime: 20
-  _currentBloom: 0
-  maxDecay: 30
-  _currentDecay: 0
-  _isBaby: 1
-  _isDead: 0
-  _self: {fileID: 0}
-  _traitData:
-    nutritionTraits: 0
-    foodTraits: 3
-    terrainTraits: 1
-    miscTraits: 0
-  currentState: 0
-  isBlooming: 0
 --- !u!1001 &7332244219948485787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -189,7 +158,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlantModelHandler
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4449060674821900555, guid: c494830de7919b2469615c593b13b79e, type: 3}
+    - {fileID: 4375578125033597180, guid: c494830de7919b2469615c593b13b79e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

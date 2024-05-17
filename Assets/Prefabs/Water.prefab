@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2375887452657927182}
   - component: {fileID: 2594782912005095922}
   m_Layer: 6
-  m_Name: TestWater
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,4 +125,7 @@ MonoBehaviour:
     miscTraits: 0
   fertility: 0
   isBloody: 0
-  isNearWater: 0
+  bloodTimer: 5
+  OnBlood:
+    m_PersistentCalls:
+      m_Calls: []

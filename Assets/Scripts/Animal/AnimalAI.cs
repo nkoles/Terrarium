@@ -156,7 +156,7 @@ public class AnimalAI : MonoBehaviour
         Collider[] nearbyColliders = new Collider[maxColliders];
         List<ITerrariumProduct> nearbyTargets = new List<ITerrariumProduct>();
 
-        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders, ~(1<<6));
+        Physics.OverlapSphereNonAlloc(transform.position, range, nearbyColliders, 1<<7|1<<9);
 
         foreach(var collider in nearbyColliders)
         {
