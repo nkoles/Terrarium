@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TerrariumTraits;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AnimalFactory : TerrariumFactory
 {
@@ -13,6 +14,9 @@ public class AnimalFactory : TerrariumFactory
     public Animal animalPrefab;
 
     public Transform container;
+
+    public GameObject Restart;
+    public GameTimeManager gameTimeManager;
 
     public override ITerrariumProduct CreateTerrariumObject(Vector3 position, TraitData traitData)
     {
@@ -39,5 +43,14 @@ public class AnimalFactory : TerrariumFactory
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Update()
+    {
+        if (count <= 0)
+        {
+            Restart.SetActive(false);
+            gameTimeManager.SetPlayState(false);
+        }
     }
 }
