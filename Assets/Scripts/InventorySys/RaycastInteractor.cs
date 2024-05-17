@@ -7,6 +7,7 @@ public class RaycastInteractor : MonoBehaviour
 {
     [SerializeField] private Camera myCamera;
     private bool waitingForRaycast;
+    public static string state; // Crafting, Reset
 
     private void Awake()
     {
@@ -40,6 +41,7 @@ public class RaycastInteractor : MonoBehaviour
             if (hit.transform.gameObject.GetComponent<RaycastInteractable>() != null)
             {
                 Debug.Log("Got a hit on " + hit.transform.gameObject);
+                //hit.transform.gameObject.GetComponent<RaycastInteractable>().raycastInteractor = this;
                 hit.transform.gameObject.GetComponent<RaycastInteractable>().MyBehaviour();
             }
         }

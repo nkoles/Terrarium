@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,7 +27,7 @@ namespace LerpingUtils
 
             while(lerp < 1)
             {
-                lerp += Time.deltaTime * speed;
+                lerp += speed / 1000;
 
                 switch (transformFieldID)
                 {
@@ -34,13 +35,13 @@ namespace LerpingUtils
                         objectTransform.position = Vector3.Lerp(objectTransform.position, transformFieldValue, lerp);
                         break;
                     case 1:
-                        objectTransform.rotation = Quaternion.Lerp(Quaternion.EulerRotation(objectTransform.rotation.eulerAngles), Quaternion.EulerRotation(transformFieldValue), lerp);
+                        objectTransform.rotation = Quaternion.Lerp(Quaternion.Euler(objectTransform.rotation.eulerAngles), Quaternion.Euler(transformFieldValue), lerp);
+                        if (objectTransform.rotation == Quaternion.Euler(transformFieldValue)) { Debug.Log("reached position target"); lerp = 1; }
                         break;
                     case 2:
                         objectTransform.localScale = Vector3.Lerp(objectTransform.localScale, transformFieldValue, lerp);
                         break;
                 }
-
                 yield return null;
             }
         }

@@ -12,8 +12,7 @@ public class RaycastInteractable : MonoBehaviour
     [SerializeField] private Transform tooltipObj;
     [Tooltip("Crafting, Reset")]public string myBehaviourType;
     [SerializeField] private GameObject[] canvas; // MAINUI, MENUUI, CRAFTINGUI
-    public static bool behaviourActive;
-    //[SerializeField] private 
+    public static bool coroutineActive;
 
     private void Awake()
     {
@@ -22,12 +21,12 @@ public class RaycastInteractable : MonoBehaviour
 
     private void Update()
     {
-        
+        Debug.Log("Coroutine active = " + coroutineActive);
     }
 
     public void MyBehaviour()
     {
-        if (!behaviourActive)
+        if (!coroutineActive)
         {
             switch (myBehaviourType)
             {
@@ -47,21 +46,40 @@ public class RaycastInteractable : MonoBehaviour
     
     public IEnumerator CraftingBehaviour()
     {
-        behaviourActive = true;
-        StartCoroutine(LerpTools.LerpToPosition(transform.position, targetTransform.position, cameraSpeed));
+        if (RaycastInteractor.state != "Crafting")
+        {
+            coroutineActive = true;
+            StartCoroutine(LerpTools.LerpTransform(myCamera.transform, targetTransform.position, 0, cameraSpeed));
+            yield return LerpTools.LerpTransform(myCamera.transform, targetTransform.rotation.eulerAngles, 1, cameraSpeed);
 
-        // when coroutine is finished
-        canvas[2].SetActive(true);
-        tooltipObj.SetParent(canvas[2].transform);
-        invManager.SwitchSlotParents(2);
-        behaviourActive = false;
+            Debug.Log("bruh");
+            canvas[2].SetActive(true);
+            tooltipObj.SetParent(canvas[2].transform);
+            invManager.SwitchSlotParents(2);
+            RaycastInteractor.state = "Crafting";
+            coroutineActive = false;
 
+        }
         yield return null;
     }
 
     public IEnumerator ResetBehaviour()
     {
+        if (RaycastInteractor.state != "Reset")
+        {
+            coroutineActive = true;
 
+            StartCoroutine(LerpTools.LerpTransform(myCamera.transform, targetTransform.position, 0, cameraSpeed));
+            yield return LerpTools.LerpTransform(myCamera.transform, targetTransform.rotation.eulerAngles, 1, cameraSpeed);
+
+            foreach (GameObject c in canvas)
+            {
+                c.SetActive(false);
+            }
+
+            RaycastInteractor.state = "Reset";
+            coroutineActive = false;
+        }
         yield return null;
     }
 }
