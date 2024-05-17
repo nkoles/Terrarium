@@ -122,8 +122,8 @@ public class Plant : PlantAI, ITerrariumProduct
                 if(CurrentAge > (int)maxAge / 8)
                     currentState = PlantStates.Grow;
 
-                if (targetTerrain.isBloody)
-                    Traits.foodTraits |= FoodTraits.Meat;
+                // if (targetTerrain.isBloody)
+                //     Traits.foodTraits |= FoodTraits.Meat;
                 break;
             case PlantStates.Grow:
                 if(CurrentAge % 20 == 0)
