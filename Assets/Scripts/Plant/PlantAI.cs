@@ -75,7 +75,7 @@ public class PlantAI : MonoBehaviour
 
         if(targetTerrain.fertility >= fertilityLevel)
         {
-            int range = (int)(3 * fertilityLevel);
+            int range = 1;
             int[] posIdx = new int[range];
 
             if(range!=0)
@@ -100,7 +100,8 @@ public class PlantAI : MonoBehaviour
 
                         takenTiles.Add(randomPos);
 
-                        StartCoroutine(LerpParabola(GenerateParabolaPoints(transform.position, availableTiles[randomPos]), Instantiate(seedPrefab, transform), plantData)); 
+                        //PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos], plantData);
+                        StartCoroutine(LerpParabola(GenerateParabolaPoints(transform.position, availableTiles[randomPos]), Instantiate(seedPrefab, transform), plantData));
                     }
 
                     hasBloomed = true;

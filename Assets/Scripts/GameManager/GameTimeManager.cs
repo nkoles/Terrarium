@@ -32,7 +32,7 @@ public class GameTimeManager : MonoBehaviour
         {
             print("TICK");
             PreTick.Invoke();
-            Tick.Invoke();
+            Tick.Invoke();  
             _tickTimer = 0;
         }
     } 

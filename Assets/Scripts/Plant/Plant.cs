@@ -47,6 +47,7 @@ public class Plant : PlantAI, ITerrariumProduct
     public PlantStates currentState = PlantStates.Sapling;
 
     public bool isBlooming = false;
+    public bool isInitialised = false;
 
     public void Initialise()
     {
@@ -54,7 +55,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         maxAge = 180;
         maxDecay = 90;
-        bloomTime = 20;
+        bloomTime = 30;
 
         _currentBloom = 0;
         _currentDecay = 0;
@@ -67,8 +68,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         Evolve();
 
-
-
+        isInitialised = true;
     }
 
     public void Age()
@@ -87,6 +87,7 @@ public class Plant : PlantAI, ITerrariumProduct
         {
             TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
             currentState = PlantStates.Wither;
+            CurrentAge = maxAge;
             IsDead = true;
         }
     }
@@ -98,51 +99,51 @@ public class Plant : PlantAI, ITerrariumProduct
 
     public void Lifecycle()
     {
-        Age();
-
-        CheckForCorrectGround(Traits);
-
-        Evolve();
-
-        if(targetTerrain == null || targetTerrain.fertility < 0.125)
+        if(isInitialised)
         {
-            if(currentState == PlantStates.Sapling)
+            Age();
+
+            CheckForCorrectGround(Traits);
+
+            Evolve();
+
+            if (targetTerrain == null || targetTerrain.fertility < 0.125)
             {
-                Destroy(gameObject);
-            }else if (currentState == PlantStates.Grow)
-            {
-                IsDead = true;
-                currentState = PlantStates.Wither;
+                if (currentState == PlantStates.Sapling)
+                {
+                    Destroy(gameObject);
+                }
+                else if (currentState == PlantStates.Grow)
+                {
+                    IsDead = true;
+                    currentState = PlantStates.Wither;
+                }
             }
         }
+
 
         switch (currentState)
         {
             case PlantStates.Sapling:
-                if(CurrentAge > (int)maxAge / 4)
+                if(CurrentAge > maxAge / 8)
                     currentState = PlantStates.Grow;
 
-                // if (targetTerrain.isBloody)
-                //     Traits.foodTraits |= FoodTraits.Meat;
+                if (targetTerrain.isBloody)
+                    Traits.foodTraits |= FoodTraits.Meat;
                 break;
             case PlantStates.Grow:
-                if(CurrentAge % maxAge/2 == 0)
+                if(CurrentAge % 40 == 0)
                 {
-                    if(AgeVariable >= bloomTime)
+                    if (!isBlooming)
                     {
-                        if (!isBlooming)
-                        {
-                            currentState = PlantStates.Bloom;
-                            AgeVariable = 0;
-                        }
-                        else
-                        {
-                            TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
-                            IsDead = true;
-                            currentState = PlantStates.Wither;
-                        }
-
+                        currentState = PlantStates.Bloom;
                         AgeVariable = 0;
+                    }
+                    else
+                    {
+                        TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);
+                        IsDead = true;
+                        currentState = PlantStates.Wither;
                     }
                 } else
                 {
@@ -153,7 +154,7 @@ public class Plant : PlantAI, ITerrariumProduct
             case PlantStates.Bloom:
                 if(!isBlooming || AgeVariable < bloomTime)
                 {
-                    isBlooming = Bloom(targetTerrain.fertility, Traits);
+                    isBlooming = Bloom(0.125f, Traits);
 
                     if (isBlooming)
                     {
@@ -189,5 +190,10 @@ public class Plant : PlantAI, ITerrariumProduct
         GameTimeManager.Tick.AddListener(Lifecycle);
 
         Initialise();
+    }
+
+    private void OnDestroy()
+    {
+        PlantFactory.instance.count--;
     }
 }

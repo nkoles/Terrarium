@@ -55,11 +55,10 @@ public class TerrariumTerrain : MonoBehaviour
     public bool CheckForBlood()
     {
         RaycastHit hit;
-        Physics.Linecast(transform.position, transform.position + transform.up, out hit, ~(1<<6));
+        Physics.Linecast(transform.position, transform.position + transform.up, out hit);
 
         if (hit.collider != null && hit.collider.TryGetComponent<Animal>(out Animal deadAnim) && deadAnim.IsDead)
         {
-            OnBlood.Invoke();
             return true;            
         }
 
@@ -68,7 +67,7 @@ public class TerrariumTerrain : MonoBehaviour
 
     private void OnTick()
     {
-        CheckForBlood();
+        isBloody = CheckForBlood();
     }
 
     private void OnBloody()

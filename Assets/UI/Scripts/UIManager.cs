@@ -6,13 +6,11 @@ using UnityEngine.UI;
 using System.Linq;
 using System;
 using TMPro;
+using UIToolStates;
 
-public class UIManager : MonoBehaviour
+namespace UIToolStates
 {
-
-    public static UIManager instance { get; set; }
-
-    public enum UIInteractionType 
+    public enum UIInteractionType
     {
         None,
 
@@ -22,7 +20,14 @@ public class UIManager : MonoBehaviour
 
         Slorp,
 
-    }    
+    }
+}
+
+
+public class UIManager : MonoBehaviour
+{
+
+    public static UIManager instance { get; set; }
 
     public UIInteractionType UIState;
     

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TerrariumTraits;
 using UnityEngine;
 using UnityEngine.Events;
+using UIToolStates;
 
 public class AnimalSelect : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class AnimalSelect : MonoBehaviour
         mousePos = cam.ScreenToWorldPoint(mousePos);
         Debug.DrawRay(transform.position, mousePos-transform.position, Color.blue);
 
-        if(Input.GetMouseButtonDown(0) && UIManager.instance.UIState == UIManager.UIInteractionType.None) 
+        if(Input.GetMouseButtonDown(0) && UIManager.instance.UIState == UIInteractionType.None) 
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

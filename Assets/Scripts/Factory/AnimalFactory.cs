@@ -7,18 +7,28 @@ public class AnimalFactory : TerrariumFactory
 {
     static public AnimalFactory instance;
 
+    public int count;
+    public int maxCount;
+
     public Animal animalPrefab;
+
+    public Transform container;
 
     public override ITerrariumProduct CreateTerrariumObject(Vector3 position, TraitData traitData)
     {
-        GameObject instance = Instantiate(animalPrefab.gameObject, position, Quaternion.identity);
+        if(count < maxCount)
+        {
+            GameObject instance = Instantiate(animalPrefab.gameObject, position, Quaternion.identity, container);
 
-        Animal newAnimal = instance.GetComponent<Animal>();
-        newAnimal.Traits = traitData;
+            Animal newAnimal = instance.GetComponent<Animal>();
+            newAnimal.Traits = traitData;
 
-        //newAnimal.Initialise();
+            //newAnimal.Initialise();
 
-        return newAnimal;
+            return newAnimal;
+        }
+
+        return null;
     }
 
     public override ITerrariumProduct CreateTerrariumObject(Vector3 position)

@@ -7,16 +7,26 @@ public class PlantFactory : TerrariumFactory
 {
     static public PlantFactory instance;
 
+    public int count;
+    public int maxCount;
+
     public Plant plantPrefab;
+
+    public Transform container;
 
     public override ITerrariumProduct CreateTerrariumObject(Vector3 position, TraitData traitData)
     {
-        GameObject instance = Instantiate(plantPrefab.gameObject, position, Quaternion.identity);
+        if(count < maxCount)
+        {
+            GameObject instance = Instantiate(plantPrefab.gameObject, position, Quaternion.identity, container);
 
-        Plant newPlant = instance.GetComponent<Plant>();
-        newPlant.Traits = traitData;
+            Plant newPlant = instance.GetComponent<Plant>();
+            newPlant.Traits = traitData;
 
-        return newPlant;
+            return newPlant;
+        }
+
+        return null;
     }
 
     public override ITerrariumProduct CreateTerrariumObject(Vector3 position)
