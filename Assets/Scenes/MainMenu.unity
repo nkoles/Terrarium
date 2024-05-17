@@ -158,8 +158,8 @@ Camera:
   m_GameObject: {fileID: 27368920}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -681,8 +681,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -710,7 +710,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -194.09308, w: -350.60156}
+  m_margin: {x: 0, y: 0, z: -552.5744, w: -350.60156}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1743,9 +1743,28 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Pick a tool!
+  m_text: 'Take care of your terrarium!
 
-    (Left Mouse - Main Action Right Mouse - Alt Action)'
+
+    Tools: (Right and Left Click)
+
+    Tweezers
+    - Pickup Objects and store them in your tray
+
+    Pipette - Add and remove water
+    tiles
+
+    Scalpel - Kill a mite
+
+
+    Back button:
+
+    Takes you to the crafting
+    station!
+
+    Try out what you can make!
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f39559b245faf0a4294332b5787568b5, type: 2}
   m_sharedMaterial: {fileID: -6201510257256556207, guid: f39559b245faf0a4294332b5787568b5, type: 2}
@@ -1779,8 +1798,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1808,7 +1827,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -194.09308, w: -350.60156}
+  m_margin: {x: 0, y: 0, z: -554.566, w: -350.60156}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
