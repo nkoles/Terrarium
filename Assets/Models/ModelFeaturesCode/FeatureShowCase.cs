@@ -31,6 +31,7 @@ public class FeatureShowCase : MonoBehaviour
         traitModels[2].SetActive(currentTraitData.foodTraits.HasFlag(FoodTraits.Fertilizer));
         traitModels[3].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Carnivore));
         traitModels[4].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Herbivore));
+        traitModels[5].SetActive(currentTraitData.foodTraits.HasFlag(FoodTraits.Plant));
     }
     
 }
