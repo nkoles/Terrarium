@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 1230260207776539409}
   - component: {fileID: 7134530386446972766}
   - component: {fileID: 2499152933498618143}
+  - component: {fileID: 8334123591914827133}
+  - component: {fileID: 7900461409544220266}
   m_Layer: 0
   m_Name: ModelHandler
   m_TagString: Untagged
@@ -161,6 +163,38 @@ MonoBehaviour:
   - {fileID: 7892982107760425668}
   - {fileID: 802395922531453212}
   - {fileID: 2919813333362197160}
+--- !u!114 &8334123591914827133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3470958474181572270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d26c6bf17833224b8c4a61140c911f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  miteShader: {fileID: -6465566751694194690, guid: 4366d4dc4af5ed94098abc9c76e5f8a6, type: 3}
+  colors:
+  - {r: 0.8773585, g: 0.36832502, b: 0.37963703, a: 1}
+  - {r: 0.5943396, g: 0.32215196, b: 0.25511748, a: 1}
+  - {r: 0.15102986, g: 0.8113208, b: 0.095674604, a: 1}
+  - {r: 0.3099858, g: 0.71833, b: 0.8113208, a: 1}
+--- !u!114 &7900461409544220266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3470958474181572270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3820a9d0838afb4a926aed33a308ae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animal: {fileID: 0}
+  miteShader: {fileID: -6465566751694194690, guid: 4366d4dc4af5ed94098abc9c76e5f8a6, type: 3}
 --- !u!1 &3514588091025479738
 GameObject:
   m_ObjectHideFlags: 0

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOnWater: 0
+  startHeight: 0
   waterHeight: -5
 --- !u!1001 &1414148886128493210
 PrefabInstance:
@@ -114,6 +115,10 @@ PrefabInstance:
     - target: {fileID: 3470958474181572270, guid: 8286a42688850334d86f8c73844fa08c, type: 3}
       propertyPath: m_Name
       value: ModelHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987249721712094549, guid: 8286a42688850334d86f8c73844fa08c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

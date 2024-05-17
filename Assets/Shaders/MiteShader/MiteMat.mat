@@ -108,7 +108,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _BumpScale: 1
     - _ColorBlendOppacity: 0.5
-    - _CorpseDitherSize: 2
+    - _CorpseDitherSize: 0.1
     - _CorpseOppacity: 1
     - _Cutoff: 0.5
     - _DecayValue: 21.4

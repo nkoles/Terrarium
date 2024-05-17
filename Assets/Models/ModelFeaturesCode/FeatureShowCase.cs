@@ -13,16 +13,19 @@ public class FeatureShowCase : MonoBehaviour
     private void Awake()
     {
         GameTimeManager.Tick.AddListener(UpdateFeatures);
+        
     }
 
     //USING FOR DEBUG MAKE SURE TO DELETE AFTER!!!!!
     private void Update()
     {
-        UpdateFeatures();
+        //UpdateFeatures();
     }
 
     public void UpdateFeatures()
     {
+        currentTraitData = GetComponentInParent<Animal>().Traits;
+
         traitModels[0].SetActive(currentTraitData.terrainTraits.HasFlag(TerrainTraits.Water));
         traitModels[1].SetActive(currentTraitData.nutritionTraits.HasFlag(NutritionalTraits.Scavenger));
         traitModels[2].SetActive(currentTraitData.foodTraits.HasFlag(FoodTraits.Fertilizer));
