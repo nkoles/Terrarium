@@ -104,7 +104,7 @@ public class Plant : PlantAI, ITerrariumProduct
 
         Evolve();
 
-        if(targetTerrain == null || targetTerrain.fertility <= 0.125)
+        if(targetTerrain == null || targetTerrain.fertility < 0.125)
         {
             if(currentState == PlantStates.Sapling)
             {
@@ -119,19 +119,22 @@ public class Plant : PlantAI, ITerrariumProduct
         switch (currentState)
         {
             case PlantStates.Sapling:
-                if(CurrentAge > (int)maxAge / 8)
+                if(CurrentAge > (int)maxAge / 4)
                     currentState = PlantStates.Grow;
 
                 if (targetTerrain.isBloody)
                     Traits.foodTraits |= FoodTraits.Meat;
                 break;
             case PlantStates.Grow:
-                if(CurrentAge % 20 == 0)
+                if(CurrentAge % maxAge/2 == 0)
                 {
                     if(AgeVariable >= bloomTime)
                     {
                         if (!isBlooming)
+                        {
                             currentState = PlantStates.Bloom;
+                            AgeVariable = 0;
+                        }
                         else
                         {
                             TraitUtils.AddTrait(ref Traits.foodTraits, FoodTraits.Fertilizer);

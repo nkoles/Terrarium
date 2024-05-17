@@ -249,26 +249,31 @@ public class AnimalAI : MonoBehaviour
 
     public Vector3 ClosestTileToTarget(TraitData animalTraits)
     {
-        Vector3[] nonFilteredAvailableTiles = AvailableTiles(animalTraits).ToArray();
-
-        int tileIndex = 0;
-        float tempDistance = float.MaxValue;
-
-        for (int i = 0; i < nonFilteredAvailableTiles.Length; ++i)
+        if(!CheckTargetDestruction())
         {
-            if (target == null)
-                break;
+            Vector3[] nonFilteredAvailableTiles = AvailableTiles(animalTraits).ToArray();
 
-            Vector3 pos = target.SelfObject.transform.position;
+            int tileIndex = 0;
+            float tempDistance = float.MaxValue;
 
-            if (Vector3.Distance(nonFilteredAvailableTiles[i], pos) < tempDistance)
+            for (int i = 0; i < nonFilteredAvailableTiles.Length; ++i)
             {
-                tileIndex = i;
-                tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], pos);
+                if (target == null)
+                    break;
+
+                Vector3 pos = target.SelfObject.transform.position;
+
+                if (Vector3.Distance(nonFilteredAvailableTiles[i], pos) < tempDistance)
+                {
+                    tileIndex = i;
+                    tempDistance = Vector3.Distance(nonFilteredAvailableTiles[i], pos);
+                }
             }
+
+            return nonFilteredAvailableTiles[tileIndex];
         }
 
-        return nonFilteredAvailableTiles[tileIndex];
+        return transform.position;
     }
 
     public bool CheckForTarget()
