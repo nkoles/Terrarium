@@ -98,14 +98,26 @@ public class UIManager : MonoBehaviour
             temp += "Flying ";
 
         nameText.text = temp + "Mite";
-
-        
-
     }
 
     public void UpdatePlantName(Plant currentPlant) 
     {
-        nameText.text = "Plant";
+
+        string temp = "";
+
+        if(currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Fertilizer))
+            temp += "Fertile ";
+
+        if(currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Water))
+            temp += "Aquatic ";
+
+        if(currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Air))
+            temp += "Floating ";    
+        
+        if(currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Meat))
+            temp += "Meaty ";
+
+        nameText.text = temp + "Plant";
 
     }
 
