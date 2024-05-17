@@ -71,7 +71,7 @@ public class ItemTooltipHover : MonoBehaviour, IPointerEnterHandler, IPointerExi
                         break;
                     }
             }*/
-            tooltip.ShowTooltip(eventData.pointerDrag.gameObject.name);
+            tooltip.ShowTooltip(gameObject.name);
         }
     }
 
