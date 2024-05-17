@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTerrain: {fileID: 0}
-  seedPrefab: {fileID: 0}
+  seedPrefab: {fileID: 1892504196852776343, guid: c6f7319c7942a5a458dc6697e003efd9, type: 3}
   maxAge: 300
   _currentAge: 0
   bloomTime: 20
@@ -132,7 +132,7 @@ MonoBehaviour:
   _self: {fileID: 0}
   _traitData:
     nutritionTraits: 0
-    foodTraits: 1
+    foodTraits: 3
     terrainTraits: 1
     miscTraits: 0
   currentState: 0

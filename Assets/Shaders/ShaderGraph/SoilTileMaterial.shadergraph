@@ -34,10 +34,10 @@
             "m_Id": "b4139e87050e40c7944525401d74302b"
         },
         {
-            "m_Id": "3d6891565ae048cbaa25583da13a04a5"
+            "m_Id": "e7a98bebcb324f2a897f6e3ffd97eab4"
         },
         {
-            "m_Id": "e7a98bebcb324f2a897f6e3ffd97eab4"
+            "m_Id": "7a79cb3c12cd4420b027837396ee54f6"
         }
     ],
     "m_Keywords": [],
@@ -205,9 +205,6 @@
             "m_Id": "89ce9e2f3b4c4798b019d655bfe9b1db"
         },
         {
-            "m_Id": "612151a6caf947fcb24123036800e62b"
-        },
-        {
             "m_Id": "c122b9728f7e4093b6faa3eae594c070"
         },
         {
@@ -218,6 +215,9 @@
         },
         {
             "m_Id": "1a9aa5c7ff764022aecf1b03841060c3"
+        },
+        {
+            "m_Id": "389db639810f4321abea1e0f0d6f04a8"
         }
     ],
     "m_GroupDatas": [
@@ -390,6 +390,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "389db639810f4321abea1e0f0d6f04a8"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "1a9aa5c7ff764022aecf1b03841060c3"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "5163a198ce174ba8a87b7c8e3e03ab91"
                 },
                 "m_SlotId": 2
@@ -441,20 +455,6 @@
                     "m_Id": "9d58714468cc471cbfba5cac46b6eb14"
                 },
                 "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "612151a6caf947fcb24123036800e62b"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "1a9aa5c7ff764022aecf1b03841060c3"
-                },
-                "m_SlotId": 1
             }
         },
         {
@@ -1944,6 +1944,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "389db639810f4321abea1e0f0d6f04a8",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1728.6956787109375,
+            "y": 951.3043823242188,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "8153173bdaa142ca901d69df7973f765"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "7a79cb3c12cd4420b027837396ee54f6"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "3981b20e506b441e9833cdf399ccbeb2",
     "m_Id": 1,
@@ -2003,29 +2039,6 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.BooleanShaderProperty",
-    "m_ObjectId": "3d6891565ae048cbaa25583da13a04a5",
-    "m_Guid": {
-        "m_GuidSerialized": "3788e73f-e164-4601-a409-dcc4142d0e57"
-    },
-    "m_Name": "IsBlood",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "IsBlood",
-    "m_DefaultReferenceName": "_IsBlood",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": true
 }
 
 {
@@ -2782,10 +2795,10 @@
             "m_Id": "b4139e87050e40c7944525401d74302b"
         },
         {
-            "m_Id": "3d6891565ae048cbaa25583da13a04a5"
+            "m_Id": "e7a98bebcb324f2a897f6e3ffd97eab4"
         },
         {
-            "m_Id": "e7a98bebcb324f2a897f6e3ffd97eab4"
+            "m_Id": "7a79cb3c12cd4420b027837396ee54f6"
         }
     ]
 }
@@ -2947,42 +2960,6 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Normal"
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
-    "m_ObjectId": "612151a6caf947fcb24123036800e62b",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Property",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -1743.0,
-            "y": 863.0,
-            "width": 116.0,
-            "height": 34.00006103515625
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "f984ddc266d84b2183b198fff26755e1"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Property": {
-        "m_Id": "3d6891565ae048cbaa25583da13a04a5"
-    }
 }
 
 {
@@ -3577,6 +3554,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "7a79cb3c12cd4420b027837396ee54f6",
+    "m_Guid": {
+        "m_GuidSerialized": "e0f1c797-b256-4581-b7fd-beb4e8e9964e"
+    },
+    "m_Name": "Bloody",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Bloody",
+    "m_DefaultReferenceName": "_Bloody",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SubtractNode",
     "m_ObjectId": "7be1d8fa96e8481082e4304d39d1379b",
@@ -3756,6 +3761,21 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "8153173bdaa142ca901d69df7973f765",
+    "m_Id": 0,
+    "m_DisplayName": "Bloody",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -6524,20 +6544,6 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Smoothness"
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BooleanMaterialSlot",
-    "m_ObjectId": "f984ddc266d84b2183b198fff26755e1",
-    "m_Id": 0,
-    "m_DisplayName": "IsBlood",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": false,
-    "m_DefaultValue": false
 }
 
 {

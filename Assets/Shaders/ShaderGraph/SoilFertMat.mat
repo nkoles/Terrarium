@@ -42,10 +42,11 @@ Material:
     - _BloodIntesity: 0.83
     - _ColorEdge: 0
     - _ColorIntensiry: 8
-    - _EdgeIntensity: 13
+    - _EdgeBorder: 0.65
+    - _EdgeIntensity: 9.69
     - _Fertility: 0.97
     - _IsBlood: 0
-    - _MaxNoise: 9.18
+    - _MaxNoise: -0.6
     m_Colors:
     - _BloodColor: {r: 0.5, g: 0, b: 0.054076433, a: 1}
   m_BuildTextureStacks: []

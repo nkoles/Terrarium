@@ -1172,10 +1172,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestGround
       objectReference: {fileID: 0}
-    - target: {fileID: 2388673064780911406, guid: 69e7eb899c97e2d41b45689dd5fe5767, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3468046336487970002, guid: 69e7eb899c97e2d41b45689dd5fe5767, type: 3}
       propertyPath: m_LocalPosition.x
       value: -17.5
@@ -4353,7 +4349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f06c44d267db941a00be33b60d8c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalPrefab: {fileID: 242123760868516954, guid: c867fbe614e4f1a40bbf0b11ca636df5, type: 3}
+  animalPrefab: {fileID: 2680935994349256744, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
 --- !u!4 &1595374137
 Transform:
   m_ObjectHideFlags: 0
@@ -4416,10 +4412,6 @@ PrefabInstance:
     - target: {fileID: 1544943442311036239, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2680935994349256744, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
-      propertyPath: _traitData.nutritionTraits
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8984410132856913809, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
       propertyPath: m_Name
@@ -5720,21 +5712,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 491883194}
     m_Modifications:
-    - target: {fileID: 2549499084862177201, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
-      propertyPath: _traitData.foodTraits
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2549499084862177201, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
-      propertyPath: _traitData.terrainTraits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_Name
       value: PlantTest (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2999358259682261760, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6597415887816704244, guid: c1178bd3118bac5419adb042caccb4f9, type: 3}
       propertyPath: m_LocalPosition.x

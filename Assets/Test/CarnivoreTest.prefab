@@ -121,11 +121,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   consumption: 0
   consumptionTime: 5
+  selfTraits:
+    nutritionTraits: 0
+    foodTraits: 0
+    terrainTraits: 0
+    miscTraits: 0
   animalContainer: {fileID: 0}
   terrainGrid: {fileID: 0}
+  availableTiles: []
+  _lastPosition: {x: 0, y: 0, z: 0}
+  isMoving: 0
   maxAge: 180
   _currentAge: 0
-  maxVariable: 0
+  maxVariable: 40
   _currentVariable: 0
   maxDecay: 20
   _currentDecay: 0
@@ -133,7 +141,7 @@ MonoBehaviour:
   _isDead: 0
   _self: {fileID: 0}
   _traitData:
-    nutritionTraits: 2
+    nutritionTraits: 1
     foodTraits: 2
     terrainTraits: 1
     miscTraits: 0
