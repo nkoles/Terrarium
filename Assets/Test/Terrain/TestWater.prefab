@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2388673064780911406}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -124,4 +124,5 @@ MonoBehaviour:
     terrainTraits: 2
     miscTraits: 0
   fertility: 0
-  bloody: 0
+  isBloody: 0
+  isNearWater: 0
