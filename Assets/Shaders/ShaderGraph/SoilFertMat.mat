@@ -42,7 +42,7 @@ Material:
     - _ColorEdge: 0
     - _ColorIntensiry: 8
     - _EdgeIntensity: 13
-    - _Fertility: 0
+    - _Fertility: 0.97
     - _MaxNoise: 9.18
     m_Colors: []
   m_BuildTextureStacks: []
