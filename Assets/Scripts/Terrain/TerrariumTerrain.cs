@@ -2,59 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TerrariumTraits;
-using System.Drawing;
+using UnityEngine.Events;
 
 public class TerrariumTerrain : MonoBehaviour
 {
     public TraitData traits; 
 
     public float fertility = 0;
-    public float bloody = 0;
+    public bool isBloody;
 
+    public bool isNearWater = false;
 
+    static public UnityEvent OnTerrainCreation = new UnityEvent(); 
 
     public void CheckNearbyWaterTiles()
     {
-        Vector3 size = new Vector3(1f, 0.25f, 1f);
+        Vector3 size = new Vector3(0.5f, 0.5f, 0.5f);
 
-        Collider[] colliders = new Collider[9];
+        Collider[] colliders = new Collider[18];
 
-        int num = Physics.OverlapBoxNonAlloc(transform.position, size, colliders, Quaternion.identity, 1<<6);
+        int num = Physics.OverlapBoxNonAlloc(transform.position, size, colliders);
 
         print(num);
 
         float tempFertility = 0;
 
+        List<Collider> tempCol = new List<Collider>();
+
         foreach(var col in colliders)
         {
             if(col!=null)
             {
-                if (col.TryGetComponent<TerrariumTerrain>(out TerrariumTerrain terrain) && terrain.traits.terrainTraits.HasFlag(TerrainTraits.Water))
-                    tempFertility++;
+                print(col.gameObject.name);
+
+                if ((col.TryGetComponent<TerrariumTerrain>(out TerrariumTerrain terrain) && terrain.traits.terrainTraits.HasFlag(TerrainTraits.Water))
+                    || (col.TryGetComponent<ITerrariumProduct>(out ITerrariumProduct plantAnim) && plantAnim.Traits.foodTraits.HasFlag(FoodTraits.Fertilizer)))
+                {
+                    if(!tempCol.Contains(col))
+                        tempCol.Add(col);
+                }
             }
         }
 
-        if(tempFertility >= 1)
+        fertility = tempCol.Count*0.125f;
+
+        if(fertility >= 1)
         {
             fertility = 1;
-        }else
-        {
-            fertility = tempFertility / 8;
         }
+    }
+
+    public bool CheckForBlood()
+    {
+        RaycastHit hit;
+        Physics.Raycast(transform.position, transform.up, out hit, 1, ~1 << 6);
+
+        if (hit.collider != null && TryGetComponent<Animal>(out Animal deadAnim) && deadAnim.IsDead)
+        {
+            return true;            
+        }
+
+        return false;
+    }
+
+    private void OnTick()
+    {
+        isBloody = CheckForBlood();
     }
 
     public void Awake()
     {
         if(traits.terrainTraits.HasFlag(TerrainTraits.Ground))
         {
-            GameTimeManager.PreTick.AddListener(CheckNearbyWaterTiles);
+            OnTerrainCreation.AddListener(CheckNearbyWaterTiles);
+            GameTimeManager.Tick.AddListener(OnTick);
         }
-    }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Vector3 offset = new Vector3(0, 0.25f, 0);
-    //    Vector3 size = new Vector3(2f, 0.5f, 2f);
-    //    Gizmos.DrawCube(transform.position - offset, size);
-    //}
+        OnTerrainCreation.Invoke();
+    }
 }

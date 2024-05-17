@@ -51,6 +51,8 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public string targetName;
 
+    static public int totalAnimalCount;
+
     public String TargetName
     {
         get
@@ -133,7 +135,7 @@ public class Animal : AnimalAI, ITerrariumProduct
                 }
 
 
-                Move(AvailableTiles(Traits), 50);
+                Move(availableTiles.ToArray(), 50);
                 break;
             case AnimalStates.Hungry:
                 List<FoodTraits> searchTraits = new List<FoodTraits>();
@@ -208,8 +210,10 @@ public class Animal : AnimalAI, ITerrariumProduct
     public void Awake()
     {
         _self = gameObject;
+        selfTraits = Traits;
+        _lastPosition = transform.position;
+        GameTimeManager.PreTick.AddListener(OnPreTick);
         terrainGrid = FindObjectOfType<Grid>();
         GameTimeManager.Tick.AddListener(Lifecycle);
-        Initialise();
     }
 }
