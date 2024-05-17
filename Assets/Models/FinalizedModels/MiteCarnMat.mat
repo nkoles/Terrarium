@@ -43,6 +43,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
+    - _ColorBlendOppacity: 0.5
     - _CorpseDitherSize: 1
     - _DecayValue: 0
     m_Colors:

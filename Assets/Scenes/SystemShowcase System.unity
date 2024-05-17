@@ -672,6 +672,10 @@ PrefabInstance:
       propertyPath: _traitData.nutritionTraits
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7514409021477162676, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
+      propertyPath: isOnWater
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8984410132856913809, guid: 95fdb7a39ae177c418097a53bd0d137a, type: 3}
       propertyPath: m_Name
       value: CarnivoreTest (2)
