@@ -26,6 +26,9 @@ public class AnimalAI : MonoBehaviour
     public Vector3 _lastPosition;
     public bool isMoving;
 
+    public TickMovement animationHandler;
+    public WaterLevelHandler waterLevelHandler;
+
     public bool CheckTargetDestruction()
     {
         if(target != null)
@@ -109,6 +112,31 @@ public class AnimalAI : MonoBehaviour
 
             _lastPosition = transform.position;
             transform.position = target;
+
+            Vector3 offset = _lastPosition - transform.position;
+
+            if(offset.x != 0)
+            {
+                if (offset.x > 0)
+                    animationHandler.startStepAnimation(3);
+
+                animationHandler.startStepAnimation(1);
+            }
+
+            if(offset.z != 0)
+            {
+                if(offset.z > 0)
+                    animationHandler.startStepAnimation(0);
+
+                animationHandler.startStepAnimation(2);
+            }
+
+            RaycastHit hit;
+            Physics.Raycast(transform.position, -transform.up, out hit, 1f, 1 << 6);
+            if (hit.collider.TryGetComponent<TerrariumTerrain>(out TerrariumTerrain t) && t.traits.terrainTraits.HasFlag(TerrainTraits.Water))
+                waterLevelHandler.isOnWater = true;
+            else
+                waterLevelHandler.isOnWater = false;
         }
     }
 

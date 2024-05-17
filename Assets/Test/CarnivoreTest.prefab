@@ -131,6 +131,8 @@ MonoBehaviour:
   availableTiles: []
   _lastPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
+  animationHandler: {fileID: 2336039451270993700}
+  waterLevelHandler: {fileID: 7514409021477162676}
   maxAge: 180
   _currentAge: 0
   maxVariable: 40
@@ -227,8 +229,30 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
+--- !u!114 &2336039451270993700 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8116297407246038468, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
+  m_PrefabInstance: {fileID: 5821367596227535584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8fc109bd9474464e89057a337811970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4471372093754220944 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7981548175172043632, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
   m_PrefabInstance: {fileID: 5821367596227535584}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7514409021477162676 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4071585897789762644, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
+  m_PrefabInstance: {fileID: 5821367596227535584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438819f9d443ae842871a5fcda948c26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
