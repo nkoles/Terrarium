@@ -8968,7 +8968,7 @@ MonoBehaviour:
   invOpen: 0
   closed: {fileID: 1487092595}
   open: {fileID: 1037878852}
-  lerpValue: 0.8
+  lerpValue: 1
 --- !u!114 &1741097601
 MonoBehaviour:
   m_ObjectHideFlags: 0

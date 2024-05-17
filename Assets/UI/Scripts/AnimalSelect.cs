@@ -45,6 +45,19 @@ public class AnimalSelect : MonoBehaviour
                 if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Animal")) 
                 {
                     Debug.Log(hit.transform.gameObject);
+
+                    if(currentAnimal != null) {
+                        if(currentAnimal.GetComponent<Outline>()) {
+                            Destroy(currentAnimal.GetComponent<Outline>());
+                        }
+                    }
+
+                    if(currentPlant != null) {
+                        if(currentPlant.GetComponent<Outline>()) {
+                            Destroy(currentPlant.GetComponent<Outline>());
+                        }
+                    }
+
                     currentAnimal = hit.transform.gameObject.GetComponent<Animal>();
                     currentPlant = null;
                     currentAnimal.gameObject.AddComponent<Outline>();
@@ -57,6 +70,19 @@ public class AnimalSelect : MonoBehaviour
                 if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Plant")) 
                 {
                     Debug.Log(hit.transform.gameObject);
+
+                    if(currentPlant != null) {
+                        if(currentPlant.GetComponent<Outline>()) {
+                            Destroy(currentPlant.GetComponent<Outline>());
+                        }
+                    }
+
+                    if(currentAnimal != null) {
+                        if(currentAnimal.GetComponent<Outline>()) {
+                            Destroy(currentAnimal.GetComponent<Outline>());
+                        }
+                    }
+
                     currentPlant = hit.transform.gameObject.GetComponent<Plant>();
                     currentAnimal = null;
                     currentPlant.gameObject.AddComponent<Outline>();
@@ -71,8 +97,17 @@ public class AnimalSelect : MonoBehaviour
 
             if(!Physics.Raycast(ray, out hit, 100, gameLayer)) 
             {
-                Destroy(currentAnimal.GetComponent<Outline>());
-                Destroy(currentPlant.GetComponent<Outline>());
+                if(currentAnimal != null) {
+                    if(currentAnimal.GetComponent<Outline>()) {
+                        Destroy(currentAnimal.GetComponent<Outline>());
+                    }
+                }
+                    
+                if(currentPlant != null) {
+                    if(currentPlant.GetComponent<Outline>()) {
+                        Destroy(currentPlant.GetComponent<Outline>());
+                    }
+                }
                 currentAnimal = null;
                 currentPlant = null;
                 animalSelectionNulled.Invoke();
