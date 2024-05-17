@@ -15,6 +15,7 @@ public class InventoryManagerV2 : MonoBehaviour
     public List<ItemData> itemTypes;
     [Header("Other")]
     public GameObject inventoryItemV2Prefab;
+    public List<InventoryItemV2> inventoryItems;
     [Header("Debug")]
     [SerializeField] private bool debugMode;
     [SerializeField] private int debugAmountToAdd;
@@ -70,6 +71,7 @@ public class InventoryManagerV2 : MonoBehaviour
                 itemInSlot.OnItemUsed.Invoke();
                 //itemInSlot.RefreshCount();
                 //Debug.Log("Successfully added item to stack!");
+                inventoryItems.Add(itemInSlot);
                 return;
             }
         }
@@ -109,6 +111,7 @@ public class InventoryManagerV2 : MonoBehaviour
                 {
                     itemInSlot.RefreshCount();
                 }*/
+                inventoryItems.Remove(itemInSlot);
                 return;
             }
         }
@@ -121,6 +124,7 @@ public class InventoryManagerV2 : MonoBehaviour
         invItem.InitialiseItem(itemData);
         invItem.count += amount;
         invItem.OnItemUsed.Invoke();
+        inventoryItems.Add(invItem);
         //invItem.RefreshCount();
     }
 

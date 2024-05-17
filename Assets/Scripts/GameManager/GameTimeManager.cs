@@ -12,6 +12,7 @@ public class GameTimeManager : MonoBehaviour
 
     public float tickFrequency;
     private float _tickTimer = 0;
+    public bool isPlaying;
 
     private void Awake()
     {
@@ -39,6 +40,14 @@ public class GameTimeManager : MonoBehaviour
 
     public void Update()
     {
-        TickRate();
+        if(isPlaying)
+        {
+            TickRate();
+        }
+    }
+
+    public void SetPlayState(bool b)
+    {
+        isPlaying = b;
     }
 }
