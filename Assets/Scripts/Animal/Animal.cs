@@ -191,6 +191,7 @@ public class Animal : AnimalAI, ITerrariumProduct
 
                 break;
             case AnimalStates.Decomposing:
+                IsDead = true;
                 TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
                 Traits.foodTraits = FoodTraits.Fertilizer;
 
