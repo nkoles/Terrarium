@@ -48,7 +48,7 @@ namespace TerrariumTraits
 
     static public class TraitUtils
     {
-        static public void AddTrait<T>(ref T traitData, params T[] traitFlags) where T: Enum
+        static public void AddTrait<T>(ref T traitData, params T[] traitFlags) where T : Enum
         {
             foreach (var t in traitFlags)
             {
@@ -61,7 +61,7 @@ namespace TerrariumTraits
             }
         }
 
-        static public void RemoveTrait<T>(ref T traitData, params T[] traitFlags) where T: Enum
+        static public void RemoveTrait<T>(ref T traitData, params T[] traitFlags) where T : Enum
         {
             foreach (var t in traitFlags)
             {
@@ -74,7 +74,7 @@ namespace TerrariumTraits
             }
         }
 
-        static public bool HasTrait<T>(T traitData, T traitFlags) where T: Enum
+        static public bool HasTrait<T>(T traitData, T traitFlags) where T : Enum
         {
             int traitDataValue = (int)(object)traitData;
             int traitFlagValue = (int)(object)traitFlags;
@@ -99,7 +99,7 @@ namespace TerrariumTraits
         public FoodTraits foodTraits;
         public TerrainTraits terrainTraits;
         public MiscTraits miscTraits;
-        
+
         static public TraitData operator +(TraitData t1, TraitData t2)
         {
             return CombineAllTraits(t1, t2);
@@ -117,7 +117,7 @@ namespace TerrariumTraits
             return result;
         }
 
-        public TraitData CombineTrait<TEnum>(TraitData other) where TEnum: Enum
+        public TraitData CombineTrait<TEnum>(TraitData other) where TEnum : Enum
         {
             TraitData result = this;
 
@@ -126,7 +126,7 @@ namespace TerrariumTraits
                 TEnum selfData = GetTraitFlags<TEnum>();
                 TEnum otherData = other.GetTraitFlags<TEnum>();
 
-                if (!TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value) && TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value))
+                if (!TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value) && TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value) || (!TraitUtils.HasTrait<TEnum>(otherData, (TEnum)value) && TraitUtils.HasTrait<TEnum>(GetTraitFlags<TEnum>(), (TEnum)value)))
                 {
                     TraitUtils.AddTrait<TEnum>(ref selfData, (TEnum)value);
                 }
@@ -152,7 +152,7 @@ namespace TerrariumTraits
                 result = foodTraits;
             else if (typeof(TEnum) == typeof(TerrainTraits))
                 result = terrainTraits;
-            else if (typeof (TEnum) == typeof(MiscTraits))
+            else if (typeof(TEnum) == typeof(MiscTraits))
                 result = miscTraits;
 
             return (TEnum)result;
@@ -162,11 +162,11 @@ namespace TerrariumTraits
         {
             List<TEnum> result = new List<TEnum>();
 
-            foreach(var value in Enum.GetValues(typeof(TEnum)))
+            foreach (var value in Enum.GetValues(typeof(TEnum)))
             {
-                if(this.GetTraitFlags<TEnum>().HasFlag((TEnum)value))
+                if (this.GetTraitFlags<TEnum>().HasFlag((TEnum)value))
                 {
-                    result.Add((TEnum) value);
+                    result.Add((TEnum)value);
                 }
             }
 
@@ -193,9 +193,9 @@ namespace TerrariumTraits
 
             TEnum otherTrait = other.GetTraitFlags<TEnum>();
 
-            foreach(var value in Enum.GetValues(typeof(TEnum)))
+            foreach (var value in Enum.GetValues(typeof(TEnum)))
             {
-                if(TraitUtils.HasTrait<TEnum>(otherTrait, (TEnum)value))
+                if (TraitUtils.HasTrait<TEnum>(otherTrait, (TEnum)value))
                 {
                     ++result;
                 }
