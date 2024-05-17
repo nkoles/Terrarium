@@ -72,8 +72,6 @@ public class Animal : AnimalAI, ITerrariumProduct
 
     public void Initialise()
     {
-        TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
-
         if((int)UnityEngine.Random.Range(0, 2) % 2 == 0)
         {
             TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Gender);
@@ -95,8 +93,6 @@ public class Animal : AnimalAI, ITerrariumProduct
         {
             if (CurrentAge > (int)(maxAge / 4))
             {
-                TraitUtils.RemoveTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
-
                 IsBaby = false;
             }
 

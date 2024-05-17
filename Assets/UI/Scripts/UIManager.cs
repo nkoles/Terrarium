@@ -20,6 +20,9 @@ namespace UIToolStates
 
         Slorp,
 
+        PlaceItem,
+
+        Camera
     }
 }
 
@@ -108,10 +111,79 @@ public class UIManager : MonoBehaviour
 
     }
 
+    static public string UpdateCorpseName(Animal animal)
+    {
+        string temp = "";
+
+        if (animal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Herbivore))
+            temp += "Herbivorous ";
+
+        if (animal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Carnivore))
+            temp += "Carnivorous ";
+
+        if (animal.Traits.nutritionTraits.HasFlag(NutritionalTraits.Scavenger))
+            temp += "Scavenging ";
+
+        if (animal.Traits.terrainTraits.HasFlag(TerrainTraits.Ground))
+            temp += "Walking ";
+
+        if (animal.Traits.terrainTraits.HasFlag(TerrainTraits.Water))
+            temp += "Swimming ";
+
+        if (animal.Traits.terrainTraits.HasFlag(TerrainTraits.Air))
+            temp += "Flying ";
+
+        return temp + "Corpse";
+    }
+
     public void UpdatePlantName(Plant currentPlant) 
     {
-        nameText.text = "Plant";
+        string temp = "";
 
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Fertilizer))
+            temp += "Rotten ";
+
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Plant))
+            temp += "Fauna ";
+
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Meat))
+            temp += "Scavenging ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Ground))
+            temp += "Walking ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Water))
+            temp += "Swimming ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Air))
+            temp += "Flying ";
+
+        nameText.text = temp +" Plant";
+    }
+
+    static public string UpdateSeedName(Plant currentPlant)
+    {
+        string temp = "";
+
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Fertilizer))
+            temp += "Rotten ";
+
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Plant))
+            temp += "Fauna ";
+
+        if (currentPlant.Traits.foodTraits.HasFlag(FoodTraits.Meat))
+            temp += "Lumpy ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Ground))
+            temp += "Walking ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Water))
+            temp += "Swimming ";
+
+        if (currentPlant.Traits.terrainTraits.HasFlag(TerrainTraits.Air))
+            temp += "Flying ";
+
+        return temp + " Plant";
     }
 
     public void HideTraits() 

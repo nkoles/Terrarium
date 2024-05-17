@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InvOpen : MonoBehaviour
 {
-
+    static public InvOpen instance;
     [SerializeField] bool invOpen;
 
     [SerializeField] Transform closed, open;
@@ -36,13 +36,13 @@ public class InvOpen : MonoBehaviour
         {
             case true:
 
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, open.position, lerpValue);
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, open.position, lerpValue * Time.deltaTime);
 
             break;
 
             case false:
 
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, closed.position, lerpValue);
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, closed.position, lerpValue * Time.deltaTime);
 
             break;
 
@@ -51,5 +51,8 @@ public class InvOpen : MonoBehaviour
 
     }
 
-
+    private void Awake()
+    {
+        instance = this;
+    }
 }

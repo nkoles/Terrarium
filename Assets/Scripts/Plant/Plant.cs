@@ -60,7 +60,7 @@ public class Plant : PlantAI, ITerrariumProduct
         _currentBloom = 0;
         _currentDecay = 0;
         _isBaby = true;
-        TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
+        //TraitUtils.AddTrait<MiscTraits>(ref Traits.miscTraits, MiscTraits.Pickupable);
 
         _self = gameObject;
 

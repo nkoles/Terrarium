@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventorySlotV2 : MonoBehaviour, IDropHandler
+public class InventorySlotV2 : MonoBehaviour, IDropHandler, IPointerDownHandler
 {
     public void OnDrop(PointerEventData eventData) // When a dragged item is released on this slot
     {
@@ -12,6 +12,19 @@ public class InventorySlotV2 : MonoBehaviour, IDropHandler
         {
             InventoryItemV2 inventoryItem = eventData.pointerDrag.GetComponent<InventoryItemV2>();
             inventoryItem.parentAfterDrag = transform;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (GetComponentInChildren<InventoryItemV2>() != null)
+        {
+            InventoryItemV2 item = GetComponentInChildren<InventoryItemV2>();
+
+            UIManager.instance.UIState = UIToolStates.UIInteractionType.PlaceItem;
+            ToolManager.instance.currentItem = item;
+
+            InvOpen.instance.OpenInv();
         }
     }
 }
