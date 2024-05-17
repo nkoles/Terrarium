@@ -99,7 +99,8 @@ public class PlantAI : MonoBehaviour
                         }
 
                         takenTiles.Add(randomPos);
-                        PlantFactory.instance.CreateTerrariumObject(availableTiles[randomPos], plantData);
+
+                        StartCoroutine(LerpParabola(GenerateParabolaPoints(transform.position, availableTiles[randomPos]), Instantiate(seedPrefab, transform), plantData)); 
                     }
 
                     hasBloomed = true;
@@ -110,6 +111,57 @@ public class PlantAI : MonoBehaviour
         return hasBloomed;
     }
 
+    public Vector3[] GenerateParabolaPoints(Vector3 start, Vector3 end, int numPoints = 3)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        float startEndDist = Vector3.Distance(start, end);
+
+        float xDiff = end.x - start.x;
+        float zDiff = end.z - start.z;
+
+        Vector3 quarterPoint = new Vector3(end.x - 3 * ((end.x - start.x) / 4), start.y + startEndDist / 4, end.z - 3 * ((end.z - start.z) / 4));
+
+        Vector3 midPoint = new Vector3(end.x - (end.x - start.x) / 2, start.y + startEndDist / 2, end.z - (end.z - start.z) / 2);
+
+        Vector3 secondQuarterPoint = new Vector3(end.x - 1 * ((end.x - start.x) / 4), start.y + startEndDist / 4, end.z - 1 * ((end.z - start.z) / 4));
+
+        //for (int i = 1; i < numPoints; ++i)
+        //{
+
+
+        //    points.Add(new Vector3(end.x - i * xDiff / numPoints, start.y + 1startEndDisti, end.z - i * zDiff / numPoints));
+        //}
+
+        points.Add(quarterPoint);
+        points.Add(midPoint);
+        points.Add(secondQuarterPoint);
+        points.Add(end);
+
+        return points.ToArray();
+    }
+
+    public IEnumerator LerpParabola(Vector3[] points, GameObject target, TraitData plantData)
+    {
+        foreach (var point in points)
+        {
+            Vector3 targetPos = point;
+
+            float lerp = 0;
+
+            while (lerp < 1)
+            {
+                lerp += Time.deltaTime * 10;
+
+                target.transform.position = Vector3.Lerp(target.transform.position, point, lerp);
+
+                yield return null;
+            }
+        }
+
+        Destroy(target.gameObject);
+        PlantFactory.instance.CreateTerrariumObject(points[points.Length-1], plantData);
+    }
     //private void OnDrawGizmos()
     //{
     //    for (int i = -3; i < 3; ++i)

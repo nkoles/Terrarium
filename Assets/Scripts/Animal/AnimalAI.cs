@@ -15,15 +15,22 @@ public class AnimalAI : MonoBehaviour
     public int consumptionTime;
     public ITerrariumProduct? target = null;
 
+    public TraitData selfTraits;
+
     public Transform animalContainer;
 
     public Grid terrainGrid;
+
+    public List<Vector3> availableTiles = new List<Vector3>();
+
+    public Vector3 _lastPosition;
+    public bool isMoving;
 
     public bool CheckTargetDestruction()
     {
         if(target != null)
         {
-            if(target.SelfObject == null)
+            if(target.IsDead || target.SelfObject == null)
             {
                 target = null;
                 return true;
@@ -33,7 +40,17 @@ public class AnimalAI : MonoBehaviour
         return false;
     }
 
-    public Vector3[] AvailableTiles(TraitData animalTraits)
+    public void OnPreTick()
+    {
+        availableTiles = AvailableTiles(selfTraits);
+
+        if (availableTiles.Count > 1 && availableTiles.Contains(_lastPosition))
+        {
+            availableTiles.Remove(_lastPosition);
+        }
+    }
+
+    public List<Vector3> AvailableTiles(TraitData animalTraits)
     {
         List<Vector3> results = new List<Vector3>();
 
@@ -62,7 +79,7 @@ public class AnimalAI : MonoBehaviour
         {
             Physics.Raycast(directionalRays[i], out directionalHits[i], 1f);
 
-            if (directionalHits[i].collider == null)
+            if (directionalHits[i].collider == null || directionalHits[i].collider.GetComponent<ITerrariumProduct>().IsDead)
             {
                 Physics.Raycast(groundRays[i], out groundHits[i], 2f);
 
@@ -74,20 +91,23 @@ public class AnimalAI : MonoBehaviour
             }
         }
 
-        return results.ToArray();
+        return results;
     }
 
-    public void Move(Vector3[] availableTiles, int chanceToMove = 100)
+    public void Move(Vector3[] _availableTiles, int chanceToMove = 100)
     {
-        if(availableTiles.Length > 0)
+        if(availableTiles.ToArray().Length > 0)
         {
             int movementChance = UnityEngine.Random.Range(0, 101);
             int randomTile = 0;
             Vector3 target = transform.position;
 
             if (movementChance <= chanceToMove)
-                target = availableTiles[UnityEngine.Random.Range(0, availableTiles.Length)];
+            {
+                target = _availableTiles[UnityEngine.Random.Range(0, _availableTiles.ToArray().Length)];
+            }
 
+            _lastPosition = transform.position;
             transform.position = target;
         }
     }
@@ -120,7 +140,7 @@ public class AnimalAI : MonoBehaviour
 
                 foreach (var trait in searchTraits)
                 {
-                    if (collider.GetComponent<ITerrariumProduct>().Traits.HasTrait<TEnum>(trait))
+                    if (collider.GetComponent<ITerrariumProduct>().Traits.HasTrait<TEnum>(trait) && !collider.GetComponent<ITerrariumProduct>().IsBaby)
                     {
                         nearbyTargets.Add(collider.GetComponent<ITerrariumProduct>());
                     }
@@ -201,7 +221,7 @@ public class AnimalAI : MonoBehaviour
 
     public Vector3 ClosestTileToTarget(TraitData animalTraits)
     {
-        Vector3[] nonFilteredAvailableTiles = AvailableTiles(animalTraits);
+        Vector3[] nonFilteredAvailableTiles = AvailableTiles(animalTraits).ToArray();
 
         int tileIndex = 0;
         float tempDistance = float.MaxValue;
@@ -264,22 +284,22 @@ public class AnimalAI : MonoBehaviour
         {
             //traitData.foodTraits = FoodTraits.None;
 
-            if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Plant))
+            if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Plant) && !TraitUtils.HasTrait<NutritionalTraits>(traitData.nutritionTraits, NutritionalTraits.Herbivore))
             {
-                TraitUtils.AddTrait<NutritionalTraits>(ref traitData.nutritionTraits, NutritionalTraits.Herbivore);
+                traitData.nutritionTraits = NutritionalTraits.Herbivore;
             }
 
-            if (TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Meat))
+            if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Fertilizer) && !TraitUtils.HasTrait<NutritionalTraits>(traitData.nutritionTraits, NutritionalTraits.Scavenger))
             {
-                TraitUtils.AddTrait<NutritionalTraits>(ref traitData.nutritionTraits, NutritionalTraits.Carnivore);
+                traitData.nutritionTraits = NutritionalTraits.Herbivore;
             }
 
-            if(TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Fertilizer))
+            if (TraitUtils.HasTrait<FoodTraits>(target.Traits.foodTraits, FoodTraits.Meat) && !TraitUtils.HasTrait<NutritionalTraits>(traitData.nutritionTraits, NutritionalTraits.Carnivore))
             {
-                TraitUtils.AddTrait<NutritionalTraits>(ref traitData.nutritionTraits, NutritionalTraits.Scavenger);
+                traitData.nutritionTraits = NutritionalTraits.Herbivore;
             }
 
-            Destroy(target.SelfObject);
+            target.IsDead = true;
             target = null;
 
             return true;
@@ -293,7 +313,7 @@ public class AnimalAI : MonoBehaviour
         if(target == null)
         {
             consumption = 0;
-            Move(AvailableTiles(traitData), 70);
+            Move(availableTiles.ToArray(), 70);
             target = FindTargetWithTrait<FoodTraits>(searchTraits, range);
         } else
         {
@@ -320,7 +340,7 @@ public class AnimalAI : MonoBehaviour
     {
         int randomSpawn = 0;
 
-        Vector3[] pos = AvailableTiles(traitData);
+        Vector3[] pos = availableTiles.ToArray();
 
         if (pos.Length > 0)
         {
@@ -349,7 +369,7 @@ public class AnimalAI : MonoBehaviour
         {
             print("finding partner");
 
-            Move(AvailableTiles(traitData), 70);
+            Move(availableTiles.ToArray(), 70);
             target = FindTargetWithSimilarTraits(traitData, similarityCount, range);
         } 
         else
