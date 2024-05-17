@@ -60,15 +60,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.77674806, b: 0.2971698, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 6da69121e6b131142a42a5d650c0ab28, type: 3}
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -113,4 +113,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3d3529d2e3e28a4ba6eb0dcd4f779d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invItemPrefab: {fileID: 6871789392584625865, guid: 775a4e6fb9cf04c4a9e27e6fcd7cef4e, type: 3}
+  craftingSystem: {fileID: 0}
+  otherItemLink: {fileID: 0}
+  isFirstSlot: 0
