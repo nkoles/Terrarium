@@ -26,19 +26,26 @@ public class CraftingSystem : MonoBehaviour
             // then remove 1 of the same type from inventory
             ItemData itemData1 = itemsInCrafting[0].itemData;
             ItemData itemData2 = itemsInCrafting[1].itemData;
-            ItemData newItemData = itemData1; // the item data for the output item
+            ItemData newItemData;
+            TraitData newTraitData = UpdatedTraitData(itemData1.traits, itemData2.traits); // the item data for the output item
 
-            newItemData.traits = UpdatedTraitData(itemData1.traits, itemData2.traits);
+            //newItemData.traits = UpdatedTraitData(itemData1.traits, itemData2.traits);
+            Debug.Log(CompareTraitData(newTraitData, itemData1.traits));
 
-            Debug.Log("Nutrition traits = " + newItemData.traits.nutritionTraits);
-            Debug.Log("Food traits = " + newItemData.traits.foodTraits);
-            Debug.Log("Terrain traits = " + newItemData.traits.terrainTraits);
-            Debug.Log("Misc traits = " + newItemData.traits.miscTraits);
+            Debug.Log("newTraitData Nutrition traits = " + newTraitData.nutritionTraits);
+            Debug.Log("itemdata1 Nutrition traits = " + itemData1.traits.nutritionTraits);
+            Debug.Log("newTraitData Food traits = " + newTraitData.foodTraits);
+            Debug.Log("itemdata1 Food traits = " + itemData1.traits.foodTraits);
+            Debug.Log("newTraitData Terrain traits = " + newTraitData.terrainTraits);
+            Debug.Log("itemdata1 Terrain traits = " + itemData1.traits.terrainTraits);
+            Debug.Log("newTraitData Misc traits = " + newTraitData.miscTraits);
+            Debug.Log("itemdata1 Misc traits = " + itemData1.traits.miscTraits);
+
             // CHECK IF THIS IS A NEW TYPE OF TRAIT, IF IT IS, INSTANTIATE A NEW SCRIPTABLE OBJECT
             bool newDataType = true;
             for (int i = 0; i < inventoryManager.itemTypes.Count; i++)
             {
-                if (newItemData.itemType == inventoryManager.itemTypes[i].itemType && newItemData.traits == inventoryManager.itemTypes[i].traits) // Check if this itemData type already exists
+                if (itemData1.itemType == inventoryManager.itemTypes[i].itemType && CompareTraitData(newTraitData, inventoryManager.itemTypes[i].traits)) // Check if this itemData type already exists
                 {
                     Debug.Log("Not a new item type");
                     newDataType = false;
@@ -48,9 +55,13 @@ public class CraftingSystem : MonoBehaviour
             if (newDataType) // Data type doesnt exist, create a new one
             {
                 Debug.Log("Instantiating new data type SO, yippee!!");
-                ItemData data = ItemData.CreateInstance(newItemData.itemType, "Custom Data Type", newItemData.icon, newItemData.isStackable, newItemData.traits);
+                ItemData data = ItemData.CreateInstance(itemData1.itemType, "Custom Data Type", itemData1.icon, itemData1.isStackable, newTraitData);
                 inventoryManager.itemTypes.Add(data);
                 newItemData = data;
+            }
+            else
+            {
+                newItemData = itemData1;
             }
 
             InventoryItemV2 outputItem = itemsInCrafting[0];
@@ -143,5 +154,14 @@ public class CraftingSystem : MonoBehaviour
     public void RemoveEmptyFromList()
     {
         itemsInCrafting.RemoveAll(item => item == null);
+    }
+
+    bool CompareTraitData(TraitData traitData1, TraitData traitData2)
+    {
+        if (traitData1.foodTraits != traitData2.foodTraits) { return false; }
+        if (traitData1.nutritionTraits != traitData2.nutritionTraits) { return false; }
+        if (traitData1.terrainTraits != traitData2.terrainTraits) { return false; }
+        if (traitData1.miscTraits != traitData2.miscTraits) { return false; }
+        return true;
     }
 }
