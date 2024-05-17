@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 3
   displayName: Corpse
-  icon: {fileID: 21300000, guid: 44c7c7fa3336f054396b6e9a45b0dc68, type: 3}
+  icon: {fileID: 21300000, guid: 806e9c9281db3cd48a98eefc410b76a2, type: 3}
   isStackable: 0
   traits:
-    nutritionTraits: 2
-    foodTraits: 0
+    nutritionTraits: 0
+    foodTraits: 4
     terrainTraits: 0
     miscTraits: 0
