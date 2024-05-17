@@ -52,15 +52,16 @@ public class PlantModelHandler : MonoBehaviour
                 setModel(2);
             }
         }
-        else
-        {
-            UpdatePlantDecay();
-        }
+    }
+
+    public void Update()
+    {
+        if (_plant.IsDead) UpdatePlantDecay();
     }
 
     public void UpdatePlantDecay()
     {
-        renderer.material.SetFloat("_DecayValue", _plant.CurrentAge);
+        renderer.material.SetFloat("_DecayValue", _plant.CurrentDecay);
     }
     public void setModel(int i)
     {
