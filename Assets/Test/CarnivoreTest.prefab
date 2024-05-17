@@ -162,6 +162,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WaterLevelModel
       objectReference: {fileID: 0}
+    - target: {fileID: 4071585897789762644, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
+      propertyPath: waterHeight
+      value: -0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7981548175172043632, guid: cabe0ff4401869c4ea8364471439090a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.85
