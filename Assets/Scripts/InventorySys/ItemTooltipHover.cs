@@ -8,19 +8,71 @@ public class ItemTooltipHover : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private TooltipUI tooltip;
     private InventoryItemV2 parentItem;
     private ItemData itemData;
+    public bool isOnItemPrefab;
 
     private void Awake()
     {
         tooltip = GameObject.FindGameObjectWithTag("Tooltip").GetComponent<TooltipUI>();
-        parentItem = transform.parent.GetComponent<InventoryItemV2>();
+        if (transform.parent.GetComponent<InventoryItemV2>() != null)
+        {
+            parentItem = transform.parent.GetComponent<InventoryItemV2>();
+            isOnItemPrefab = true;
+        }
+        else
+        {
+            isOnItemPrefab = false;
+        }
         //itemData = parentItem.itemData;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         Debug.Log("OnPointerEnter");
-        itemData = parentItem.itemData;
-        tooltip.ShowTooltip("Item Traits:\nNutrition: " + itemData.traits.nutritionTraits.ToString() + "\nFood: " + itemData.traits.foodTraits.ToString() + "\nTerrain: " + itemData.traits.terrainTraits.ToString() + "\nMisc: " + itemData.traits.miscTraits.ToString());
+        if (isOnItemPrefab)
+        {
+            itemData = parentItem.itemData;
+            tooltip.ShowTooltip("Item Traits:\nNutrition: " + itemData.traits.nutritionTraits.ToString() + "\nFood: " + itemData.traits.foodTraits.ToString() + "\nTerrain: " + itemData.traits.terrainTraits.ToString() + "\nMisc: " + itemData.traits.miscTraits.ToString());
+        }
+        else
+        {
+            /*switch (gameObject.name)
+            {
+                case "Herbivore":
+                    {
+                        break;
+                    }
+                case "Carnivore":
+                    {
+                        break;
+                    }
+                case "Scavenger":
+                    {
+
+                    }
+                case "Meat":
+                    {
+
+                    }
+                case "Fertilizer":
+                    {
+
+                    }
+                case "Ground":
+                    {
+
+                    }
+                case "Water":
+                    {
+
+                    }
+                default:
+                    {
+                        Debug.Log("DEFAULT RUN UH OH! on gameObject " + gameObject);
+                        break;
+                    }
+            }*/
+            tooltip.ShowTooltip(eventData.pointerDrag.gameObject.name);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
