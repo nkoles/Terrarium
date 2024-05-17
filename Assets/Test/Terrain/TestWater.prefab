@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2375887452657927182}
   - component: {fileID: 2594782912005095922}
   m_Layer: 6
-  m_Name: TestGround
+  m_Name: TestWater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cd5f3ed1bf9af149a865d916facb1ec, type: 2}
+  - {fileID: 2100000, guid: f877a0455c7f91a4d825325c4cfbdaa5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   traits:
     nutritionTraits: 0
     foodTraits: 0
-    terrainTraits: 1
+    terrainTraits: 2
     miscTraits: 0
   fertility: 0
   bloody: 0
